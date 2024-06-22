@@ -43,5 +43,14 @@ class Siswa_model extends CI_Model {
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->row();
     }
+
+    public function get_by_id_kelas($id_kelas) {
+        $this->db->where("id_kelas", $id_kelas);
+        return $this->db->get($this->table)->result();
+    }
+
+    public function jumlah_siswa(){
+        return $this->db->count_all('siswa');
+    }
 }
 ?>

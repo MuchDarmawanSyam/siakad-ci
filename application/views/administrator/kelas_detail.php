@@ -21,6 +21,7 @@
                     <thead>
                         <tr style="background-color: #f9f9f9;">
                             <th style="font-size: 14px;">NO</th>
+                            <th style="font-size: 14px;">NIS</th>
                             <th style="font-size: 14px;">NAMA SISWA</th>
                             <th style="width: 15%; font-size: 14px;">JENIS KELAMIN</th>
                             <th style="font-size: 14px;">ALAMAT</th>
@@ -32,6 +33,7 @@
                             <?php foreach ($siswa as $sw) : ?>
                                 <tr>
                                     <td><?php echo $no++; ?></td>
+                                    <td><?php echo $sw->nis; ?></td>
                                     <td><?php echo $sw->nama_siswa; ?></td>
                                     <td><?php echo $sw->jenis_kelamin; ?></td>
                                     <td><?php echo $sw->alamat; ?></td>

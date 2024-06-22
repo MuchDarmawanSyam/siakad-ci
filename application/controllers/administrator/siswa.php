@@ -18,7 +18,9 @@ class Siswa extends CI_Controller {
     }
 
     public function tambah_siswa() {
-        $data['siswa'] = $this->siswa_model->get_siswa(); 
+        $this->load->model('kelas_model');
+        $data['siswa'] = $this->siswa_model->get_siswa();
+        $data['kelas'] = $this->kelas_model->get_all_kelas();
         $this->load->view('templates_administrator/header');
         $this->load->view('templates_administrator/sidebar');
         $this->load->view('administrator/siswa_form', $data); 
@@ -41,6 +43,7 @@ class Siswa extends CI_Controller {
             $agama = $this->input->post('agama');
             $nama_ayah = $this->input->post('nama_ayah');
             $pekerjaan_ayah = $this->input->post('pekerjaan_ayah');
+            $kelas = $this->input->post('id_kelas');
             $nama_ibu = $this->input->post('nama_ibu');
             $pekerjaan_ibu = $this->input->post('pekerjaan_ibu');
             $foto = $this->input->post('foto');
@@ -65,6 +68,7 @@ class Siswa extends CI_Controller {
                 'pekerjaan_ibu' => $pekerjaan_ibu,
                 'foto' => $foto,
                 'no_telp' => $no_telp,
+                'id_kelas' => $kelas,
                 'idu' => $idu // Isi idu dengan nilai nis
             );
     

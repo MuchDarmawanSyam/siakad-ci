@@ -97,28 +97,28 @@
         </div>
 
        <!-- Form group untuk kelas -->
-<div class="form-group">
-    <label for="id_kelas">Kelas</label>
-    <select name="id_kelas" id="id_kelas" class="form-control" required>
-        <?php foreach ($kelas as $kls) : ?>
-            <?php
-            $already_assigned = false;
-            foreach ($siswa as $sw) {
-                if ($sw->id_kelas == $kls->id_kelas) {
-                    $already_assigned = true;
-                    break;
-                }
-            }
-            if (!$already_assigned) {
-                ?>
-                <option value="<?php echo $kls->id_kelas; ?>"><?php echo $kls->nama_kelas; ?></option>
-                <?php
-            }
-            ?>
-        <?php endforeach; ?>
-    </select>
-    <?php echo form_error('id_kelas','<div class="text-danger small ml-3">','</div>') ?>
-</div>
+        <div class="form-group">
+            <label for="id_kelas">Kelas</label>
+            <select name="id_kelas" id="id_kelas" class="form-control" required>
+                <?php foreach ($kelas as $kls) : ?>
+                    <?php
+                    $already_assigned = false;
+                    foreach ($siswa as $sw) {
+                        if ($sw->id_kelas == $kls->id_kelas) {
+                            $already_assigned = true;
+                            break;
+                        }
+                    }
+                    if (!$already_assigned) {
+                        ?>
+                        <option value="<?php echo $kls->id_kelas; ?>"><?php echo $kls->nama_kelas; ?></option>
+                        <?php
+                    }
+                    ?>
+                <?php endforeach; ?>
+            </select>
+            <?php echo form_error('id_kelas','<div class="text-danger small ml-3">','</div>') ?>
+        </div>
 
 
         <div class="form-group">

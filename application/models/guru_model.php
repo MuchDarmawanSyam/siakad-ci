@@ -40,4 +40,8 @@ class Guru_model extends CI_Model {
         $this->db->where($this->id,$id);
         return $this->db->get($this->table)->row();
     }
+
+    public function jumlah_guru(){
+        return $this->db->count_all('guru');
+    }
 }

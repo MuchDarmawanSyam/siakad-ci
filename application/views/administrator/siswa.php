@@ -11,10 +11,10 @@
         <thead>
             <tr>
                 <th class="sort" data-sort="no">NO <span class="sort-icon"><i class="fas fa-sort"></i></span></th>
-                <th class="sort" data-sort="email">EMAIL <span class="sort-icon"><i class="fas fa-sort"></i></span></th>
                 <th class="sort" data-sort="nama_siswa">NAMA LENGKAP <span class="sort-icon"><i class="fas fa-sort"></i></span></th>
                 <th class="sort" data-sort="alamat">ALAMAT <span class="sort-icon"><i class="fas fa-sort"></i></span></th>
                 <th class="sort" data-sort="jenis_kelamin">JENIS KELAMIN <span class="sort-icon"><i class="fas fa-sort"></i></span></th>
+                <th class="sort" data-sort="email">EMAIL <span class="sort-icon"><i class="fas fa-sort"></i></span></th>
                
                 <th colspan="3">AKSI</th>
             </tr>

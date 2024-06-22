@@ -77,6 +77,10 @@ class Kelas_model extends CI_Model {
         $this->db->where('nis', $nis);
         $this->db->delete('kelas');
     }
+
+    public function jumlah_kelas(){
+        return $this->db->count_all('kelas');
+    }
     
 }
 ?>
