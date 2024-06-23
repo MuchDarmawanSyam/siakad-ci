@@ -217,7 +217,7 @@ class Guru extends CI_Controller {
         // $data['detail'] = $this->guru_model->ambil_kode_guru($id); // Masih jadi issue (data terhapus tapi file tdk)
         // unlink('./assets/uploads/img/guru/'.$data['detail']['foto']); // hapus foto
         $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
-                Data guru Berhasil dihapus!'
+                Data guru Berhasil dihapus!
                 </div>');
         redirect('administrator/guru');
     }
