@@ -2,9 +2,10 @@
     <div class="alert alert-success" role="alert">
         <i class="fas fa-landmark"></i> Form Update Guru
     </div>
+    <?php echo $this->session->flashdata('pesan') ?>
 
     <?php foreach ($guru as $gr) : ?>
-        <form method="post" action="<?php echo base_url('administrator/guru/update_aksi') ?>">
+        <form method="post" action="<?php echo base_url('administrator/guru/update_aksi') ?>" enctype="multipart/form-data">
             <input type="hidden" name="nik" value="<?php echo $gr->nik ?>">
 
             <!-- Form group untuk nomor induk guru -->
@@ -64,9 +65,13 @@
             </div>
             <!-- Form group untuk foto -->
             <div class="form-group">
-                <label for="foto">Foto</label>
+                <div>
+                    <label for="foto">Foto</label>    
+                </div>
+                <img src="<?php echo base_url('assets/uploads/img/guru/') . $gr->foto; ?>" alt="Foto guru" style="max-width: 200px; max-height: 200px;">
                 <input type="file" name="foto" id="foto" class="form-control" accept=".jpg, .jpeg">
-                <small class="text-muted">Format harus berupa JPEG</small>
+                <input type="hidden" name="old_foto" value="<?php echo $gr->foto; ?>">
+                <small class="text-muted">Kosongkan jika tidak ingin mengupdate foto. Format harus berupa JPG atau JPEG</small>
                 <?php echo form_error('foto','<div class="text-danger small ml-3">','</div>') ?>
             </div>
             <!-- Form group untuk nomor telepon -->
@@ -77,6 +82,7 @@
         </div>
         <!-- Tombol simpan -->
         <button type="submit" class="btn btn-primary mb-5">Simpan</button>
+        <?php echo anchor('administrator/guru','<div class="btn btn-danger mb-5">Kembali</div>') ?>
     </form>
     <?php endforeach; ?>
 </div>

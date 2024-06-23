@@ -123,7 +123,7 @@
                                             <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo($guru) ?></div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                            <i class="fas fa-user fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -141,7 +141,7 @@
                                             <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo($siswa) ?></div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                            <i class="fas fa-users fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -163,7 +163,7 @@
                                             </div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                            <i class="fas fa-building fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -181,7 +181,7 @@
                                             <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo($pengguna) ?></div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                            <i class="fas fa-key fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>

@@ -2,7 +2,9 @@
     <div class="alert alert-success" role="alert">
         <i class="fas fa-landmark"></i> Form tambah guru
     </div>
-    <form method="post" action="<?php echo base_url('administrator/guru/tambah_guru_aksi')?>">
+    <?php echo $this->session->flashdata('pesan') ?>
+    
+    <form method="post" action="<?php echo base_url('administrator/guru/tambah_guru_aksi')?>" enctype="multipart/form-data">
         <!-- Form group untuk nomor induk guru -->
         <div class="form-group">
             <label for="nik">Nomor Induk Guru</label>
@@ -62,7 +64,7 @@
         <div class="form-group">
             <label for="foto">Foto</label>
             <input type="file" name="foto" id="foto" class="form-control" required accept=".jpg, .jpeg">
-            <small class="text-muted">Format harus berupa JPEG</small>
+            <small class="text-muted">Format harus berupa JPG atau JPEG</small>
             <?php echo form_error('foto','<div class="text-danger small ml-3">','</div>') ?>
         </div>
         <!-- Form group untuk nomor telepon -->
@@ -80,5 +82,6 @@
         </div>
         <!-- Tombol simpan -->
         <button type="submit" class="btn btn-primary mb-5">Simpan</button>
+        <?php echo anchor('administrator/guru','<div class="btn btn-danger mb-5">Kembali</div>') ?>
     </form>
 </div>

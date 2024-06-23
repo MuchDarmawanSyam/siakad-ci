@@ -7,7 +7,7 @@
             <tr>
                 <th>FOTO</th>
                 <td>
-                    <img src="<?php echo base_url('assets/uploads/') . $dt->foto; ?>" alt="Foto guru" style="max-width: 200px; max-height: 200px;">
+                    <img src="<?php echo base_url('assets/uploads/img/guru/') . $dt->foto; ?>" alt="Foto guru" style="max-width: 200px; max-height: 200px;">
                 </td>
             </tr>
             <tr>
