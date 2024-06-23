@@ -22,7 +22,7 @@
     </form>
 
     <br>
-    <a href="<?php echo site_url('administrator/ekstra'); ?>">Kembali</a>
+    <?php echo anchor('administrator/ekstra/detail/'.$ekstra->id_ekstra,'<div class="btn btn-danger mb-5">Kembali</div>') ?>
 
 </div>
 

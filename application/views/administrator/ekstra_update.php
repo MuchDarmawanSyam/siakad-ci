@@ -26,17 +26,8 @@
                 </select>
             </div>
 
-            <!-- Dropdown untuk memilih kelas -->
-            <div class="form-group">
-                <label for="kelas">Kelas</label>
-                <select name="kelas" class="form-control">
-                    <?php foreach ($kelas_list as $kelas) : ?>
-                        <option value="<?= $kelas->id_kelas; ?>" <?= ($ekstra->id_kelas == $kelas->id_kelas) ? 'selected' : ''; ?>><?= $kelas->nama_kelas; ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Simpan</button>
+            <button type="submit" class="btn btn-primary mb-5">Simpan</button>
+            <?php echo anchor('administrator/ekstra','<div class="btn btn-danger mb-5">Kembali</div>') ?>
         </form>
     <?php else : ?>
         <div class="alert alert-danger" role="alert">

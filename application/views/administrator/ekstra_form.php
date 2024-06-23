@@ -30,16 +30,8 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="kelas">Pilih Kelas:</label>
-                    <select class="form-control" id="kelas" name="kelas" required>
-                        <option value="">--Pilih Kelas--</option>
-                        <?php foreach ($kelas_list as $kelas): ?>
-                            <option value="<?php echo $kelas->id_kelas; ?>"><?php echo $kelas->nama_kelas; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary">Simpan</button>
+                <button type="submit" class="btn btn-primary mb-5">Simpan</button>
+                <?php echo anchor('administrator/ekstra','<div class="btn btn-danger mb-5">Kembali</div>') ?>
             </form>
         </div>
     </body>

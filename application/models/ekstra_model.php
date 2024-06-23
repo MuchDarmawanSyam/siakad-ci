@@ -95,36 +95,38 @@ class Ekstra_model extends CI_Model {
 
     public function get_siswa_by_ekstra_id($id_ekstra) {
         $this->db->select('siswa.nis, siswa.nama_siswa, siswa.jenis_kelamin, siswa.alamat');
-        $this->db->from('ekstra'); // Mengubah dari 'ekstra_siswa' menjadi 'ekstra'
-        $this->db->join('siswa', 'ekstra.nis = siswa.nis');
-        $this->db->where('ekstra.id_ekstra', $id_ekstra);
+        $this->db->from('ekstra_siswa');
+        $this->db->join('siswa', 'ekstra_siswa.nis = siswa.nis');
+        $this->db->where('ekstra_siswa.id_ekstra', $id_ekstra);
         return $this->db->get()->result();
     }
 
     public function get_ekstra_by_id($id) {
-        $this->db->select('ekstra.*, guru.nama_guru, kelas.nama_kelas, tahun_ajaran.tahun_ajaran');
+        $this->db->select('ekstra.*, guru.nama_guru, tahun_ajaran.tahun_ajaran');
         $this->db->from('ekstra');
         $this->db->join('guru', 'ekstra.nik = guru.nik', 'left');
-        $this->db->join('kelas', 'ekstra.id_kelas = kelas.id_kelas', 'left');
         $this->db->join('tahun_ajaran', 'ekstra.id_tahun = tahun_ajaran.id_tahun', 'left');
         $this->db->where('ekstra.id_ekstra', $id);
         return $this->db->get()->row();
     }
+
     public function get_kelas_by_id($id_kelas) {
         return $this->db->get_where('kelas', array('id_kelas' => $id_kelas))->row();
     }
+
     public function get_tahun_ajaran_by_id($id_tahun) {
         return $this->db->get_where('tahun_ajaran', array('id_tahun' => $id_tahun))->row();
     }
+
     public function hapus_siswa($id_ekstra, $nis) {
         // Cek apakah entri dengan 'nis' yang diberikan ada di tabel 'ekstra'
-        $cek_data = $this->db->get_where('ekstra', array('id_ekstra' => $id_ekstra, 'nis' => $nis))->row();
+        $cek_data = $this->db->get_where('ekstra_siswa', array('id_ekstra' => $id_ekstra, 'nis' => $nis))->row();
     
         if ($cek_data) {
             // Hapus entri data 'nis' dari tabel 'ekstra'
             $this->db->where('id_ekstra', $id_ekstra);
             $this->db->where('nis', $nis);
-            $this->db->delete('ekstra');
+            $this->db->delete('ekstra_siswa');
             return $this->db->affected_rows() > 0;
         } else {
             return false; // Jika entri 'nis' tidak ditemukan, tidak ada yang dihapus

@@ -6,12 +6,10 @@
     <div class="alert alert-info" role="alert">
         Tahun Ajaran: <?php echo isset($tahun_ajaran) ? $tahun_ajaran->tahun_ajaran : 'Belum ditentukan'; ?>
     </div>
-    <a href="<?php echo base_url('administrator/ekstra/tambah'); ?>" class="btn btn-primary">Tambah Ekstrakurikuler</a>
     <?php if($this->session->flashdata('pesan') && !strpos($this->session->flashdata('pesan'), 'field harus diisi')): ?>
-        <div class="alert alert-success">
-            <?php echo $this->session->flashdata('pesan'); ?>
-        </div>
+        <?php echo $this->session->flashdata('pesan'); ?>
     <?php endif; ?>
+    <a href="<?php echo base_url('administrator/ekstra/tambah'); ?>" class="btn btn-primary mb-3">Tambah Ekstrakurikuler</a>
     <table id="ekstra_table" class="table table-bordered table-striped table-hover">
         <thead>
             <tr>

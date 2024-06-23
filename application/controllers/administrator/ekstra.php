@@ -42,15 +42,13 @@ class Ekstra extends CI_Controller {
         $nama_ekstra = $this->input->post('nama_ekstra');
         $deskripsi = $this->input->post('deskripsi');
         $nik = $this->input->post('guru');
-        $id_kelas = $this->input->post('kelas');
         $tahun_ajaran = $this->Ekstra_model->get_active_tahun_ajaran();
 
-        if ($nama_ekstra && $deskripsi && $nik && $id_kelas && $tahun_ajaran) {
+        if ($nama_ekstra && $deskripsi && $nik && $tahun_ajaran) {
             $data = array(
                 'nama_ekstra' => $nama_ekstra,
                 'deskripsi' => $deskripsi,
                 'nik' => $nik,
-                'id_kelas' => $id_kelas,
                 'id_tahun' => $tahun_ajaran->id_tahun,
             );
 
@@ -78,15 +76,13 @@ class Ekstra extends CI_Controller {
         $nama_ekstra = $this->input->post('nama_ekstra');
         $deskripsi = $this->input->post('deskripsi');
         $nik = $this->input->post('guru');
-        $id_kelas = $this->input->post('kelas');
         $tahun_ajaran = $this->Ekstra_model->get_active_tahun_ajaran();
 
-        if ($id && $nama_ekstra && $deskripsi && $nik && $id_kelas && $tahun_ajaran) {
+        if ($id && $nama_ekstra && $deskripsi && $nik && $tahun_ajaran) {
             $data = array(
                 'nama_ekstra' => $nama_ekstra,
                 'deskripsi' => $deskripsi,
                 'nik' => $nik,
-                'id_kelas' => $id_kelas,
                 'id_tahun' => $tahun_ajaran->id_tahun,
             );
 
@@ -108,38 +104,53 @@ class Ekstra extends CI_Controller {
     }
 
     public function daftar_siswa($id_ekstra) {
-        $data['ekstra'] = $this->Ekstra_model->ambil_detail_ekstra($id_ekstra);
-        $data['siswa_list'] = $this->Ekstra_model->get_siswa_by_ekstra_id($id_ekstra); // Mengubah dari 'get_siswa_by_ekstra_id' menjadi 'get_siswa_by_kelas_id'
+        $this->load->model('siswa_model');
+        $data['ekstra'] = $this->Ekstra_model->get_ekstra_by_id($id_ekstra);
+        $data['siswa_list'] = $this->siswa_model->get_siswa(); 
         $this->load->view('templates_administrator/header');
         $this->load->view('templates_administrator/sidebar');
-        $this->load->view('administrator/ekstra_daftar_siswa', $data);
+        $this->load->view('administrator/ekstra_form_siswa', $data);
         $this->load->view('templates_administrator/footer');
-    } public function detail($id_ekstra) {
-    $data['detail'] = $this->Ekstra_model->get_ekstra_by_id($id_ekstra);
-    $data['siswa'] = $this->Ekstra_model->get_siswa_by_ekstra_id($id_ekstra); // Mengubah dari 'get_siswa_by_ekstra_id' menjadi 'get_siswa_by_kelas_id'
-    $data['guru'] = $this->Ekstra_model->get_data_guru($data['detail']->nik);
-    $data['kelas'] = $this->Ekstra_model->get_kelas_by_id($data['detail']->id_kelas);
-    $data['tahun_ajaran'] = $this->Ekstra_model->get_tahun_ajaran_by_id($data['detail']->id_tahun);
-    $this->load->view('templates_administrator/header');
-    $this->load->view('templates_administrator/sidebar');
-    $this->load->view('administrator/ekstra_detail', $data);
-    $this->load->view('templates_administrator/footer');
-}
-
-public function hapus_siswa($id_ekstra) {
-    $nis = $this->input->get('nis'); // Mendapatkan nilai 'nis' dari query string
-
-    if (!empty($nis)) {
-        if ($this->Ekstra_model->hapus_siswa($id_ekstra, $nis)) {
-            $this->session->set_flashdata('message', 'Siswa berhasil dihapus dari ekstrakurikuler');
-        } else {
-            $this->session->set_flashdata('message', 'Gagal menghapus siswa dari ekstrakurikuler');
-        }
-    } else {
-        $this->session->set_flashdata('message', 'NIS kosong, tidak ada yang dihapus');
     }
 
-    redirect('administrator/ekstra/detail/' . $id_ekstra);
-}
+    public function tambah_siswa_aksi($id_ekstra){
+        $nis = $this->input->post('nis');
+        if($nis && $id_ekstra){
+            $this->Ekstra_model->tambah_siswa_ekstra($id_ekstra, $nis);
+            $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">Data siswa berhasil ditambahkan ke ekstra!</div>');
+            redirect('administrator/ekstra/detail/'.$id_ekstra);
+        } else {
+            $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">Semua field harus diisi!</div>');
+            redirect('administrator/ekstra/daftar_siswa/'.$id_ekstra);
+        }
+    }
+    
+    public function detail($id_ekstra) {
+        $data['detail'] = $this->Ekstra_model->get_ekstra_by_id($id_ekstra);
+        $data['siswa'] = $this->Ekstra_model->get_siswa_by_ekstra_id($id_ekstra);
+        $data['guru'] = $this->Ekstra_model->get_data_guru($data['detail']->nik);
+        //$data['kelas'] = $this->Ekstra_model->get_kelas_by_id($data['detail']->id_kelas);
+        $data['tahun_ajaran'] = $this->Ekstra_model->get_tahun_ajaran_by_id($data['detail']->id_tahun);
+        $this->load->view('templates_administrator/header');
+        $this->load->view('templates_administrator/sidebar');
+        $this->load->view('administrator/ekstra_detail', $data);
+        $this->load->view('templates_administrator/footer');
+    }
+    // lanjut update ekstra
+    public function hapus_siswa($id_ekstra) {
+        $nis = $this->input->get('nis'); // Mendapatkan nilai 'nis' dari query string
+
+        if (!empty($nis)) {
+            if ($this->Ekstra_model->hapus_siswa($id_ekstra, $nis)) {
+                $this->session->set_flashdata('message', 'Siswa berhasil dihapus dari ekstrakurikuler');
+            } else {
+                $this->session->set_flashdata('message', 'Gagal menghapus siswa dari ekstrakurikuler');
+            }
+        } else {
+            $this->session->set_flashdata('message', 'NIS kosong, tidak ada yang dihapus');
+        }
+
+        redirect('administrator/ekstra/detail/' . $id_ekstra);
+    }
 
 }

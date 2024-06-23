@@ -32,15 +32,13 @@
                         <th style="width: 30%; font-size: 18px;">Tahun Ajaran</th>
                         <td style="width: 70%; font-size: 18px;"><?php echo $tahun_ajaran->tahun_ajaran; ?></td>
                     </tr>
-                    <tr>
-                        <th style="width: 30%; font-size: 18px;">Kelas</th>
-                        <td style="width: 70%; font-size: 18px;"><?php echo $kelas->nama_kelas; ?></td>
-                    </tr>
                 </table>
                 <!-- Mark "Informasi Siswa" -->
                 <div class="alert alert-info text-uppercase" role="alert" style="margin-bottom: 20px;">
                     <i class="fas fa-info-circle"></i> Informasi Siswa
                 </div>
+                <a href="<?php echo base_url('administrator/ekstra/daftar_siswa/'.$detail->id_ekstra); ?>" class="btn btn-success mb-3">Tambah Siswa</a>
+                <?php echo anchor('administrator/ekstra','<div class="btn btn-danger mb-3">Kembali</div>') ?>
                 <!-- Tabel siswa -->
                 <table class="table table-hover table-striped table-bordered" style="background-color: #fff; width: 100%;">
                     <thead>
@@ -62,9 +60,9 @@
                                     <td><?php echo $sw->jenis_kelamin; ?></td>
                                     <td><?php echo $sw->alamat; ?></td>
                                     <td>
-                                    <a href="<?php echo site_url('administrator/ekstra/hapus_siswa/' . $sw->nis . '?id_ekstra=' . $detail->id_ekstra); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus siswa ini?');">
-    <i class="fas fa-trash"></i> Hapus
-</a>
+                                    <a href="<?php echo site_url('administrator/ekstra/hapus_siswa/' . $detail->id_ekstra . '?nis=' . $sw->nis); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus siswa ini?');">
+                                        <i class="fas fa-trash"></i> Hapus
+                                    </a>
 
 
                                     </td>
