@@ -63,14 +63,19 @@
             <input type="text" name="pekerjaan_ibu" class="form-control" value="<?php echo $sw->pekerjaan_ibu ?>">
         </div>
         <div class="form-group">
-            <label>Foto</label>
+            <div>
+                <label for="foto">Foto</label>    
+            </div>
+            <img src="<?php echo base_url('assets/uploads/img/siswa/') . $sw->foto; ?>" alt="Foto guru" style="max-width: 200px; max-height: 200px;">
             <input type="file" name="foto" class="form-control">
+            <input type="hidden" name="old_foto" value="<?php echo $sw->foto; ?>">
         </div>
         <div class="form-group">
             <label>No Telepon</label>
             <input type="text" name="no_telp" class="form-control" value="<?php echo $sw->no_telp ?>">
         </div>
-        <button type="submit" class="btn btn-primary">Simpan</button>
+        <button type="submit" class="btn btn-primary mb-5">Simpan</button>
+        <?php echo anchor('administrator/siswa','<div class="btn btn-danger mb-5">Kembali</div>') ?>
     </form>
     <?php endforeach; ?>
 </div>

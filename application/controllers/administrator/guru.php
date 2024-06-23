@@ -46,7 +46,7 @@ class Guru extends CI_Controller {
             // Membuat konfigurasi untuk upload file
             $config['upload_path']          = './assets/uploads/img/guru/';
             $config['allowed_types']        = 'jpg|jpeg';
-            $config['max_size']             = 2024000;
+            $config['max_size']             = 5024;
             $config['overwrite']             = TRUE;
             $config['file_name']             = 'Guru-'.$nik;
             // Memuat modul bawaaan ci untuk mengangani uploadd file
@@ -84,8 +84,8 @@ class Guru extends CI_Controller {
                 }
             }else{
                 $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
-                        Gagal upload foto guru.
-                        </div>');
+                    Gagal upload foto guru.
+                    </div>');
                 redirect('administrator/guru'); // Jika gagal upload, tetap di halaman tambah guru
             }
         }
@@ -124,10 +124,10 @@ class Guru extends CI_Controller {
         // Membuat konfigurasi untuk upload file
         $config['upload_path']          = './assets/uploads/img/guru/';
         $config['allowed_types']        = 'jpg|jpeg';
-        $config['max_size']             = 2024000;
+        $config['max_size']             = 5024;
         $config['overwrite']             = TRUE;
         $config['file_name']             = 'Guru-'.$nik;
-        // Memuat modul bawaaan ci untuk mengangani uploadd file
+        // Memuat modul bawaaan ci untuk mengangani upload file
         $this->load->library('upload', $config);
         
         if(!isset($_FILES['foto']) || $_FILES['foto']['error'] == UPLOAD_ERR_NO_FILE) {
@@ -214,8 +214,8 @@ class Guru extends CI_Controller {
     public function delete($id) {
         $where = array('nik' => $id);
         $this->guru_model->hapus_data($where,'guru');
-        // $data['detail'] = $this->guru_model->ambil_kode_guru($id); // Masih jadi issue (data terhapus tapi file tdk)
-        // unlink('./assets/uploads/img/guru/'.$data['detail']['foto']); // hapus foto
+        //$data['detail'] = $this->guru_model->ambil_kode_guru($id); // Masih jadi issue (data terhapus tapi file tdk)
+        //unlink('./assets/uploads/img/guru/'.$data['detail'][0]->foto); // hapus foto
         $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
                 Data guru Berhasil dihapus!
                 </div>');

@@ -2,8 +2,9 @@
     <div class="alert alert-success" role="alert">
         <i class="fas fa-landmark"></i> Form tambah Siswa
     </div>
-    <form method="post" action="<?php echo base_url('administrator/siswa/tambah_siswa_aksi')?>">
+    <?php echo $this->session->flashdata('pesan') ?>
 
+    <form method="post" action="<?php echo base_url('administrator/siswa/tambah_siswa_aksi')?>" enctype="multipart/form-data">
         <!-- Form group untuk nomor induk siswa -->
         <div class="form-group">
             <label for="nis">Nomor Induk Siswa</label>
@@ -101,30 +102,16 @@
             <label for="id_kelas">Kelas</label>
             <select name="id_kelas" id="id_kelas" class="form-control" required>
                 <?php foreach ($kelas as $kls) : ?>
-                    <?php
-                    $already_assigned = false;
-                    foreach ($siswa as $sw) {
-                        if ($sw->id_kelas == $kls->id_kelas) {
-                            $already_assigned = true;
-                            break;
-                        }
-                    }
-                    if (!$already_assigned) {
-                        ?>
-                        <option value="<?php echo $kls->id_kelas; ?>"><?php echo $kls->nama_kelas; ?></option>
-                        <?php
-                    }
-                    ?>
+                    <option value="<?php echo $kls->id_kelas; ?>"><?php echo $kls->nama_kelas; ?></option>
                 <?php endforeach; ?>
             </select>
             <?php echo form_error('id_kelas','<div class="text-danger small ml-3">','</div>') ?>
         </div>
 
-
         <div class="form-group">
             <label for="foto">Foto</label>
-            <input type="file" name="foto" id="foto" class="form-control" required accept=".jpg, .jpeg">
-            <small class="text-muted">Format harus berupa JPEG</small>
+            <input type="file" name="foto" id="foto" class="form-control" accept=".jpg, .jpeg">
+            <small class="text-muted">Format harus berupa JPG atau JPEG</small>
             <?php echo form_error('foto','<div class="text-danger small ml-3">','</div>') ?>
         </div>
 
@@ -137,6 +124,7 @@
 
         <!-- Tombol simpan -->
         <button type="submit" class="btn btn-primary mb-5">Simpan</button>
+        <?php echo anchor('administrator/siswa','<div class="btn btn-danger mb-5">Kembali</div>') ?>
     </form>
 </div>
                     

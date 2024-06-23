@@ -53,35 +53,89 @@ class Siswa extends CI_Controller {
             // Isi idu dengan nilai nis
             $idu = $nis;
     
-            $data = array(
-                'nis' => $nis,
-                'nama_siswa' => $nama_siswa,
-                'alamat' => $alamat,
-                'jenis_kelamin' => $jenis_kelamin,
-                'tempat_lahir' => $tempat_lahir,
-                'tgl_lahir' => $tgl_lahir,
-                'email' => $email,
-                'agama' => $agama,
-                'nama_ayah' => $nama_ayah,
-                'pekerjaan_ayah' => $pekerjaan_ayah,
-                'nama_ibu' => $nama_ibu,
-                'pekerjaan_ibu' => $pekerjaan_ibu,
-                'foto' => $foto,
-                'no_telp' => $no_telp,
-                'id_kelas' => $kelas,
-                'idu' => $idu // Isi idu dengan nilai nis
-            );
+            // Membuat konfigurasi untuk upload file
+            $config['upload_path']          = './assets/uploads/img/siswa/';
+            $config['allowed_types']        = 'jpg|jpeg';
+            $config['max_size']             = 5024;
+            $config['overwrite']             = TRUE;
+            $config['file_name']             = 'Siswa-'.$nis;
+            // Memuat modul bawaaan ci untuk mengangani upload file
+            $this->load->library('upload', $config);
+
+            if(!isset($_FILES['foto']) || $_FILES['foto']['error'] == UPLOAD_ERR_NO_FILE) {
+                // Jika melakukan tambah data tanpa update foto
+                $data = array(
+                    'nis' => $nis,
+                    'nama_siswa' => $nama_siswa,
+                    'alamat' => $alamat,
+                    'jenis_kelamin' => $jenis_kelamin,
+                    'tempat_lahir' => $tempat_lahir,
+                    'tgl_lahir' => $tgl_lahir,
+                    'email' => $email,
+                    'agama' => $agama,
+                    'nama_ayah' => $nama_ayah,
+                    'pekerjaan_ayah' => $pekerjaan_ayah,
+                    'nama_ibu' => $nama_ibu,
+                    'pekerjaan_ibu' => $pekerjaan_ibu,
+                    'foto' => $foto,
+                    'no_telp' => $no_telp,
+                    'id_kelas' => $kelas,
+                    'idu' => $idu // Isi idu dengan nilai nis
+                );
+
+                if ($this->siswa_model->insert_data($data)) {
+                    $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
+                        Data siswa Berhasil Ditambahkan!
+                        </div>');
+                    redirect('administrator/siswa');
+                } else {
+                    $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
+                        Gagal menambah data siswa.
+                        </div>');
+                    redirect('administrator/siswa/tambah_siswa');
+                }
+            }else{
+                // Jika melakukan tambah data beserta foto
+                if($this->upload->do_upload('foto')){
+                    $data_upload['tipe'] = $this->upload->data();
+                    $nama_file = 'Siswa-'.$nis.$data_upload['tipe']['file_ext'];
+                    $data = array(
+                        'nis' => $nis,
+                        'nama_siswa' => $nama_siswa,
+                        'alamat' => $alamat,
+                        'jenis_kelamin' => $jenis_kelamin,
+                        'tempat_lahir' => $tempat_lahir,
+                        'tgl_lahir' => $tgl_lahir,
+                        'email' => $email,
+                        'agama' => $agama,
+                        'nama_ayah' => $nama_ayah,
+                        'pekerjaan_ayah' => $pekerjaan_ayah,
+                        'nama_ibu' => $nama_ibu,
+                        'pekerjaan_ibu' => $pekerjaan_ibu,
+                        'foto' => $nama_file,
+                        'no_telp' => $no_telp,
+                        'id_kelas' => $kelas,
+                        'idu' => $idu // Isi idu dengan nilai nis
+                    );
     
-            if ($this->siswa_model->insert_data($data)) {
-                $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
-                    Data siswa Berhasil Ditambahkan!
-                    </div>');
-                redirect('administrator/siswa');
-            } else {
-                $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
-                    Gagal menambah data siswa.
-                    </div>');
-                redirect('administrator/siswa/tambah_siswa');
+                    if ($this->siswa_model->insert_data($data)) {
+                        $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
+                            Data siswa Berhasil Ditambahkan!
+                            </div>');
+                        redirect('administrator/siswa');
+                    } else {
+                        unlink('./assets/uploads/img/siswa/'.$nama_file);
+                        $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
+                            Gagal menambah data siswa.
+                            </div>');
+                        redirect('administrator/siswa/tambah_siswa');
+                    }
+                }else{
+                    $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
+                        Gagal upload foto siswa.
+                        </div>');
+                    redirect('administrator/siswa/tambah_siswa');
+                }
             }
         }
     }
@@ -116,39 +170,96 @@ class Siswa extends CI_Controller {
         $pekerjaan_ibu = $this->input->post('pekerjaan_ibu');
         $foto = $this->input->post('foto');
         $no_telp = $this->input->post('no_telp');
+        $old_foto = $this->input->post('old_foto');
 
-$data = array(
-    'nama_siswa' => $nama_siswa,
-    'alamat' => $alamat,
-    'jenis_kelamin' => $jenis_kelamin,
-    'tempat_lahir' => $tempat_lahir,
-    'tgl_lahir' => $tgl_lahir,
-    'email' => $email,
-    'agama' => $agama,
-    'nama_ayah' => $nama_ayah,
-    'pekerjaan_ayah' => $pekerjaan_ayah,
-    'nama_ibu' => $nama_ibu,
-    'pekerjaan_ibu' => $pekerjaan_ibu,
-    'foto' => $foto,
-    'no_telp' => $no_telp,
-);
+        // Membuat konfigurasi untuk upload file
+        $config['upload_path']          = './assets/uploads/img/siswa/';
+        $config['allowed_types']        = 'jpg|jpeg';
+        $config['max_size']             = 5024;
+        $config['overwrite']             = TRUE;
+        $config['file_name']             = 'Siswa-'.$id;
+        // Memuat modul bawaaan ci untuk mengangani upload file
+        $this->load->library('upload', $config);
 
-$where = array(
-    'nis' => $id
-);
+        if(!isset($_FILES['foto']) || $_FILES['foto']['error'] == UPLOAD_ERR_NO_FILE) {
+            $data = array(
+                'nama_siswa' => $nama_siswa,
+                'alamat' => $alamat,
+                'jenis_kelamin' => $jenis_kelamin,
+                'tempat_lahir' => $tempat_lahir,
+                'tgl_lahir' => $tgl_lahir,
+                'email' => $email,
+                'agama' => $agama,
+                'nama_ayah' => $nama_ayah,
+                'pekerjaan_ayah' => $pekerjaan_ayah,
+                'nama_ibu' => $nama_ibu,
+                'pekerjaan_ibu' => $pekerjaan_ibu,
+                'foto' => $old_foto,
+                'no_telp' => $no_telp,
+            );
+    
+            $where = array(
+                'nis' => $id
+            );
 
-if ($this->siswa_model->update_data($where, $data, 'siswa')) {
-    $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
-        Data siswa Berhasil diupdate!
-        </div>');
-    redirect('administrator/siswa');
-} else {
-    $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
-        Gagal mengupdate data siswa.
-        </div>');
-    redirect('administrator/siswa');
-}
-}
+            if ($this->siswa_model->update_data($where, $data, 'siswa')) {
+                $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
+                    Data siswa Berhasil diupdate!
+                    </div>');
+                redirect('administrator/siswa');
+            } else {
+                $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
+                    Gagal mengupdate data siswa.
+                    </div>');
+                redirect('administrator/siswa');
+            }
+
+        }else{
+            unlink('./assets/uploads/img/siswa/'.$old_foto); // hapus foto lama
+            // Jika melakukan update data beserta foto
+            if ($this->upload->do_upload('foto')){
+                $data_upload['tipe'] = $this->upload->data();
+                $nama_file = 'Siswa-'.$id.$data_upload['tipe']['file_ext'];
+                $data = array(
+                    'nama_siswa' => $nama_siswa,
+                    'alamat' => $alamat,
+                    'jenis_kelamin' => $jenis_kelamin,
+                    'tempat_lahir' => $tempat_lahir,
+                    'tgl_lahir' => $tgl_lahir,
+                    'email' => $email,
+                    'agama' => $agama,
+                    'nama_ayah' => $nama_ayah,
+                    'pekerjaan_ayah' => $pekerjaan_ayah,
+                    'nama_ibu' => $nama_ibu,
+                    'pekerjaan_ibu' => $pekerjaan_ibu,
+                    'foto' => $nama_file,
+                    'no_telp' => $no_telp,
+                );
+        
+                $where = array(
+                    'nis' => $id
+                );
+
+                if ($this->siswa_model->update_data($where, $data, 'siswa')) {
+                    $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
+                        Data siswa Berhasil diupdate!
+                        </div>');
+                    redirect('administrator/siswa');
+                } else {
+                    unlink('./assets/uploads/img/siswa/'.$nama_file); // hapus foto yang baru diupload jika gagal
+                    $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
+                        Gagal mengupdate data siswa.
+                        </div>');
+                    redirect('administrator/siswa');
+                }
+            }else{
+                $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
+                    Gagal upload foto siswa.
+                    </div>');
+                redirect('administrator/siswa');
+            }
+        }
+    }
     
 public function delete($id) {
     $where = array('nis' => $id);

@@ -6,7 +6,7 @@
         <tbody>
             <tr>
                 <th scope="row">Foto</th>
-                <td><img src="<?php echo base_url('assets/uploads/') . $detail[0]->foto; ?>" alt="Foto Siswa"></td>
+                <td><img src="<?php echo base_url('assets/uploads/img/siswa/') . $detail[0]->foto; ?>" alt="Foto Siswa" style="max-width: 200px; max-height: 200px;"></td>
             </tr>
             <tr>
                 <th scope="row">NIS</th>
@@ -62,4 +62,5 @@
             </tr>
         </tbody>
     </table>
+    <?php echo anchor('administrator/siswa','<div class="btn btn-danger mb-5">Kembali</div>') ?>
 </div>
