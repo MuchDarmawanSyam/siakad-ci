@@ -15,7 +15,7 @@
             var n1 = parseInt($('[name="' + s + '1' + x + '"]').val());
             $('[name="rata_' + s + '' + x + '"]').val(n1);
             $('[name="total_' + s + '' + x + '"]').val(n1);
-            $('[name="' + s + '2' + x + '"]').val("");
+            // $('[name="' + s + '2' + x + '"]').val("");
             dropreadonly(s + '2' + x);
             $('[name="' + s + '1' + x + '"]').prop('readonly', true);
         }
@@ -28,7 +28,7 @@
 
             $('[name="rata_' + s + '' + x + '"]').val(hasil);
             $('[name="total_' + s + '' + x + '"]').val(total);
-            $('[name="' + s + '3' + x + '"]').val("");
+            // $('[name="' + s + '3' + x + '"]').val("");
             dropreadonly(s + '3' + x);
             $('[name="' + s + '2' + x + '"]').prop('readonly', true);
         }
@@ -42,7 +42,7 @@
 
             $('[name="rata_' + s + '' + x + '"]').val(hasil);
             $('[name="total_' + s + '' + x + '"]').val(total);
-            $('[name="' + s + '4' + x + '"]').val("");
+            // $('[name="' + s + '4' + x + '"]').val("");
             dropreadonly(s + '4' + x);
             $('[name="' + s + '3' + x + '"]').prop('readonly', true);
         }
@@ -89,6 +89,15 @@
         <div class="alert alert-success" role="alert">
             <i class="fas fa-landmark"></i> Input Data Nilai Mata Pelajaran di Kelas
         </div>
+        <?php 
+            if ($nilai){
+        ?>
+                <div class="alert alert-warning" role="alert">
+                    <i class="fas fa-landmark"></i> Nilai di Mata Pelajaran Kelas Ini sudah diisi
+                </div>
+        <?php
+            }
+        ?>
         <?php echo $this->session->flashdata('pesan') ?>
         <center>
             <legend class="mt-3"><strong>Input Data Nilai</strong></legend>
@@ -116,7 +125,7 @@
         </div>
         <!-- Lanjuut Bikin Tabel Input -->
         <div class="mt-4" style="overflow-x:scroll;">
-            <form action="<?= base_url('administrator/nilai/input_nilai_aksi'); ?>" id="formNilai" method="post">
+            <form action="<?= base_url('administrator/nilai/'.($nilai? 'update_nilai_aksi' : 'input_nilai_aksi')); ?>" id="formNilai" method="post">
                 <table class="table table-bordered table-hover table-striped" style="table-layout:fixed;">
                     <thead>
                         <tr>
@@ -149,46 +158,51 @@
                                     <td><?php echo htmlspecialchars($sw->nama_siswa, ENT_QUOTES, 'UTF-8'); ?></td>
                                     <td width="100">
                                         <input type="hidden" name="nis<?=$sw->nis;?>" value="<?=$sw->nis;?>">
-                                        <input type="number" name="n1<?=$sw->nis;?>" id="n1" class="form-control" min="0"
+                                        
+                                        <?php if($nilai){ ?>
+                                                <input type="hidden" name="idn<?=$sw->nis;?>" value="<?=$nilai[$no-2]->id_nilai;?>">
+                                        <?php } ?>
+                                        
+                                        <input type="number" name="n1<?=$sw->nis;?>" value="<?= $nilai? $nilai[$no-2]->ns1 : 0; ?>" id="n1" class="form-control" min="0"
                                         max="100" placeholder="0" onkeyup="this.value = minmax(this.value,0,100)"
                                         onchange="nilai1('n',<?=$sw->nis;?>)"
                                         onclick="dropreadonly('n1<?=$sw->nis;?>')">
                                     </td>
                                     <td width="100">
-                                        <input type="number" name="n2<?=$sw->nis;?>" id="n2" class="form-control" min="0"
+                                        <input type="number" name="n2<?=$sw->nis;?>" value="<?= $nilai? $nilai[$no-2]->ns2 : 0; ?>" id="n2" class="form-control" min="0"
                                         max="100" placeholder="0" onkeyup="this.value = minmax(this.value,0,100)"
                                         onchange="nilai2('n',<?=$sw->nis;?>)"
                                         onclick="dropreadonly('n2<?=$sw->nis;?>')">
                                     </td>
                                     <td width="100">
-                                        <input type="number" name="n3<?=$sw->nis;?>" id="n3" class="form-control" min="0"
+                                        <input type="number" name="n3<?=$sw->nis;?>" value="<?= $nilai? $nilai[$no-2]->ns3 : 0; ?>" id="n3" class="form-control" min="0"
                                         max="100" placeholder="0" onkeyup="this.value = minmax(this.value,0,100)"
                                         onchange="nilai3('n',<?=$sw->nis;?>)"
                                         onclick="dropreadonly('n3<?=$sw->nis;?>')">
                                     </td>
                                     <td width="100">
-                                        <input type="number" name="n4<?=$sw->nis;?>" id="n4" class="form-control" min="0"
+                                        <input type="number" name="n4<?=$sw->nis;?>" value="<?= $nilai? $nilai[$no-2]->ns4 : 0; ?>" id="n4" class="form-control" min="0"
                                         max="100" placeholder="0" onkeyup="this.value = minmax(this.value,0,100)"
                                         onchange="nilai4('n',<?=$sw->nis;?>)"
                                         onclick="dropreadonly('n4<?=$sw->nis;?>')">
                                     </td>
                                     <td>
-                                        <input type="text" name="total_n<?=$sw->nis;?>" id="total" class="form-control text-center" placeholder="0" readonly>
+                                        <input type="text" name="total_n<?=$sw->nis;?>" value="<?= $nilai? $nilai[$no-2]->total : 0; ?>" id="total" class="form-control text-center" placeholder="0" readonly>
                                     </td>
                                     <td>
-                                        <input type="text" name="rata_n<?=$sw->nis;?>" id="rata" class="form-control text-center" placeholder="0" readonly>
+                                        <input type="text" name="rata_n<?=$sw->nis;?>" value="<?= $nilai? $nilai[$no-2]->rata1 : 0; ?>" id="rata" class="form-control text-center" placeholder="0" readonly>
                                     </td>
                                     <td>
                                         <input type="text" name="kkm" id="kkm" class="form-control text-center" value="<?=$kkm->kkm ?>" readonly>
                                     </td>
                                     <td>
-                                        <input type="text" name="akhir_n<?=$sw->nis;?>" id="na" class="form-control text-center" placeholder="0" readonly>
+                                        <input type="text" name="akhir_n<?=$sw->nis;?>" value="<?= $nilai? $nilai[$no-2]->nilai_akhir : 0; ?>" id="na" class="form-control text-center" placeholder="0" readonly>
                                     </td>
                                     <td>
-                                        <input type="text" name="predikat_<?=$sw->nis;?>" id="predikat" class="form-control text-center" readonly>
+                                        <input type="text" name="predikat_<?=$sw->nis;?>" value="<?= $nilai? $nilai[$no-2]->predikat : 0; ?>" id="predikat" class="form-control text-center" readonly>
                                     </td>
                                     <td>
-                                        <input type="text" name="deskripsi_<?=$sw->nis;?>" id="deskripsi" class="form-control text-center" readonly>
+                                        <input type="text" name="deskripsi_<?=$sw->nis;?>" value="<?= $nilai? $nilai[$no-2]->deskripsi : 0; ?>" id="deskripsi" class="form-control text-center" readonly>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -206,7 +220,7 @@
 
         <div class="mt-3">
             <!-- Lanjut Bikin Fungsi Simpan Nilai -->
-            <a href="#simpan" class="btn btn-success" onclick="$('#formNilai').submit()">Simpan</a>
+            <a href="#simpan" class="btn btn-success" onclick="$('#formNilai').submit()"><?= $nilai? 'Update' : 'Simpan';?></a>
             <?php echo anchor('administrator/nilai/nilai_aksi', '<button class="btn btn-danger">Kembali</button>'); ?>
         </div>
     </div>

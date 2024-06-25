@@ -10,6 +10,21 @@
             $this->db->insert('nilai', $data);
         }
 
+        // Update nilai siswa
+        public function update_nilai($data, $id_nilai){
+            $this->db->where('id_nilai', $id_nilai);
+            $this->db->update('nilai', $data);
+        }
+
+        // Ambil data nilai berdasarkan id mengajar
+        public function get_nilai_by_id_mengajar($id_mengajar){
+            $this->db->select('*');
+            $this->db->from('nilai');
+            $this->db->where('id_mengajar', $id_mengajar);
+            $query = $this->db->get();
+            return $query->result();
+        }
+
         // Ambil semua kelas
         public function get_all_kelas() {
             $this->db->select('*');
