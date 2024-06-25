@@ -11,7 +11,8 @@
 <body>
     <div class="container">
         <h2>Masukkan KHS</h2>
-        <?php echo form_open('administrator/nilai/nilai_aksi'); ?>
+        <?php //echo form_open('administrator/nilai/nilai_aksi'); // Harusnya masuk data nila khs ?>
+        <?php echo form_open(); ?>
             <div class="form-group">
                 <label for="id_kelas">Kelas</label>
                 <select class="form-control" id="id_kelas" name="id_kelas" required>

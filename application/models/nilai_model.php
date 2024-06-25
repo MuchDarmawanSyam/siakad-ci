@@ -5,6 +5,11 @@
 
     class Nilai_model extends CI_Model {
 
+        // Simpan nilai siswa
+        public function save_nilai($data){
+            $this->db->insert('nilai', $data);
+        }
+
         // Ambil semua kelas
         public function get_all_kelas() {
             $this->db->select('*');
@@ -31,6 +36,18 @@
             return $query->row();
         }
 
+        // Ambil semua data siswa berdasarkab id dan id kelas
+        public function get_siswa_by_id_ngajar_id_kelas($id_mengajar, $id_kelas){
+            $this->db->select('siswa.nis, siswa.nama_siswa');
+            // $this->db->select('siswa.nis, siswa.nama_siswa, mengajar.id_kelas');
+            // $this->db->from('siswa, mengajar');
+            $this->db->from('siswa, mengajar');
+            $this->db->where('mengajar.id_mengajar', $id_mengajar);
+            $this->db->where('siswa.id_kelas', $id_kelas);
+            $query = $this->db->get();
+            return $query->result();
+        }
+
         // Ambil data nilai berdasarkan kelas dan tahun ajaran
         public function baca_nilai($id_kelas, $id_tahun) {
             $this->db->select('nilai.*, siswa.nis, siswa.nama_siswa');
@@ -50,6 +67,35 @@
             $query = $this->db->get();
             return $query->row();
         }
+
+        // Ambil tahun ajaran berdasarkan ID mengajar
+        public function get_tahun_ajaran_by_id_mengajar($id_mengajar) {
+            $this->db->select('tahun_ajaran.id_tahun, tahun_ajaran.tahun_ajaran');
+            $this->db->from('tahun_ajaran, mengajar');
+            $this->db->where('mengajar.id_mengajar', $id_mengajar);
+            $query = $this->db->get();
+            return $query->row();
+        }
+
+        // Ambil nilai kkm berdasarkan id mengajar
+        public function get_kkm_by_id_mengajar($id_mengajar){
+            $this->db->select('mengajar.kkm');
+            $this->db->from('mengajar');
+            $this->db->where('mengajar.id_mengajar', $id_mengajar);
+            $query = $this->db->get();
+            return $query->row();
+        }
+
+        public function get_mata_pelajaran_guru_by_id_mengajar($id_mengajar) {
+            $this->db->select('mengajar.id_mengajar, mapel.nama_mapel, guru.nama_guru');
+            $this->db->from('mengajar');
+            $this->db->join('mapel', 'mengajar.id_mapel = mapel.id_mapel');
+            $this->db->join('guru', 'mengajar.nik = guru.nik');
+            $this->db->where('mengajar.id_mengajar', $id_mengajar);
+            $query = $this->db->get();
+            return $query->result();
+        }
+
         public function get_mata_pelajaran_guru($id_kelas, $id_tahun) {
             $this->db->select('mengajar.id_mengajar, mapel.nama_mapel, guru.nama_guru');
             $this->db->from('mengajar');

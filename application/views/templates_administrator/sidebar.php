@@ -89,8 +89,8 @@
     <div id="collapseAkademik" class="collapse" aria-labelledby="headingAkademik" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Menu Akademik:</h6>
-            <a class="collapse-item" href="<?php echo base_url('administrator/input_nilai')?>">Input Nilai</a>
-            <a class="collapse-item" href="<?php echo base_url('administrator/nilai')?>">Hasil Studi</a>
+            <a class="collapse-item" href="<?php echo base_url('administrator/nilai')?>">Input Nilai</a>
+            <a class="collapse-item" href="<?php echo base_url('administrator/khs')?>">Hasil Studi</a>
             <a class="collapse-item" href="<?php echo base_url('administrator/Cetak_raport')?>">Cetak Raport</a>
         </div>
     </div>

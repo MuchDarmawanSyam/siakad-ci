@@ -41,20 +41,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php 
-                    $no = 1;
-                    foreach ($nilai_data as $nilai) : ?>
-                    <tr>
-                        <td width="20px"><?php echo $no++ ?></td>
-                        <td><?php echo htmlspecialchars($nilai->nis, ENT_QUOTES, 'UTF-8'); ?></td>
-                        <td><?php echo htmlspecialchars($nilai->nama_siswa, ENT_QUOTES, 'UTF-8'); ?></td>
-                        <td><?php echo htmlspecialchars($nilai->nilai, ENT_QUOTES, 'UTF-8'); ?></td>
-                    </tr>
-                    <?php endforeach; ?>
+                    <?php if (!empty($siswa)) : ?>
+                        <?php 
+                        $no = 1;
+                        foreach ($krs_data as $nilai) : ?>
+                        <tr>
+                            <td width="20px"><?php echo $no++ ?></td>
+                            <td><?php echo htmlspecialchars($nilai->nis, ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td><?php echo htmlspecialchars($nilai->nama_siswa, ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td><?php echo htmlspecialchars($nilai->nilai, ENT_QUOTES, 'UTF-8'); ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    <?php else : ?>
+                        <tr>
+                            <td colspan="5" class="text-center">Tidak ada siswa dalam krs ini.</td>
+                        </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
-        <?php echo anchor('administrator/nilai', '<button class="btn btn-sm btn-danger">Kembali</button>'); ?>
+        <?php echo anchor('administrator/krs/tambah_krs/'.$id_kelas.'/'.$id_tahun, '<button class="btn btn-success">Tambah</button>'); ?>
+        <?php echo anchor('administrator/krs', '<button class="btn btn-danger">Kembali</button>'); ?>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>

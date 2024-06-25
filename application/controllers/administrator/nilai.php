@@ -14,7 +14,7 @@ class Nilai extends CI_Controller {
         );
         $this->load->view('templates_administrator/header');
         $this->load->view('templates_administrator/sidebar');
-        $this->load->view('administrator/masuk_khs', $data);
+        $this->load->view('administrator/nilai_list', $data);
         $this->load->view('templates_administrator/footer');
     }
 
@@ -60,6 +60,56 @@ class Nilai extends CI_Controller {
                 $this->load->view('templates_administrator/footer');
             }
         }
+    }
+
+    // Ini untuk tampilkan form input nilai
+    public function input_nilai($id_mengajar){
+        $id_kls = $this->input->get('kelas');
+        $tahun_mengajar = $this->nilai_model->get_tahun_ajaran_aktif();
+        $data_mengajar = $this->nilai_model->get_mata_pelajaran_guru_by_id_mengajar($id_mengajar);
+        $data = [
+            'id_mengajar' => $id_mengajar,
+            'id_kelas' => $id_kls,
+            'kelas' => $this->nilai_model->get_kelas_by_id($id_kls),
+            'siswa' => $this->nilai_model->get_siswa_by_id_ngajar_id_kelas($id_mengajar, $id_kls),
+            'mapel' => $data_mengajar[0]->nama_mapel,
+            'guru' => $data_mengajar[0]->nama_guru,
+            'tahun_ajaran_mapel' => $tahun_mengajar,
+            'kkm' => $this->nilai_model->get_kkm_by_id_mengajar($id_mengajar)
+        ];
+        $this->load->view('templates_administrator/header');
+        $this->load->view('templates_administrator/sidebar');
+        $this->load->view('administrator/nilai_form', $data);
+        $this->load->view('templates_administrator/footer');
+    }
+
+    public function input_nilai_aksi(){
+        $this->load->model('siswa_model');
+        $id_mengajar = $this->input->post('idm');
+        $id_kelas = $this->input->post('idk');
+        $siswa = $this->siswa_model->get_by_id_kelas($id_kelas);
+        foreach($siswa as $sw){
+            $nis = $this->input->post('nis'.$sw->nis);
+            $data = [
+                'nis' => $sw->nis,
+                'ns1' => $this->input->post('n1'.$sw->nis, true),
+                'ns2' => $this->input->post('n2'.$sw->nis, true),
+                'ns3' => $this->input->post('n3'.$sw->nis, true),
+                'ns4' => $this->input->post('n4'.$sw->nis, true),
+                'rata1' => $this->input->post('rata_n'.$sw->nis, true),
+                'predikat' => $this->input->post('predikat_'.$sw->nis, true),
+                'deskripsi' => $this->input->post('deskripsi_'.$sw->nis, true),
+                'total' => $this->input->post('total_n'.$sw->nis, true),
+                'nilai_akhir' => $this->input->post('akhir_n'.$sw->nis, true),
+                'kkm' => $this->input->post('kkm', true),
+                'id_mengajar' => $id_mengajar
+            ];
+            $this->nilai_model->save_nilai($data);
+        }
+        $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
+                    Data Nilai Berhasil ditambah!
+                    </div>');
+        redirect('administrator/nilai');
     }
 }
 ?>

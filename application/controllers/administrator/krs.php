@@ -56,15 +56,17 @@ class Krs extends CI_Controller {
     }
 
     private function baca_krs($id_kelas, $id_tahun) {
-        $this->db->select('k.id_krs, k.id_mapel, m.nama_mapel, g.nama_guru');
-        $this->db->from('krs as k');
-        $this->db->where('k.id_kelas', $id_kelas);
-        $this->db->where('k.id_tahun', $id_tahun);
-        $this->db->join('mapel as m', 'm.id_mapel = k.id_mapel');
-        $this->db->join('guru as g', 'g.nik = m.nik'); 
+        $this->db->select('krs.id_krs, krs.id_mapel, mapel.nama_mapel, guru.nama_guru');
+        $this->db->from('krs, kelas, mapel');
+        $this->db->where('kelas.id_kelas', $id_kelas);
+        $this->db->where('kelas.id_tahun', $id_tahun);
+        $this->db->join('mengajar', 'mengajar.id_mapel = mapel.id_mapel');
+        $this->db->join('guru', 'guru.nik = mengajar.nik'); 
 
         return $this->db->get()->result();
     }
+
+    // Buat Nilai
 
     private function ruleskrs() {
         $this->form_validation->set_rules('id_tahun', 'Tahun Ajaran', 'required');

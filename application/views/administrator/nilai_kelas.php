@@ -11,9 +11,9 @@
 <body>
     <div class="container-fluid">
         <div class="alert alert-success" role="alert">
-            <i class="fas fa-landmark"></i> Data Nilai Mata Pelajaran di Kelas
+            <i class="fas fa-landmark"></i> Data Nilai Mata Pelajaran di <?=$nama_kelas ?>
         </div>
-       
+        <?php echo $this->session->flashdata('pesan') ?>
         <center>
             <legend class="mt-3"><strong>Data Nilai Kelas</strong></legend>
         </center>
@@ -60,7 +60,7 @@
                                         }
                                     }
                                     if (!$already_filled): ?>
-                                        <?php echo anchor('administrator/nilai/input_nilai/'.$nilai->id_mengajar, '<button class="btn btn-sm btn-primary">Input Nilai</button>'); ?>
+                                        <?php echo anchor('administrator/nilai/input_nilai/'.$nilai->id_mengajar.'?kelas='.$id_kelas, '<button class="btn btn-sm btn-primary">Input Nilai</button>'); ?>
                                     <?php else: ?>
                                         Sudah Dinilai
                                     <?php endif; ?>
