@@ -30,6 +30,7 @@ class Wali_model extends CI_Model {
         $this->db->where('id_kelas', $id_kelas);
         return $this->db->count_all_results('wali_kelas');
     }
+
     public function cek_data($nik, $id_kelas, $id_tahun) {
         // Memeriksa apakah data sudah ada di tabel wali_kelas
         $this->db->where('nik', $nik);
@@ -38,14 +39,25 @@ class Wali_model extends CI_Model {
         $query = $this->db->get('wali_kelas');
         return $query->num_rows() > 0;
     }
-    
+
+    public function cek_wali_duplikat($id_kelas) {
+        // Memeriksa apakah data sudah wali_kelas di kelas
+        $this->db->where('id_kelas', $id_kelas);
+        $query = $this->db->get('wali_kelas');
+        return $query->num_rows() > 0;
+    }
+
     public function tambah_data($data) {
         // Menambahkan data ke dalam tabel wali_kelas
         $this->db->insert('wali_kelas', $data);
     }
-    
-    
 
+
+    public function hapus_data_by_kelas($id_kelas){
+        $this->db->where('id_kelas', $id_kelas);
+        $this->db->delete('wali_kelas');
+    }
+    
     public function get_all_guru() {
         return $this->db->get('guru')->result();
     }

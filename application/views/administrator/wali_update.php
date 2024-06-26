@@ -23,6 +23,7 @@
         </div>
         <input type="hidden" name="id_tahun" value="<?php echo $wali->id_tahun; ?>">
 
-        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="submit" class="btn btn-primary mt-3">Update</button>
+        <?php echo anchor('administrator/wali', '<div class="btn btn-danger mt-3">Kembali</div>'); ?>
     </form>
 </div>

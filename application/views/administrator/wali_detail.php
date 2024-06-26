@@ -78,7 +78,7 @@
         </div>
     <?php endif; ?>
 
-    <?php echo anchor('administrator/wali', '<button class="btn btn-sm btn-danger mt-3">Kembali</button>'); ?>
+    <?php echo anchor('administrator/wali', '<div class="btn btn-danger mt-3">Kembali</div>'); ?>
 </div>
 
 <!-- Include List.js library -->

@@ -45,16 +45,28 @@ class Wali extends CI_Controller {
         // Memeriksa apakah data sudah ada
         if ($this->wali_model->cek_data($nik, $id_kelas, $id_tahun)) {
             // Data sudah ada, set flash data
-            $this->session->set_flashdata('message', 'Data yang Anda input telah ada, jadi tidak bisa diinput lagi.');
+            $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
+            Data yang Anda input telah ada, jadi tidak bisa diinput lagi.
+            </div>');
         } else {
             // Data belum ada, masukkan ke dalam database
-            $data = array(
-                'nik' => $nik,
-                'id_kelas' => $id_kelas,
-                'id_tahun' => $id_tahun
-            );
-            $this->wali_model->tambah_data($data);
-            $this->session->set_flashdata('message', 'Data berhasil ditambahkan.');
+            if ($this->wali_model->cek_wali_duplikat($id_kelas)) {
+
+                $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
+                Data yang Anda input telah ada, jadi tidak bisa diinput lagi.
+                </div>');
+            }else{
+
+                $data = array(
+                    'nik' => $nik,
+                    'id_kelas' => $id_kelas,
+                    'id_tahun' => $id_tahun
+                );
+                $this->wali_model->tambah_data($data);
+                $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
+                Data berhasil ditambahkan.
+                </div>');
+            }
         }
         
         // Redirect ke halaman administrator/wali
@@ -66,7 +78,9 @@ class Wali extends CI_Controller {
         $this->wali_model->hapus_data_by_kelas($id_kelas);
         
         // Set flash data
-        $this->session->set_flashdata('message', 'Data berhasil dihapus.');
+        $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
+        Data berhasil dihapus.
+        </div>');
         
         // Redirect ke halaman administrator/wali
         redirect('administrator/wali');
@@ -85,7 +99,7 @@ class Wali extends CI_Controller {
         $data['wali'] = $this->wali_model->get_wali_by_id_kelas($id_kelas);
         
         if (!$data['wali']) {
-            // Handle jika data wali tidak ditemukan, misalnya redirect atau flash message
+            // Handle jika data wali tidak ditemukan, misalnya redirect atau flash pesan
             redirect('administrator/wali'); // Contoh redirect ke halaman utama wali jika data tidak ditemukan
         }
         
@@ -124,7 +138,9 @@ class Wali extends CI_Controller {
         // Panggil metode update_data_by_id_wali untuk update data lainnya
         $this->wali_model->update_data_by_id_wali($id_wali, $data);
     
-        $this->session->set_flashdata('message', 'Data berhasil diupdate.');
+        $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
+        Data berhasil diupdate.
+        </div>');
     
         // Redirect ke halaman administrator/wali
         redirect('administrator/wali');
@@ -143,11 +159,11 @@ class Wali extends CI_Controller {
                 // If successfully deleted, redirect to the wali detail page
                 redirect('administrator/wali/detail/'.$id_wali);
             } else {
-                // If the student data is not found, display a message
+                // If the student data is not found, display a pesan
                 echo "Tidak ada siswa di kelas ini.";
             }
         } else {
-            // If arguments are missing, show an error message
+            // If arguments are missing, show an error pesan
             echo "Gagal menghapus siswa. Parameter tidak lengkap.";
         }
     }

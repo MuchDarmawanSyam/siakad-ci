@@ -32,6 +32,7 @@
             </select>
         </div>
        
-        <button type="submit" class="btn btn-primary">Tambah</button>
+        <button type="submit" class="btn btn-primary mt-3">Tambah</button>
+        <?php echo anchor('administrator/wali', '<div class="btn btn-danger mt-3">Kembali</div>'); ?>
     </form>
 </div>
