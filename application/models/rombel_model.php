@@ -24,15 +24,24 @@ class Rombel_model extends CI_Model {
         return $query->row();
     }
 
-    public function get_siswa_by_kelas($id_kelas, $id_tahun) {
+    public function get_siswa_by_kelas($id_kelas) {
+    //public function get_siswa_by_kelas($id_kelas, $id_tahun) {
         // Mengambil siswa berdasarkan id_kelas dan id_tahun dari tabel wali_kelas
-        $this->db->select('wali_kelas.nis, siswa.nama_siswa');
-        $this->db->from('wali_kelas');
-        $this->db->join('siswa', 'siswa.nis = wali_kelas.nis');
-        $this->db->where('wali_kelas.id_kelas', $id_kelas);
-        $this->db->where('wali_kelas.id_tahun', $id_tahun);
+        // $this->db->select('wali_kelas.nis, siswa.nama_siswa');
+        // $this->db->from('wali_kelas');
+        // $this->db->join('siswa', 'siswa.nis = wali_kelas.nis');
+        // $this->db->where('wali_kelas.id_kelas', $id_kelas);
+        // $this->db->where('wali_kelas.id_tahun', $id_tahun);
+        $this->db->select('siswa.nis, siswa.nama_siswa');
+        $this->db->from('siswa');
+        $this->db->where('siswa.id_kelas', $id_kelas);
         $query = $this->db->get();
         return $query->result();
+    }
+
+    public function update_siswa_by_nis($nis, $data){
+        $this->db->where('nis', $nis);
+        $this->db->update('siswa', $data); // lanjut updaten data yang masih salah sintaks di sqlnya (cek lewat console)
     }
 }
 ?>

@@ -2,7 +2,6 @@
     <?php $no = 1; ?>
     <?php foreach ($siswa_kelas as $siswa): ?>
         <tr>
-            <td><input type="checkbox" name="siswa_id" value="<?php echo $siswa->nis; ?>"></td>
             <td><?php echo $no++; ?></td>
             <td><?php echo $siswa->nis; ?></td>
             <td><?php echo $siswa->nama_siswa; ?></td>
