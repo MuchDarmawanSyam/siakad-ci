@@ -97,11 +97,17 @@ class Mengajar extends CI_Controller {
                 'kkm' => $this->input->post('kkm', TRUE)
             );
 
-            if ($this->Mengajar_model->tambah_mengajar($data)) {
-                $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">Data mata pelajaran berhasil ditambahkan!</div>');
-                redirect('administrator/mengajar/mengajar_aksi'); // Redirect kembali ke halaman daftar pengajaran jika berhasil menambahkan
-            } else {
-                $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">Gagal menambahkan data mata pelajaran. Pastikan semua field terisi dengan benar!</div>');
+            if($this->Mengajar_model->cek_duplikat_pengajar($data['nik'], $data['id_kelas'], $data['id_tahun'], $data['id_mapel'], $data['semester'])){
+                
+                if ($this->Mengajar_model->tambah_mengajar($data)) {
+                    $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">Data mata pelajaran berhasil ditambahkan!</div>');
+                    redirect('administrator/mengajar/mengajar_aksi'); // Redirect kembali ke halaman daftar pengajaran jika berhasil menambahkan
+                } else {
+                    $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">Gagal menambahkan data mata pelajaran. Pastikan semua field terisi dengan benar!</div>');
+                    redirect('administrator/mengajar/tambah_mengajar/'.$data['id_kelas'].'/'.$data['id_tahun']); // Redirect kembali ke halaman tambah_mengajar dengan parameter id_kelas dan id_tahun jika gagal menambahkan
+                }
+            }else{
+                $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">Gagal menambahkan data. Guru mata pelajaran di kelas yang sama dan semester yang sama sudah ada!</div>');
                 redirect('administrator/mengajar/tambah_mengajar/'.$data['id_kelas'].'/'.$data['id_tahun']); // Redirect kembali ke halaman tambah_mengajar dengan parameter id_kelas dan id_tahun jika gagal menambahkan
             }
             

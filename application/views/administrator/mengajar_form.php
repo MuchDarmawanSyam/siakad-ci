@@ -4,6 +4,7 @@
     </div>
 
     <?php echo validation_errors('<div class="alert alert-danger">', '</div>'); ?>
+    <?php echo $this->session->flashdata('pesan'); ?>
 
     <form method="post" action="<?php echo base_url('administrator/mengajar/tambah_mengajar_aksi'); ?>">
         <input type="hidden" name="id_tahun" value="<?php echo htmlspecialchars($id_tahun, ENT_QUOTES, 'UTF-8'); ?>">
@@ -22,8 +23,8 @@
         <div class="form-group">
             <label>Semester</label>
             <select name="semester" class="form-control">
-                <option value="1" <?php echo set_select('semester', '1'); ?>>Semester 1</option>
-                <option value="2" <?php echo set_select('semester', '2'); ?>>Semester 2</option>
+                <option value="ganjil" <?php echo set_select('semester', '1'); ?>>Semester 1</option>
+                <option value="genap" <?php echo set_select('semester', '2'); ?>>Semester 2</option>
             </select>
         </div>
 

@@ -103,5 +103,21 @@ class Mengajar_model extends CI_Model {
         return $this->db->get('tahun_ajaran')->row(); // Ensure to return the row, not just the query result
     }
 
+    public function cek_duplikat_pengajar($nik, $id_kelas, $id_tahun, $id_mapel, $semester){
+        $this->db->where('nik', $nik);
+        $this->db->where('id_kelas', $id_kelas);
+        $this->db->where('id_tahun', $id_tahun);
+        $this->db->where('id_mapel', $id_mapel);
+        $this->db->where('semester', $semester);
+        $this->db->from('mengajar');
+        $result = $this->db->get();
+
+        if ($result->num_rows() > 0) {
+            return false;
+        } else {
+            return $result->result();
+        }
+    }
+
 }
 ?>
