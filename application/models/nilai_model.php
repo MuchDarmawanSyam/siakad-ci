@@ -121,5 +121,16 @@
             $query = $this->db->get();
             return $query->result();
         }
+
+        public function get_nilai_cetak_raport($nis, $id_tahun){
+            // Join 3 Tabel
+            $this->db->select('nilai.*, mapel.nama_mapel');
+            $this->db->from('nilai');
+            $this->db->join('mengajar', 'nilai.id_mengajar = mengajar.id_mengajar');
+            $this->db->join('mapel', 'mengajar.id_mapel = mapel.id_mapel');
+            $this->db->where('nilai.nis', $nis);
+            $query = $this->db->get();
+            return $query->result();
+        }
     }
     ?>
