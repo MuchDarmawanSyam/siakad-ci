@@ -7,7 +7,11 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
+        <?php if($this->session->userdata['username'] == "admin"){ ?>
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?php echo base_url('administrator/dashboard') ?>">
+        <?php }else{ ?>
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?php echo base_url('guru/dashboard') ?>">
+        <?php }?>
     <div class="sidebar-brand-icon">
         <img src="<?php echo base_url('img/smp.png') ?>" alt="Logo SMP" class="logo" width="50" height="50">
     </div>
@@ -18,7 +22,11 @@
 
                 <!-- User Information -->
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <?php if($this->session->userdata['username'] == "admin"){ ?>
+                        <a class="nav-link" href="<?php echo base_url('guru/dashboard') ?>">
+                    <?php }else{ ?>
+                        <a class="nav-link" href="<?php echo base_url('guru/dashboard') ?>">
+                    <?php }?>
                         <div class="d-flex align-items-center">
                             <div class="mr-3">
                                 <i class="fas fa-user fa-2x text-gray-300"></i>
@@ -34,11 +42,18 @@
 
 
             <!-- Nav Item - Dashboard -->
-                            <li class="nav-item active">
+                <li class="nav-item active">
+                <?php if($this->session->userdata['username'] == "admin"){ ?>    
                     <a class="nav-link" href="<?php echo base_url('administrator/dashboard')?>">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
                         <span>Dashboard</span>
                     </a>
+                <?php }else{ ?>
+                    <a class="nav-link" href="<?php echo base_url('guru/dashboard')?>">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                <?php } ?>
                 </li>
 
            <!-- Data Master -->
@@ -99,6 +114,7 @@
                 <a class="collapse-item" href="<?php echo base_url('administrator/raport')?>">Cetak Raport</a>
             <?php }else{ ?>
                 <a class="collapse-item" href="<?php echo base_url('guru/nilai')?>">Input Nilai</a>
+                <a class="collapse-item" href="<?php echo base_url('guru/siswa')?>">Siswa</a>
                 <a class="collapse-item" href="<?php echo base_url('guru/raport')?>">Cetak Raport</a>
             <?php } ?>
         </div>

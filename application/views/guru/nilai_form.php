@@ -125,7 +125,7 @@
         </div>
         <!-- Lanjuut Bikin Tabel Input -->
         <div class="mt-4" style="overflow-x:scroll;">
-            <form action="<?= base_url('administrator/nilai/'.($nilai? 'update_nilai_aksi' : 'input_nilai_aksi')); ?>" id="formNilai" method="post">
+            <form action="<?= base_url('guru/nilai/'.($nilai? 'update_sikap_aksi' : 'input_sikap_aksi')); ?>" id="formNilai" method="post">
                 <table class="table table-bordered table-hover table-striped" style="table-layout:fixed;">
                     <thead>
                         <tr>
@@ -221,7 +221,7 @@
         <div class="mt-3">
             <!-- Lanjut Bikin Fungsi Simpan Nilai -->
             <a href="#simpan" class="btn btn-success" onclick="$('#formNilai').submit()"><?= $nilai? 'Update' : 'Simpan';?></a>
-            <?php echo anchor('administrator/nilai/nilai_aksi', '<button class="btn btn-danger">Kembali</button>'); ?>
+            <?php echo anchor('guru/nilai/nilai_aksi', '<button class="btn btn-danger">Kembali</button>'); ?>
         </div>
     </div>
 

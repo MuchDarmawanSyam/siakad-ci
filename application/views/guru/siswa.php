@@ -5,7 +5,6 @@
         <i class="fas fa-landmark"></i> Siswa
     </div>
     <?php echo $this->session->flashdata('pesan') ?>
-    <?php echo anchor('administrator/siswa/tambah_siswa', '<button class="btn btn-sm btn-primary mb-3">Tambah Siswa</button>') ?>
 
     <table id="siswa_table" class="table table-bordered table-striped table-hover">
         <thead>
@@ -32,9 +31,8 @@
                         <td><?php echo $sis->alamat ?></td>
                         <td><?php echo $sis->jenis_kelamin ?></td>
                         <td><?php echo $sis->email ?></td>
-                        <td><?php echo anchor('administrator/siswa/detail/'.$sis->nis, 'Detail', array('class' => 'btn btn-info btn-sm')); ?></td>
-                        <td><?php echo anchor('administrator/siswa/update/'.$sis->nis, 'Edit', array('class' => 'btn btn-primary btn-sm')); ?></td>
-                        <td><?php echo anchor('administrator/siswa/delete/'.$sis->nis, 'Hapus', array('class' => 'btn btn-danger btn-sm')); ?></td>
+                        <td><?php echo anchor('guru/siswa/detail/'.$sis->nis, 'Detail', array('class' => 'btn btn-info btn-sm')); ?></td>
+                        <td><?php echo anchor('guru/nilai/nilai_sikap/'.$sis->nis, 'Nilai Sikap', array('class' => 'btn btn-info btn-sm')); ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php endif; ?>

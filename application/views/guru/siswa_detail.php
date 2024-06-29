@@ -62,5 +62,5 @@
             </tr>
         </tbody>
     </table>
-    <?php echo anchor('administrator/siswa','<div class="btn btn-danger mb-5">Kembali</div>') ?>
+    <?php echo anchor('guru/siswa','<div class="btn btn-danger mb-5">Kembali</div>') ?>
 </div>

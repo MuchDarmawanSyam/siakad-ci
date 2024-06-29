@@ -22,8 +22,8 @@
             <div class="row">
                 <?php foreach ($mapel_data as $row) :?>
                     <div class="mb-4 ml-4">
-                    <form id="<?=$row->id_kelas; ?>" action="<?php echo base_url('administrator/nilai/nilai_aksi');?>" method="post">
-                        <input type="hidden" name="id_kelas" value="<?=$row->id_kelas; ?>">
+                    <form id="<?=$row->id_kelas; ?>" action="<?php echo base_url('guru/nilai/input_nilai/').$row->id_mengajar;?>" method="get">
+                        <input type="hidden" name="kelas" value="<?=$row->id_kelas; ?>">
                         <a href="#" onclick="document.getElementById('<?=$row->id_kelas; ?>').submit();" class="col-xl-3 col-md-6">
                             <div class="card border-left-success shadow h-100 py-2">
                                 <div class="card-body">

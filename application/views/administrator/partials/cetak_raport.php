@@ -101,7 +101,7 @@ error_reporting(0);
             <br>
             <b>UAS</b> : Ujian Akhir Semester
         </p>
-        <p style="text-align:right;margin-right:125px;">Jayapura 29, April 2024</p>
+        <p style="text-align:right;margin-right:125px;">Jayapura, <?= date('d-m-Y'); ?></p>
         <table>
             <tr>
                 <td class="text-center" width="500">

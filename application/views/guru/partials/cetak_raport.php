@@ -18,6 +18,7 @@ error_reporting(0);
         <img src="<?=base_url()?>assets/img/smp.png" alt="Logo Sekolah"
             style="width:70px;height:70px;float:left;margin-bottom:10px;">
         <h3 style="line-height:5px;text-align:right;">SMP Muhammadiyah Jayapura</h3>
+        <br>
         <h3 style="line-height:5px;text-align:right;">Akreditasi A</h3>
         <hr style="border:1px solid;margin-right:0px;width:800px;">
         <hr style="border:0.5px solid;margin-top:-15px;margin-right:0px;width:750px;">
@@ -91,17 +92,22 @@ error_reporting(0);
             </tbody>
         </table>
         <p>
+            Nilai Sikap:
+            <b><?= $sikap[0]->ket; ?></b>
+        </p>
+
+        <p>
             Keterangan :
             <br>
-            <b>RTP</b> : Rata-rata nilai Tugas/PR
+            <b>N1</b> : Rata-rata nilai Tugas/PR
             <br>
-            <b>RNU</b> : Rata-rata nilau Ulangan Harian
+            <b>N2</b> : Rata-rata nilau Ulangan Harian
             <br>
-            <b>PTS</b> : Penilaian Tengah Semester
+            <b>N3</b> : Penilaian Tengah Semester
             <br>
-            <b>UAS</b> : Ujian Akhir Semester
+            <b>N4</b> : Ujian Akhir Semester
         </p>
-        <p style="text-align:right;margin-right:125px;">Jayapura 29, April 2024</p>
+        <p style="text-align:right;margin-right:125px;">Jayapura, <?= date('d-m-Y'); ?></p>
         <table>
             <tr>
                 <td class="text-center" width="500">

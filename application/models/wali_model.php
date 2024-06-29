@@ -91,11 +91,17 @@ class Wali_model extends CI_Model {
         $this->db->update('wali_kelas', array('id_kelas' => $id_kelas_baru));
     }
     
-    
-    
     public function get_wali_by_id_kelas($id_kelas) {
         $this->db->where('id_kelas', $id_kelas);
         return $this->db->get('wali_kelas')->row();
+    }
+
+    public function get_kelas_by_nik($nik){
+        $this->db->select('wali_kelas.id_kelas, kelas.nama_kelas');
+        $this->db->from('wali_kelas');
+        $this->db->join('kelas', 'kelas.id_kelas = wali_kelas.id_kelas');
+        $this->db->where('nik', $nik);
+        return $this->db->get()->row();
     }
     
     public function get_wali_detail($id_kelas) {
@@ -167,6 +173,13 @@ class Wali_model extends CI_Model {
         return $this->db->count_all_results();
     }
 
+    public function get_siswa_by_nik_wali($nik){
+        $this->db->select('siswa.*');
+        $this->db->from('siswa');
+        $this->db->join('wali_kelas', 'wali_kelas.id_kelas = siswa.id_kelas');
+        $this->db->where('wali_kelas.nik', $nik);
+        return $this->db->get()->result();
+    }
 
 }
 ?>

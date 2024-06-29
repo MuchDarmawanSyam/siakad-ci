@@ -21,7 +21,7 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <form id="form_pilih_kelas" action="<?= base_url('administrator/raport/cetak_raport'); ?>" method="post">
+                <form id="form_pilih_kelas" action="<?= base_url('guru/raport/cetak_raport'); ?>" method="post">
                 <h5>Tahun Ajaran</h5>
                 <div class="form-group">
                     <select name="tahun" id="id_tahun" class="form-control">
@@ -54,13 +54,11 @@
             </div>
 
             <div class="col-md-6">
-                <h5>Kelas</h5>
+                <h5>Wali Kelas</h5>
                     <div class="form-group">
                         <select name="kelas" id="id_kelas" class="form-control">
                             <option value="">Pilih Kelas</option>
-                            <?php foreach ($kelas as $kls): ?>
-                                <option value="<?php echo $kls->id_kelas; ?>"><?php echo $kls->nama_kelas; ?></option>
-                            <?php endforeach; ?>
+                            <option value="<?php echo $kelas->id_kelas; ?>"><?php echo $kelas->nama_kelas; ?></option>
                         </select>
                     </div>
                 
@@ -93,7 +91,7 @@
                 var kepsek = $('#id_kepsek').val();
                 if (id_kelas) {
                     $.ajax({
-                        url: "<?php echo base_url('administrator/raport/get_siswa_by_kelas'); ?>",
+                        url: "<?php echo base_url('guru/raport/get_siswa_by_kelas'); ?>",
                         type: "POST",
                         data: {id_kelas: id_kelas},
                         success: function(data) {

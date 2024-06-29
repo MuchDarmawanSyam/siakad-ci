@@ -60,7 +60,7 @@
                                         }
                                     }
                                     if (!$already_filled): ?>
-                                        <?php echo anchor('administrator/nilai/input_nilai/'.$nilai->id_mengajar.'?kelas='.$id_kelas, '<button class="btn btn-sm btn-primary">Input Nilai</button>'); ?>
+                                        <?php echo anchor('guru/nilai/input_nilai/'.$nilai->id_mengajar.'?kelas='.$id_kelas, '<button class="btn btn-sm btn-primary">Input Nilai</button>'); ?>
                                     <?php else: ?>
                                         Sudah Dinilai
                                     <?php endif; ?>
@@ -77,7 +77,7 @@
         </div>
 
         <div class="mt-3">
-            <?php echo anchor('administrator/nilai', '<button class="btn btn-sm btn-danger">Kembali</button>'); ?>
+            <?php echo anchor('guru/nilai', '<button class="btn btn-sm btn-danger">Kembali</button>'); ?>
         </div>
     </div>
 

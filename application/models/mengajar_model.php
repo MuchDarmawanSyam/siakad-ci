@@ -125,7 +125,7 @@ class Mengajar_model extends CI_Model {
     //-------------------------
     public function get_mapel_by_nik($nik){
         // Join 3 Tabel
-        $this->db->select('kelas.*, mapel.nama_mapel');
+        $this->db->select('kelas.*, mapel.nama_mapel, mengajar.id_mengajar');
         $this->db->from('kelas');
         $this->db->join('mengajar', 'kelas.id_kelas = mengajar.id_kelas');
         $this->db->join('mapel', 'mengajar.id_mapel = mapel.id_mapel');

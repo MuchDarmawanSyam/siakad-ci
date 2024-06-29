@@ -132,5 +132,23 @@
             $query = $this->db->get();
             return $query->result();
         }
+
+        // Simpan nilai siswa
+        public function save_sikap($data){
+            $this->db->insert('nilai_sikap', $data);
+        }
+
+        public function get_sikap_by_nis($nis){
+            $this->db->select('*');
+            $this->db->from('nilai_sikap');
+            $this->db->where('nis', $nis);
+            $query = $this->db->get();
+            return $query->result();
+        }
+
+        public function update_sikap($data, $nis){
+            $this->db->where('nis', $nis);
+            $this->db->update('nilai_sikap', $data);
+        }
     }
-    ?>
+?>

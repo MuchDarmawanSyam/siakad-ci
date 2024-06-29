@@ -11,15 +11,16 @@ class Raport extends CI_Controller {
 
     public function index(){
         $this->load->model('tahun_model');
+        $this->load->model('wali_model');
         $data = array(
-            'kelas' => $this->nilai_model->get_all_kelas(),  // Mendapatkan semua data kelas
+            'kelas' => $this->wali_model->get_kelas_by_nik($this->session->userdata['nik']),  // Mendapatkan data kelas
             'tahun_ajaran' => $this->tahun_model->tampil_data(),  // Mendapatkan data tahun ajaran
             'tahun_ajaran_aktif' => $this->nilai_model->get_tahun_ajaran_aktif()
         );
 
         $this->load->view('templates_administrator/header');
         $this->load->view('templates_administrator/sidebar');
-        $this->load->view('administrator/raport_form', $data);
+        $this->load->view('guru/raport_form', $data);
         $this->load->view('templates_administrator/footer');
     }
 
@@ -28,7 +29,7 @@ class Raport extends CI_Controller {
         $this->load->model('siswa_model');
         $id_kelas = $this->input->post('id_kelas');
         $data['siswa'] = $this->siswa_model->get_by_id_kelas($id_kelas);
-        $this->load->view('administrator/partials/form_cetak/ajax_siswa', $data);
+        $this->load->view('guru/partials/form_cetak/ajax_siswa', $data);
     }
 
     public function cetak_raport(){
@@ -51,7 +52,8 @@ class Raport extends CI_Controller {
         $data['wali'] = $this->guru_model->get_by_id($nik_wali->nik);
         $data['siswa'] = $this->siswa_model->get_by_id($nis);
         $data['nilai'] = $this->nilai_model->get_nilai_cetak_raport($nis, $kelas);
-        $this->load->view('administrator/partials/cetak_raport', $data);
+        $data['sikap'] = $this->nilai_model->get_sikap_by_nis($nis);
+        $this->load->view('guru/partials/cetak_raport', $data);
     }
 }
 ?>

@@ -58,7 +58,7 @@ class Nilai extends CI_Controller {
                 // Muat view dengan data nilai
                 $this->load->view('templates_administrator/header');
                 $this->load->view('templates_administrator/sidebar');
-                $this->load->view('administrator/nilai_kelas', $datanilai);
+                $this->load->view('guru/nilai_kelas', $datanilai);
                 $this->load->view('templates_administrator/footer');
             }
         }
@@ -83,7 +83,7 @@ class Nilai extends CI_Controller {
         ];
         $this->load->view('templates_administrator/header');
         $this->load->view('templates_administrator/sidebar');
-        $this->load->view('administrator/nilai_form', $data);
+        $this->load->view('guru/nilai_form', $data);
         $this->load->view('templates_administrator/footer');
     }
 
@@ -114,7 +114,7 @@ class Nilai extends CI_Controller {
         $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
                     Data Nilai Berhasil ditambah!
                     </div>');
-        redirect('administrator/nilai');
+        redirect('guru/nilai');
     }
 
     // Ini untuk fungsi update nilai
@@ -145,8 +145,44 @@ class Nilai extends CI_Controller {
         $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
                     Data Nilai Berhasil diperbarui!
                     </div>');
-        redirect('administrator/nilai');
+        redirect('guru/nilai');
     }
     
+
+    public function nilai_sikap($nis) {
+        $where = array('nis' => $nis);
+        $data['detail'] = $this->siswa_model->ambil_kode_siswa($nis);
+        $data['sikap'] = $this->nilai_model->get_sikap_by_nis($nis);
+        $this->load->view('templates_administrator/header');
+        $this->load->view('templates_administrator/sidebar');
+        $this->load->view('guru/nilai_sikap', $data);
+        $this->load->view('templates_administrator/footer');
+    }
+
+    public function nilai_sikap_aksi(){
+        $this->load->model('siswa_model');
+        $data['nis'] = $this->input->post('nis');
+        $data['ket'] = $this->input->post('sikap');
+        
+        $this->nilai_model->save_sikap($data);
+        
+        $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
+                    Data Nilai Sikap Berhasil ditambah!
+                    </div>');
+        redirect('guru/siswa');
+    }
+
+    public function update_sikap_aksi(){
+        $this->load->model('siswa_model');
+        $nis = $this->input->post('nis');
+        $data['ket'] = $this->input->post('sikap');
+        
+        $this->nilai_model->update_sikap($data, $nis);
+        
+        $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
+                    Data Nilai Sikap Berhasil Diupdate!
+                    </div>');
+        redirect('guru/siswa');
+    }
 }
 ?>
