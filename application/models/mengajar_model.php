@@ -119,5 +119,20 @@ class Mengajar_model extends CI_Model {
         }
     }
 
+
+    //-------------------------
+    // Diakses Controller Guru
+    //-------------------------
+    public function get_mapel_by_nik($nik){
+        // Join 3 Tabel
+        $this->db->select('kelas.*, mapel.nama_mapel');
+        $this->db->from('kelas');
+        $this->db->join('mengajar', 'kelas.id_kelas = mengajar.id_kelas');
+        $this->db->join('mapel', 'mengajar.id_mapel = mapel.id_mapel');
+        $this->db->where('mengajar.nik', $nik);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
 }
 ?>

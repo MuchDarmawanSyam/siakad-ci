@@ -153,7 +153,19 @@ class Wali_model extends CI_Model {
     );
 
     $this->db->insert('wali_kelas', $data);
-}
+    }
+
+    // ---------------------------------------
+    // Method ini diakses dari controller guru
+    // ---------------------------------------
+    public function get_jml_siswa_by_nik_wali($nik){
+        $this->db->select('*');
+        $this->db->from('siswa');
+        $this->db->join('wali_kelas', 'wali_kelas.id_kelas = siswa.id_kelas');
+        $this->db->where('wali_kelas.nik', $nik);
+
+        return $this->db->count_all_results();
+    }
 
 
 }

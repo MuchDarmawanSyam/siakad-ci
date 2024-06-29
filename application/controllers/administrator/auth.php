@@ -35,11 +35,14 @@ class Auth extends CI_Controller{
                     $sess_data['username'] = $ck->username;
                     $sess_data['email'] = $ck->email;
                     $sess_data['hak_akses'] = $ck->hak_akses;
+                    $sess_data['nik'] = $ck->idu;
                 }
                 $this->session->set_userdata($sess_data); // Set semua data sesi sekaligus
 
                 if($sess_data['hak_akses'] == 'admin'){
                     redirect('administrator/dashboard');
+                } elseif($sess_data['hak_akses'] == 'guru'){
+                    redirect('guru/dashboard');
                 } else {
                     $this->session->set_flashdata('pesan','<div class="alert alert-danger alert-dismissible fade show" role="alert">
                     Username atau password salah

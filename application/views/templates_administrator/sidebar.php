@@ -43,6 +43,7 @@
 
            <!-- Data Master -->
 <!-- Data Master -->
+<?php if($this->session->userdata['username'] == "admin"){ ?>
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDataMaster"
         aria-expanded="true" aria-controls="collapseDataMaster">
@@ -79,6 +80,8 @@
         </div>
     </div>
 </li>
+<?php } ?>
+
 <!-- Akademik -->
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAkademik"
@@ -89,13 +92,21 @@
     <div id="collapseAkademik" class="collapse" aria-labelledby="headingAkademik" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Menu Akademik:</h6>
-            <a class="collapse-item" href="<?php echo base_url('administrator/nilai')?>">Input Nilai</a>
-            <a class="collapse-item" href="<?php echo base_url('administrator/khs')?>">Hasil Studi</a>
-            <a class="collapse-item" href="<?php echo base_url('administrator/raport')?>">Cetak Raport</a>
+
+            <?php if($this->session->userdata['username'] == "admin"){ ?>
+                <a class="collapse-item" href="<?php echo base_url('administrator/nilai')?>">Input Nilai</a>
+                <a class="collapse-item" href="<?php echo base_url('administrator/khs')?>">Hasil Studi</a>
+                <a class="collapse-item" href="<?php echo base_url('administrator/raport')?>">Cetak Raport</a>
+            <?php }else{ ?>
+                <a class="collapse-item" href="<?php echo base_url('guru/nilai')?>">Input Nilai</a>
+                <a class="collapse-item" href="<?php echo base_url('guru/raport')?>">Cetak Raport</a>
+            <?php } ?>
         </div>
     </div>
 </li>
 
+
+<?php if($this->session->userdata['username'] == "admin"){ ?>
 <!-- Pengguna -->
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePengguna"
@@ -110,6 +121,7 @@
         </div>
     </div>
 </li>
+<?php } ?>
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
