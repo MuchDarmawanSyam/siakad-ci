@@ -7,7 +7,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-        <?php if($this->session->userdata['username'] == "admin"){ ?>
+        <?php if($this->session->userdata['hak_akses'] == "admin"){ ?>
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?php echo base_url('administrator/dashboard') ?>">
         <?php }else{ ?>
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?php echo base_url('guru/dashboard') ?>">
@@ -22,7 +22,7 @@
 
                 <!-- User Information -->
                 <li class="nav-item">
-                    <?php if($this->session->userdata['username'] == "admin"){ ?>
+                    <?php if($this->session->userdata['hak_akses'] == "admin"){ ?>
                         <a class="nav-link" href="<?php echo base_url('guru/dashboard') ?>">
                     <?php }else{ ?>
                         <a class="nav-link" href="<?php echo base_url('guru/dashboard') ?>">
@@ -43,7 +43,7 @@
 
             <!-- Nav Item - Dashboard -->
                 <li class="nav-item active">
-                <?php if($this->session->userdata['username'] == "admin"){ ?>    
+                <?php if($this->session->userdata['hak_akses'] == "admin"){ ?>    
                     <a class="nav-link" href="<?php echo base_url('administrator/dashboard')?>">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
                         <span>Dashboard</span>
@@ -58,7 +58,7 @@
 
            <!-- Data Master -->
 <!-- Data Master -->
-<?php if($this->session->userdata['username'] == "admin"){ ?>
+<?php if($this->session->userdata['hak_akses'] == "admin"){ ?>
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDataMaster"
         aria-expanded="true" aria-controls="collapseDataMaster">
@@ -108,7 +108,7 @@
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Menu Akademik:</h6>
 
-            <?php if($this->session->userdata['username'] == "admin"){ ?>
+            <?php if($this->session->userdata['hak_akses'] == "admin"){ ?>
                 <a class="collapse-item" href="<?php echo base_url('administrator/nilai')?>">Input Nilai</a>
                 <a class="collapse-item" href="<?php echo base_url('administrator/khs')?>">Hasil Studi</a>
                 <a class="collapse-item" href="<?php echo base_url('administrator/raport')?>">Cetak Raport</a>
@@ -122,7 +122,7 @@
 </li>
 
 
-<?php if($this->session->userdata['username'] == "admin"){ ?>
+<?php if($this->session->userdata['hak_akses'] == "admin"){ ?>
 <!-- Pengguna -->
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePengguna"
