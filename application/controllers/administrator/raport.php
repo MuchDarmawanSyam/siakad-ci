@@ -51,6 +51,7 @@ class Raport extends CI_Controller {
         $data['wali'] = $this->guru_model->get_by_id($nik_wali->nik);
         $data['siswa'] = $this->siswa_model->get_by_id($nis);
         $data['nilai'] = $this->nilai_model->get_nilai_cetak_raport($nis, $kelas);
+        $data['sikap'] = $this->nilai_model->get_sikap_by_nis($nis);
         $this->load->view('administrator/partials/cetak_raport', $data);
     }
 }

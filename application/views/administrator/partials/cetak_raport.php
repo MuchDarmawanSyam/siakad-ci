@@ -18,6 +18,7 @@ error_reporting(0);
         <img src="<?=base_url()?>assets/img/smp.png" alt="Logo Sekolah"
             style="width:70px;height:70px;float:left;margin-bottom:10px;">
         <h3 style="line-height:5px;text-align:right;">SMP Muhammadiyah Jayapura</h3>
+        <br>
         <h3 style="line-height:5px;text-align:right;">Akreditasi A</h3>
         <hr style="border:1px solid;margin-right:0px;width:800px;">
         <hr style="border:0.5px solid;margin-top:-15px;margin-right:0px;width:750px;">
@@ -90,6 +91,11 @@ error_reporting(0);
                 <?php endforeach;?>
             </tbody>
         </table>
+        <p>
+            Nilai Sikap:
+            <b><?= $sikap[0]->ket; ?></b>
+        </p>
+
         <p>
             Keterangan :
             <br>
