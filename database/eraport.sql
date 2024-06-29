@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 22, 2024 at 08:11 AM
+-- Generation Time: Jun 29, 2024 at 09:20 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -30,8 +30,38 @@ SET time_zone = "+00:00";
 CREATE TABLE `ekstra` (
   `id_ekstra` int(50) NOT NULL,
   `nama_ekstra` varchar(100) NOT NULL,
-  `deskripsi` text NOT NULL
+  `deskripsi` text NOT NULL,
+  `nik` bigint(50) DEFAULT NULL,
+  `id_tahun` bigint(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `ekstra`
+--
+
+INSERT INTO `ekstra` (`id_ekstra`, `nama_ekstra`, `deskripsi`, `nik`, `id_tahun`) VALUES
+(4, 'Futsal', 'Setiap Sabtu Jam Setengah 4 Sore', 2020051074023, 6),
+(7, 'Musik', 'Test', 2020051074022, 6);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ekstra_siswa`
+--
+
+CREATE TABLE `ekstra_siswa` (
+  `id_ekstra_siswa` int(11) NOT NULL,
+  `nis` bigint(50) NOT NULL,
+  `id_ekstra` int(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `ekstra_siswa`
+--
+
+INSERT INTO `ekstra_siswa` (`id_ekstra_siswa`, `nis`, `id_ekstra`) VALUES
+(1, 2020051074021, 4),
+(3, 2020051074023, 4);
 
 -- --------------------------------------------------------
 
@@ -59,11 +89,8 @@ CREATE TABLE `guru` (
 
 INSERT INTO `guru` (`nik`, `nama_guru`, `alamat`, `jenis_kelamin`, `tempat_lahir`, `tgl_lahir`, `agama`, `email`, `no_telp`, `foto`, `idu`) VALUES
 (2020051074021, 'RAIHAN RAMADHAN', 'abe', 'Laki-laki', 'ambroben', '2020-11-30', 'Kristen', 'raadwjaj@gmail.com', '55667476', 'guru.jpeg', 2020051074021),
-(2020051074022, 'abel', 'abepante', 'Laki-laki', 'abe', '2002-02-20', 'Islam', 'abel@cukimai', '6543543545668', 'WhatsApp Image 2024-06-12 at 19.14.33.jpeg', 2020051074022),
-(2020051074023, 'kirana', 'abe', 'Perempuan', 'abe', '2002-02-20', 'Kristen', 'qdkqldqlkd@gmail.com', '6543543545668', 'WhatsApp Image 2024-06-12 at 19.14.33.jpeg', 2020051074023),
-(2020051074024, 'jasmin', 'abe', 'Laki-laki', 'ambroben', '2019-11-30', 'Kristen', 'raadwjaj@gmail.com', '232323', 'WhatsApp Image 2024-06-12 at 19.14.33.jpeg', 2020051074024),
-(2020051074025, 'kaleb', 'abe', 'Laki-laki', 'abe', '2000-01-22', 'Islam', 'adawdaw@aefsef', '6543543545668', 'WhatsApp Image 2024-06-12 at 19.14.33.jpeg', 2020051074025),
-(2022051074044, 'Much Darmawan', 'Ardipura', 'Laki-laki', 'Jayapura', '2002-06-01', 'Islam', 'darmawan@gmail.com', '082197829187', 'admin-logo.jpg', 2022051074044);
+(2020051074022, 'abel', 'abepante', 'Laki-laki', 'abe', '2002-02-20', 'Islam', 'abel@cukimai', '6543543545668', 'admin-logo.jpg', 2020051074022),
+(2020051074023, 'kirana', 'abe', 'Perempuan', 'abe', '2002-02-20', 'Kristen', 'qdkqldqlkd@gmail.com', '6543543545668', '', 2020051074023);
 
 -- --------------------------------------------------------
 
@@ -84,8 +111,8 @@ CREATE TABLE `kelas` (
 
 INSERT INTO `kelas` (`id_kelas`, `kode_kelas`, `nama_kelas`, `id_tahun`) VALUES
 (1, '7A', 'KELAS 7A', 6),
-(2, '8A', 'KELAS 8 A', 6),
-(3, '9A', 'KELAS 9A', NULL);
+(2, '8A', 'KELAS 8A', 6),
+(3, '9A', 'KELAS 9A', 6);
 
 -- --------------------------------------------------------
 
@@ -102,6 +129,13 @@ CREATE TABLE `krs` (
   `id_mapel` int(11) DEFAULT NULL,
   `id_nilai` int(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `krs`
+--
+
+INSERT INTO `krs` (`id_krs`, `nik`, `nis`, `id_kelas`, `id_tahun`, `id_mapel`, `id_nilai`) VALUES
+(3, NULL, NULL, 3, 1, 2, NULL);
 
 -- --------------------------------------------------------
 
@@ -149,13 +183,13 @@ CREATE TABLE `mengajar` (
 
 INSERT INTO `mengajar` (`id_mengajar`, `id_kelas`, `nik`, `id_tahun`, `id_mapel`, `semester`, `kkm`) VALUES
 (1, 1, 2020051074021, 3, 11, 'ganjil', 75),
-(12, 1, 2022051074044, 6, 2, 'genap', 75),
 (14, 1, 2020051074023, 6, 14, 'genap', 85),
 (20, 2, 2020051074023, 6, 11, 'genap', 76),
 (22, 2, 2020051074021, 6, 2, 'genap', 75),
 (23, 2, 2020051074021, 6, 2, 'ganjil', 75),
 (24, 2, 2020051074021, 6, 11, 'genap', 75),
-(25, 3, 2020051074021, 3, 2, 'genap', 75);
+(25, 3, 2020051074021, 3, 2, 'genap', 75),
+(32, 3, 2020051074021, 6, 13, 'ganjil', 80);
 
 -- --------------------------------------------------------
 
@@ -165,22 +199,48 @@ INSERT INTO `mengajar` (`id_mengajar`, `id_kelas`, `nik`, `id_tahun`, `id_mapel`
 
 CREATE TABLE `nilai` (
   `id_nilai` int(50) NOT NULL,
-  `nik` bigint(50) DEFAULT NULL,
   `nis` bigint(50) DEFAULT NULL,
-  `id_kelas` bigint(50) DEFAULT NULL,
-  `id_tahun` bigint(10) DEFAULT NULL,
   `ns1` int(4) DEFAULT NULL,
   `ns2` int(4) DEFAULT NULL,
   `ns3` int(4) DEFAULT NULL,
   `ns4` int(4) DEFAULT NULL,
   `rata1` int(4) DEFAULT NULL,
-  `predikat` int(4) DEFAULT NULL,
+  `predikat` varchar(1) DEFAULT NULL,
   `deskripsi` mediumtext DEFAULT NULL,
   `total` int(4) DEFAULT NULL,
   `nilai_akhir` int(4) DEFAULT NULL,
   `kkm` int(4) DEFAULT NULL,
   `id_mengajar` int(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `nilai`
+--
+
+INSERT INTO `nilai` (`id_nilai`, `nis`, `ns1`, `ns2`, `ns3`, `ns4`, `rata1`, `predikat`, `deskripsi`, `total`, `nilai_akhir`, `kkm`, `id_mengajar`) VALUES
+(8, 2020051074023, 1, 2, 3, 4, 3, 'D', 'Kurang Baik', 10, 3, 75, 1),
+(9, 2022051074044, 2, 3, 4, 10, 5, 'D', 'Kurang Baik', 19, 5, 75, 1),
+(10, 2022051074047, 3, 4, 5, 10, 6, 'D', 'Kurang Baik', 22, 6, 75, 1),
+(11, 2020051074021, 2, 2, 2, 2, 2, 'D', 'Kurang Baik', 8, 2, 75, 22);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `nilai_sikap`
+--
+
+CREATE TABLE `nilai_sikap` (
+  `id_nilai_sikap` bigint(50) NOT NULL,
+  `nis` bigint(50) NOT NULL,
+  `ket` varchar(250) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `nilai_sikap`
+--
+
+INSERT INTO `nilai_sikap` (`id_nilai_sikap`, `nis`, `ket`) VALUES
+(1, 2020051074021, 'asasqq222');
 
 -- --------------------------------------------------------
 
@@ -203,11 +263,10 @@ CREATE TABLE `pengguna` (
 
 INSERT INTO `pengguna` (`idu`, `username`, `password`, `email`, `hak_akses`, `blokir`) VALUES
 (2020, 'alief', '22db6b9d4434177a4abd28b0c5781f15', 'alief', 'guru', 'N'),
-(2222, 'kaleb', '7aeef99ff3f55923ab9976a897829ac3', 'adawd', 'admin', 'N'),
-(20200510, 'admin', 'admin', 'admin', '', ''),
-(20200511, 'raihan', 'raihan', 'admin', 'admin', 'N'),
-(20200512, 'rayhan', '1b03f071de953187082e8407bf3d0c70', '', 'admin', 'N'),
-(2020051074002, 'abel', 'a6cd39ee5b1d8276f6bc716b3f7881b7', 'admin@example.com', 'admin', 'N');
+(2222, 'kaleb', '7aeef99ff3f55923ab9976a897829ac3', 'adawd12121212', 'admin', 'Y'),
+(20220510, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin@gmail.com', 'admin', 'N'),
+(2020051074002, 'abel', 'a6cd39ee5b1d8276f6bc716b3f7881b7', 'admin@example.com', 'admin', 'N'),
+(2020051074021, 'tests', 'b61a6d542f9036550ba9c401c80f00ef', 'darmawan3@gmail.com', 'guru', 'N');
 
 -- --------------------------------------------------------
 
@@ -252,11 +311,12 @@ CREATE TABLE `siswa` (
 --
 
 INSERT INTO `siswa` (`nis`, `nama_siswa`, `alamat`, `jenis_kelamin`, `tgl_lahir`, `tempat_lahir`, `email`, `agama`, `nama_ayah`, `pekerjaan_ayah`, `nama_ibu`, `pekerjaan_ibu`, `foto`, `no_telp`, `idu`, `status`, `id_kelas`) VALUES
-(2020051074021, 'karel', 'btn', 'Laki-laki', '2024-06-22', 'abe', 'karel@gmail', 'Islam', NULL, 'swasta', 'sarminah', 'swasta', NULL, '208203801280382', 2020051074021, 'aktif', 1),
+(2020051074021, 'karel', 'btn', 'Laki-laki', '2024-06-22', 'abe', 'karel@gmail', 'Islam', NULL, 'swasta', 'sarminah', 'swasta', NULL, '208203801280382', 2020051074021, 'aktif', 2),
 (2020051074023, 'abelinda putri', 'jembatan ', 'Perempuan', '0000-00-00', 'ABEPURA', 'raadwjaj@gmail.com', 'Islam', NULL, 'swasta', 'sarminah', 'swasta', NULL, '0822389666065', 2020051074023, 'aktif', 1),
 (2020051074080, 'cia', 'abe', 'Laki-laki', '0000-00-00', 'abe', 'abe@gmail', 'Islam', NULL, '', '', '', NULL, '208203801280382', 2020051074080, NULL, 3),
-(2022051074044, 'Much Darmawan Syam', 'Ardipura', 'Laki-laki', '0000-00-00', 'Jayapura', 'darmawan@gmail.com', 'Islam', 'test', 'test pek', 'test', 'tes pek', 'admin-logo.jpg', '0822222', 2022051074044, NULL, 2),
-(2022051074045, 'Much Darmawan Syam2', 'Ardipura2', 'Laki-laki', '2024-06-22', 'Jayapura2', 'darmawan2@gmail.com', 'Islam', 'test2', 'test pek2', 'test2', 'tes pek2', 'admin-logo.jpg', '0822222', 2022051074045, NULL, 2);
+(2022051074044, 'Much Darmawan Syam', 'Ardipura', 'Laki-laki', '0000-00-00', 'Jayapura', 'darmawan@gmail.com', 'Islam', 'test', 'test pek', 'test', 'tes pek', 'admin-logo.jpg', '0822222', 2022051074044, NULL, 1),
+(2022051074046, 'Much Darmawan Syam3a', 'Ardipura3a', 'Laki-laki', '2024-06-03', 'Jayapura3a', 'darmawan3a@gmail.com', 'Islam', NULL, 'test peka', 'testa', 'tes pek2a', NULL, '08222221', 2022051074046, NULL, 3),
+(2022051074047, 'Much Darmawan Syam3b', 'Ardipura4', 'Laki-laki', '2024-06-16', 'Jayapura4', 'darmawan3a@gmail.com', 'Islam', NULL, 'test pek', 'test2', 'tes pek2a', 'Siswa-2022051074047.jpg', '0822222', 2022051074047, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -299,8 +359,9 @@ CREATE TABLE `wali_kelas` (
 --
 
 INSERT INTO `wali_kelas` (`id_wali`, `nik`, `id_kelas`, `id_tahun`, `nis`) VALUES
-(3, 2020051074022, 1, 6, 2020051074021),
-(84, 2022051074044, 1, 6, NULL);
+(87, 2020051074022, 1, 3, NULL),
+(93, 2020051074021, 2, 3, NULL),
+(94, 2020051074023, 3, 3, NULL);
 
 --
 -- Indexes for dumped tables
@@ -310,7 +371,17 @@ INSERT INTO `wali_kelas` (`id_wali`, `nik`, `id_kelas`, `id_tahun`, `nis`) VALUE
 -- Indexes for table `ekstra`
 --
 ALTER TABLE `ekstra`
-  ADD PRIMARY KEY (`id_ekstra`);
+  ADD PRIMARY KEY (`id_ekstra`),
+  ADD KEY `nik` (`nik`),
+  ADD KEY `id_tahun` (`id_tahun`);
+
+--
+-- Indexes for table `ekstra_siswa`
+--
+ALTER TABLE `ekstra_siswa`
+  ADD PRIMARY KEY (`id_ekstra_siswa`),
+  ADD KEY `nis` (`nis`),
+  ADD KEY `id_ekstra` (`id_ekstra`);
 
 --
 -- Indexes for table `guru`
@@ -359,11 +430,15 @@ ALTER TABLE `mengajar`
 --
 ALTER TABLE `nilai`
   ADD PRIMARY KEY (`id_nilai`),
-  ADD KEY `idx_nik_nilai` (`nik`),
   ADD KEY `idx_nis_nilai` (`nis`),
-  ADD KEY `idx_id_kelas_nilai` (`id_kelas`),
-  ADD KEY `idx_id_tahun_nilai` (`id_tahun`),
   ADD KEY `fk_nilai_mengajar` (`id_mengajar`);
+
+--
+-- Indexes for table `nilai_sikap`
+--
+ALTER TABLE `nilai_sikap`
+  ADD PRIMARY KEY (`id_nilai_sikap`),
+  ADD KEY `nis` (`nis`);
 
 --
 -- Indexes for table `pengguna`
@@ -412,7 +487,13 @@ ALTER TABLE `wali_kelas`
 -- AUTO_INCREMENT for table `ekstra`
 --
 ALTER TABLE `ekstra`
-  MODIFY `id_ekstra` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_ekstra` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `ekstra_siswa`
+--
+ALTER TABLE `ekstra_siswa`
+  MODIFY `id_ekstra_siswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `kelas`
@@ -424,7 +505,7 @@ ALTER TABLE `kelas`
 -- AUTO_INCREMENT for table `krs`
 --
 ALTER TABLE `krs`
-  MODIFY `id_krs` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_krs` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `mapel`
@@ -436,13 +517,25 @@ ALTER TABLE `mapel`
 -- AUTO_INCREMENT for table `mengajar`
 --
 ALTER TABLE `mengajar`
-  MODIFY `id_mengajar` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id_mengajar` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+
+--
+-- AUTO_INCREMENT for table `nilai`
+--
+ALTER TABLE `nilai`
+  MODIFY `id_nilai` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `nilai_sikap`
+--
+ALTER TABLE `nilai_sikap`
+  MODIFY `id_nilai_sikap` bigint(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `pengguna`
 --
 ALTER TABLE `pengguna`
-  MODIFY `idu` bigint(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2020051074003;
+  MODIFY `idu` bigint(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2020051074024;
 
 --
 -- AUTO_INCREMENT for table `rombel`
@@ -460,11 +553,25 @@ ALTER TABLE `tahun_ajaran`
 -- AUTO_INCREMENT for table `wali_kelas`
 --
 ALTER TABLE `wali_kelas`
-  MODIFY `id_wali` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `id_wali` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `ekstra`
+--
+ALTER TABLE `ekstra`
+  ADD CONSTRAINT `ekstra_ibfk_1` FOREIGN KEY (`nik`) REFERENCES `guru` (`nik`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `ekstra_ibfk_2` FOREIGN KEY (`id_tahun`) REFERENCES `tahun_ajaran` (`id_tahun`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ekstra_siswa`
+--
+ALTER TABLE `ekstra_siswa`
+  ADD CONSTRAINT `ekstra_siswa_ibfk_1` FOREIGN KEY (`nis`) REFERENCES `siswa` (`nis`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ekstra_siswa_ibfk_2` FOREIGN KEY (`id_ekstra`) REFERENCES `ekstra` (`id_ekstra`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `kelas`
@@ -478,9 +585,9 @@ ALTER TABLE `kelas`
 ALTER TABLE `krs`
   ADD CONSTRAINT `fk_krs_guru` FOREIGN KEY (`nik`) REFERENCES `guru` (`nik`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_krs_mapel` FOREIGN KEY (`id_mapel`) REFERENCES `mapel` (`id_mapel`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_krs_nilai` FOREIGN KEY (`id_nilai`) REFERENCES `nilai` (`id_nilai`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_krs_siswa` FOREIGN KEY (`nis`) REFERENCES `siswa` (`nis`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_krs_tahun_ajaran` FOREIGN KEY (`id_tahun`) REFERENCES `tahun_ajaran` (`id_tahun`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_krs_tahun_ajaran` FOREIGN KEY (`id_tahun`) REFERENCES `tahun_ajaran` (`id_tahun`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `krs_ibfk_1` FOREIGN KEY (`id_nilai`) REFERENCES `nilai` (`id_nilai`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `mengajar`
@@ -488,18 +595,21 @@ ALTER TABLE `krs`
 ALTER TABLE `mengajar`
   ADD CONSTRAINT `fk_id_mapel` FOREIGN KEY (`id_mapel`) REFERENCES `mapel` (`id_mapel`),
   ADD CONSTRAINT `fk_id_tahun` FOREIGN KEY (`id_tahun`) REFERENCES `tahun_ajaran` (`id_tahun`),
-  ADD CONSTRAINT `fk_nik` FOREIGN KEY (`nik`) REFERENCES `guru` (`nik`),
-  ADD CONSTRAINT `mengajar_ibfk_1` FOREIGN KEY (`id_kelas`) REFERENCES `kelas` (`id_kelas`) ON DELETE CASCADE;
+  ADD CONSTRAINT `mengajar_ibfk_1` FOREIGN KEY (`id_kelas`) REFERENCES `kelas` (`id_kelas`) ON DELETE CASCADE,
+  ADD CONSTRAINT `mengajar_ibfk_2` FOREIGN KEY (`nik`) REFERENCES `guru` (`nik`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `nilai`
 --
 ALTER TABLE `nilai`
-  ADD CONSTRAINT `fk_id_kelas_kelas` FOREIGN KEY (`id_kelas`) REFERENCES `kelas` (`id_kelas`),
-  ADD CONSTRAINT `fk_id_tahun_tahun_ajaran` FOREIGN KEY (`id_tahun`) REFERENCES `tahun_ajaran` (`id_tahun`),
-  ADD CONSTRAINT `fk_nik_guru` FOREIGN KEY (`nik`) REFERENCES `guru` (`nik`),
   ADD CONSTRAINT `fk_nilai_mengajar` FOREIGN KEY (`id_mengajar`) REFERENCES `mengajar` (`id_mengajar`),
   ADD CONSTRAINT `fk_nis_siswa` FOREIGN KEY (`nis`) REFERENCES `siswa` (`nis`);
+
+--
+-- Constraints for table `nilai_sikap`
+--
+ALTER TABLE `nilai_sikap`
+  ADD CONSTRAINT `nilai_sikap_ibfk_1` FOREIGN KEY (`nis`) REFERENCES `siswa` (`nis`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `rombel`
@@ -518,10 +628,10 @@ ALTER TABLE `siswa`
 -- Constraints for table `wali_kelas`
 --
 ALTER TABLE `wali_kelas`
-  ADD CONSTRAINT `fk_wali_kelas_guru` FOREIGN KEY (`nik`) REFERENCES `guru` (`nik`),
   ADD CONSTRAINT `fk_wali_kelas_nis` FOREIGN KEY (`nis`) REFERENCES `siswa` (`nis`),
   ADD CONSTRAINT `fk_wali_kelas_tahun` FOREIGN KEY (`id_tahun`) REFERENCES `tahun_ajaran` (`id_tahun`),
-  ADD CONSTRAINT `wali_kelas_ibfk_1` FOREIGN KEY (`id_kelas`) REFERENCES `kelas` (`id_kelas`);
+  ADD CONSTRAINT `wali_kelas_ibfk_1` FOREIGN KEY (`id_kelas`) REFERENCES `kelas` (`id_kelas`),
+  ADD CONSTRAINT `wali_kelas_ibfk_2` FOREIGN KEY (`nik`) REFERENCES `guru` (`nik`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
