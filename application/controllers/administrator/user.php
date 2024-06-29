@@ -38,7 +38,7 @@ class User extends CI_Controller {
         if($this->user_model->cek_duplikat_pengguna($data['idu'])){
             if ($this->user_model->tambah_pengguna($data)) {
                 $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
-                Data Penguna Berhasil Ditambahkan!
+                Data Penguna Berhasil Ditambahkan! Passwordnya :<b>'.$data['username'].'</b>.
                 </div>');
                 redirect('administrator/user');
             }else{
@@ -55,4 +55,50 @@ class User extends CI_Controller {
         }
     }
 
+    public function delete($id){
+        $me = $this->session->userdata['nik'];
+        if($me != $id){
+            $this->user_model->hapus($id);
+            $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
+                Data Penguna Berhasil dihapus!
+                </div>');
+                redirect('administrator/user');
+        }else{
+            $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
+                Tidak bisa menghapus diri sendiri!
+                </div>');
+                redirect('administrator/user');
+        }
+    }
+
+    public function update($id) {
+        $where = array('idu' => $id);
+        $data['user'] = $this->user_model->ambil_data_by_id($id);
+        $this->load->view('templates_administrator/header');
+        $this->load->view('templates_administrator/sidebar');
+        $this->load->view('administrator/user_update', $data);
+        $this->load->view('templates_administrator/footer');
+    }
+
+    public function update_aksi(){
+        $id = $this->input->post('id');
+        $data = $this->user_model->ambil_data_by_id($id);
+        $username = $this->input->post('username');
+        $email = $this->input->post('email');
+        $blokir = $this->input->post('blokir');
+        $array = [
+            'username' => $username,
+            'password' => $data->password,
+            'email' => $email,
+            'hak_akses' => $data->hak_akses,
+            'blokir' => $blokir
+        ];
+
+        $this->user_model->update($array, $id);
+        $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
+                Data Penguna Berhasil diperbarui!
+                </div>');
+                redirect('administrator/user');
+    }
+    
 }

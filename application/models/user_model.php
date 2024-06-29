@@ -7,6 +7,12 @@ class user_model extends CI_Model{
         return $this->db->get('pengguna')->row();
     }
 
+    public function ambil_data_by_id($idu)
+    {
+        $this->db->where('idu',$idu);
+        return $this->db->get('pengguna')->row();
+    }
+
     public function jumlah_pengguna(){
         return $this->db->count_all('pengguna');
     }
@@ -33,6 +39,16 @@ class user_model extends CI_Model{
         } else {
             return true;
         }
+    }
+
+    public function hapus($id){
+        $this->db->where('idu', $id);
+        $this->db->delete('pengguna');
+    }
+
+    public function update($data, $id){
+        $this->db->where('idu', $id);
+        $this->db->update('pengguna', $data);
     }
 }
 ?>

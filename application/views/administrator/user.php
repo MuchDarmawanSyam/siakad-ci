@@ -30,10 +30,10 @@
                     <td><?php echo htmlspecialchars($pengguna->username, ENT_QUOTES, 'UTF-8'); ?></td>
                     <td><?php echo $pengguna->email; ?></td>
                     <td>
-                        <a href="<?php echo base_url('administrator/mengajar/delete/'.$pengguna->idu); ?>" class="btn btn-danger">Hapus</a>
+                        <a href="<?php echo base_url('administrator/user/delete/'.$pengguna->idu); ?>" class="btn btn-danger">Hapus</a>
                     </td>
                     <td>
-                        <a href="<?php echo base_url('administrator/mengajar/update_mengajar/'.$pengguna->idu); ?>" class="btn btn-primary">Edit</a>
+                        <a href="<?php echo base_url('administrator/user/update/'.$pengguna->idu); ?>" class="btn btn-primary">Edit</a>
                     </td>
                 </tr>
                 <?php endforeach; ?>
