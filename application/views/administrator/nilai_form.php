@@ -15,7 +15,7 @@
             var n1 = parseInt($('[name="' + s + '1' + x + '"]').val());
             $('[name="rata_' + s + '' + x + '"]').val(n1);
             $('[name="total_' + s + '' + x + '"]').val(n1);
-            // $('[name="' + s + '2' + x + '"]').val("");
+            $('[name="' + s + '2' + x + '"]').val(""); // Ini untuk mencegah kesalahan nilai total ketika merubah nilai sebelum yg sdh terisi
             dropreadonly(s + '2' + x);
             $('[name="' + s + '1' + x + '"]').prop('readonly', true);
         }
@@ -28,7 +28,7 @@
 
             $('[name="rata_' + s + '' + x + '"]').val(hasil);
             $('[name="total_' + s + '' + x + '"]').val(total);
-            // $('[name="' + s + '3' + x + '"]').val("");
+            $('[name="' + s + '3' + x + '"]').val("");
             dropreadonly(s + '3' + x);
             $('[name="' + s + '2' + x + '"]').prop('readonly', true);
         }
@@ -42,7 +42,7 @@
 
             $('[name="rata_' + s + '' + x + '"]').val(hasil);
             $('[name="total_' + s + '' + x + '"]').val(total);
-            // $('[name="' + s + '4' + x + '"]').val("");
+            $('[name="' + s + '4' + x + '"]').val("");
             dropreadonly(s + '4' + x);
             $('[name="' + s + '3' + x + '"]').prop('readonly', true);
         }

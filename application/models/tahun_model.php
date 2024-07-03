@@ -29,6 +29,12 @@ class Tahun_model extends CI_Model {
         $this->db->where('id_tahun', $id_tahun);
         $this->db->delete('tahun_ajaran');
     }
+
+    public function get_tahun_aktif() {
+        $query = $this->db->get_where('tahun_ajaran', array('status' => "Aktif"));
+        return $query->row();
+    }
+
     public $table = 'tahun_ajaran';
     public $id = 'id_tahun';
     public function get_by_id($id_tahun) {

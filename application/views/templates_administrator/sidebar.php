@@ -23,7 +23,7 @@
                 <!-- User Information -->
                 <li class="nav-item">
                     <?php if($this->session->userdata['hak_akses'] == "admin"){ ?>
-                        <a class="nav-link" href="<?php echo base_url('guru/dashboard') ?>">
+                        <a class="nav-link" href="<?php echo base_url('administrator/dashboard') ?>">
                     <?php }else{ ?>
                         <a class="nav-link" href="<?php echo base_url('guru/dashboard') ?>">
                     <?php }?>

@@ -108,9 +108,10 @@ class Kelas extends CI_Controller {
     }
     
     public function detail_kelas($id) {
-        $this->load->model('siswa_model');
-        $data['detail'] = $this->Kelas_model->detail_kelas($id); // Memanggil method detail_kelas dari model dengan parameter $id
-        $data['siswa'] = $this->siswa_model->get_by_id_kelas($id);
+        $this->load->model('rombel_model');
+        $this->load->model('tahun_model');
+        $data['detail'] = $this->Kelas_model->detail_kelas($id);
+        $data['siswa'] = $this->rombel_model->get_siswa_by_kelas_tahun_aktif($id, $this->tahun_model->get_tahun_aktif()->id_tahun);
         $this->load->view('templates_administrator/header');
         $this->load->view('templates_administrator/sidebar');
         $this->load->view('administrator/kelas_detail', $data); // Menyertakan data detail ke dalam view

@@ -72,7 +72,7 @@ class Nilai extends CI_Controller {
             'id_mengajar' => $id_mengajar,
             'id_kelas' => $id_kls,
             'kelas' => $this->nilai_model->get_kelas_by_id($id_kls),
-            'siswa' => $this->nilai_model->get_siswa_by_id_ngajar_id_kelas($id_mengajar, $id_kls),
+            'siswa' => $this->nilai_model->get_siswa_by_id_ngajar_id_kelas($id_mengajar, $id_kls, $tahun_mengajar->id_tahun),
             'mapel' => $data_mengajar[0]->nama_mapel,
             'guru' => $data_mengajar[0]->nama_guru,
             'tahun_ajaran_mapel' => $tahun_mengajar,
@@ -87,10 +87,10 @@ class Nilai extends CI_Controller {
 
     // Ini untuk fungsi input nilai
     public function input_nilai_aksi(){
-        $this->load->model('siswa_model');
+        $this->load->model('rombel_model');
         $id_mengajar = $this->input->post('idm');
         $id_kelas = $this->input->post('idk');
-        $siswa = $this->siswa_model->get_by_id_kelas($id_kelas);
+        $siswa = $this->rombel_model->get_siswa_by_kelas_tahun_aktif($id_kelas, $this->tahun_model->get_tahun_aktif()->id_tahun);
         foreach($siswa as $sw){
             $nis = $this->input->post('nis'.$sw->nis);
             $data = [
@@ -120,7 +120,7 @@ class Nilai extends CI_Controller {
         $this->load->model('siswa_model');
         $id_mengajar = $this->input->post('idm');
         $id_kelas = $this->input->post('idk');
-        $siswa = $this->siswa_model->get_by_id_kelas($id_kelas);
+        $siswa = $this->rombel_model->get_siswa_by_kelas_tahun_aktif($id_kelas, $this->tahun_model->get_tahun_aktif()->id_tahun);
         foreach($siswa as $sw){
             $nis = $this->input->post('nis'.$sw->nis);
             $id_nilai = $this->input->post('idn'.$sw->nis);

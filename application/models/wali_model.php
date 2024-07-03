@@ -113,12 +113,13 @@ class Wali_model extends CI_Model {
         return $this->db->get()->row();
     }
 
-    public function get_siswa_by_id_wali($id_kelas) {
+    public function get_siswa_by_id_wali($id_kelas, $id_tahun) {
         $this->db->select('siswa.nis, siswa.nama_siswa, siswa.jenis_kelamin');
         $this->db->from('siswa');
-        //$this->db->join('wali_kelas', 'wali_kelas.nis = siswa.nis'); kesalahan logic
-        $this->db->join('wali_kelas', 'wali_kelas.id_kelas = siswa.id_kelas');
-        $this->db->where('wali_kelas.id_kelas', $id_kelas);
+        $this->db->join('rombel', 'rombel.nis = siswa.nis');
+        $this->db->join('wali_kelas', 'wali_kelas.id_kelas = rombel.id_kelas');
+        $this->db->where('rombel.id_kelas', $id_kelas);
+        $this->db->where('rombel.id_tahun', $id_tahun);
         return $this->db->get()->result();
     }
     

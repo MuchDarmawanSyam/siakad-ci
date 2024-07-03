@@ -19,8 +19,10 @@ class Siswa extends CI_Controller {
 
     public function tambah_siswa() {
         $this->load->model('kelas_model');
+        $this->load->model('tahun_model');
         $data['siswa'] = $this->siswa_model->get_siswa();
         $data['kelas'] = $this->kelas_model->get_all_kelas();
+        $data['tahun'] = $this->tahun_model->get_tahun_aktif();
         $this->load->view('templates_administrator/header');
         $this->load->view('templates_administrator/sidebar');
         $this->load->view('administrator/siswa_form', $data); 
@@ -33,6 +35,7 @@ class Siswa extends CI_Controller {
         if ($this->form_validation->run() == FALSE) {
             $this->tambah_siswa();
         } else {
+            $this->load->model('rombel_model');
             $nis = $this->input->post('nis');
             $nama_siswa = $this->input->post('nama_siswa');
             $alamat = $this->input->post('alamat');
@@ -44,6 +47,7 @@ class Siswa extends CI_Controller {
             $nama_ayah = $this->input->post('nama_ayah');
             $pekerjaan_ayah = $this->input->post('pekerjaan_ayah');
             $kelas = $this->input->post('id_kelas');
+            $tahun = $this->input->post('tahun');
             $nama_ibu = $this->input->post('nama_ibu');
             $pekerjaan_ibu = $this->input->post('pekerjaan_ibu');
             $foto = $this->input->post('foto');
@@ -79,11 +83,16 @@ class Siswa extends CI_Controller {
                     'pekerjaan_ibu' => $pekerjaan_ibu,
                     'foto' => $foto,
                     'no_telp' => $no_telp,
-                    'id_kelas' => $kelas,
                     'idu' => $idu // Isi idu dengan nilai nis
                 );
 
                 if ($this->siswa_model->insert_data($data)) {
+                    $data_rombel = [
+                        'nis' => $nis,
+                        'id_kelas' => $kelas,
+                        'id_tahun' => $tahun
+                    ];
+                    $this->rombel_model->tambah_siswa($data_rombel);
                     $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
                         Data siswa Berhasil Ditambahkan!
                         </div>');
@@ -114,11 +123,16 @@ class Siswa extends CI_Controller {
                         'pekerjaan_ibu' => $pekerjaan_ibu,
                         'foto' => $nama_file,
                         'no_telp' => $no_telp,
-                        'id_kelas' => $kelas,
                         'idu' => $idu // Isi idu dengan nilai nis
                     );
     
                     if ($this->siswa_model->insert_data($data)) {
+                        $data_rombel = [
+                            'nis' => $nis,
+                            'id_kelas' => $kelas,
+                            'id_tahun' => $tahun
+                        ];
+                        $this->rombel_model->tambah_siswa($data_rombel);
                         $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
                             Data siswa Berhasil Ditambahkan!
                             </div>');
@@ -263,6 +277,7 @@ class Siswa extends CI_Controller {
     
 public function delete($id) {
     $where = array('nis' => $id);
+    $this->rombel_model->hapus_siswa($id); // Hapus data di tabel childnya dulu baru di tabel parent
     $this->siswa_model->hapus_data($where,'siswa');
     $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
         Data siswa Berhasil dihapus!

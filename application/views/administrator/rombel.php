@@ -20,15 +20,24 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <h5>Pilih Kelas Asal</h5>
+                <h5>Pilih Kelas Asal dan Tahun Aktif</h5>
                 <form id="form_pilih_kelas">
-                    <div class="form-group">
-                        <select name="id_kelas" id="kelas_asal" class="form-control">
-                            <option value="">Pilih Kelas Asal</option>
-                            <?php foreach ($kelas_asal as $kelas): ?>
-                                <option value="<?php echo $kelas->id_kelas; ?>"><?php echo $kelas->nama_kelas; ?></option>
-                            <?php endforeach; ?>
-                        </select>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <select name="id_kelas" id="kelas_asal" class="form-control">
+                                <option value="">Pilih Kelas Asal</option>
+                                <?php foreach ($kelas_asal as $kelas): ?>
+                                    <option value="<?php echo $kelas->id_kelas; ?>"><?php echo $kelas->nama_kelas; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="form-group col-6">
+                            <select name="tahun_asal" id="tahun_asal" class="form-control">
+                                <?php foreach ($tahun_ajaran as $tahun): ?>
+                                    <option value="<?php echo $tahun->id_tahun; ?>" <?= ($tahun->id_tahun == $tahun_ajaran_aktif->id_tahun) ? 'selected="True"' : ''; ?>><?php echo $tahun->tahun_ajaran; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-sm btn-primary">Pilih</button>
                 
@@ -54,13 +63,22 @@
             <div class="col-md-6">
                 <h5>Pilih Kelas Tujuan</h5>
                 <form id="form_pindah_siswa">
-                    <div class="form-group">
-                        <select name="id_kelas_tujuan" id="kelas_tujuan" class="form-control">
-                            <option value="">Pilih Kelas Asal</option>
-                            <?php foreach ($kelas_asal as $kelas): ?>
-                                <option value="<?php echo $kelas->id_kelas; ?>"><?php echo $kelas->nama_kelas; ?></option>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <select name="id_kelas_tujuan" id="kelas_tujuan" class="form-control">
+                                <option value="">Pilih Kelas dan Tahun Tujuan</option>
+                                <?php foreach ($kelas_asal as $kelas): ?>
+                                    <option value="<?php echo $kelas->id_kelas; ?>"><?php echo $kelas->nama_kelas; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="form-group col-6">
+                            <select name="tahun_tujuan" id="tahun_tujuan" class="form-control">
+                            <?php foreach ($tahun_ajaran as $tahun): ?>
+                                <option value="<?php echo $tahun->id_tahun; ?>" <?= ($tahun->id_tahun == $tahun_ajaran_aktif->id_tahun) ? 'selected="True"' : ''; ?>><?php echo $tahun->tahun_ajaran; ?></option>
                             <?php endforeach; ?>
-                        </select>
+                            </select>
+                        </div>
                     </div>
                     <button type="submit" id="btnPindah" class="btn btn-sm btn-primary" disabled="true">Pindah yang terpilih ke Kelas Tujuan</button>
                 
@@ -115,6 +133,12 @@
                 tampilkan_data_siswa_kelas_tujuan();
             });
 
+            // Tampilkan data siswa kelas tujuan ketika mengganti input select tahun tujuan
+            $('#tahun_tujuan').change(function(e) {
+                e.preventDefault();
+                tampilkan_data_siswa_kelas_tujuan();
+            });
+
             // Pindahkan data siswa dari kelas asal ke kelas tujuan ketika tekan tombol pindahkan yang terpilih
             $('#form_pindah_siswa').submit(function(e) {
                 e.preventDefault();
@@ -124,12 +148,13 @@
                 var formData        = $(form).serializeArray(); //serialize the form into array
                 var route           = "<?php echo base_url('administrator/rombel/transfer_siswa_terpilih'); ?>" //get the route using attribute action
                 var id_kelas = $('#kelas_tujuan').val();
+                var id_tahun = $('#tahun_tujuan').val();
 
                 // Ajax config
                 $.ajax({
                     type: "POST", //we are using POST method to submit the data to the server side
                     url: route, // get the route value
-                    data: {sw : formData, id_kelas : id_kelas}, // our serialized array data for server side
+                    data: {sw : formData, id_kelas : id_kelas, id_tahun: id_tahun}, // our serialized array data for server side
                     beforeSend: function () {//We add this before send to disable the button once we submit it so that we prevent the multiple click
                         $this.attr('disabled', true).html("Memindahkan...");
                     },
@@ -152,11 +177,12 @@
             // fungsi ajax tampilkan data siswa kelas tujuan
             function tampilkan_data_siswa_kelas_tujuan(){
                 var id_kelas_tujuan = $('#kelas_tujuan').val();
+                var id_tahun_tujuan = $('#tahun_tujuan').val();
                 if (id_kelas_tujuan) {
                     $.ajax({
                         url: "<?php echo base_url('administrator/rombel/get_siswa_by_kelas'); ?>",
                         type: "POST",
-                        data: {id_kelas: id_kelas_tujuan, asal : false},
+                        data: {id_kelas: id_kelas_tujuan, id_tahun: id_tahun_tujuan, asal : false},
                         success: function(data) {
                             console.log("Response Data:", data); // Debugging log
                             $('#siswa_tujuan_table').html(data); // Menampilkan data siswa ke dalam tabel
@@ -175,11 +201,12 @@
             // fungsi ajax tampilkan data siswa kelas asal
             function tampilkan_data_siswa_kelas_asal(){
                 var id_kelas = $('#kelas_asal').val();
+                var id_tahun = $('#tahun_asal').val();
                 if (id_kelas) {
                     $.ajax({
                         url: "<?php echo base_url('administrator/rombel/get_siswa_by_kelas'); ?>",
                         type: "POST",
-                        data: {id_kelas: id_kelas, asal : true},
+                        data: {id_kelas: id_kelas, id_tahun: id_tahun, asal : true},
                         success: function(data) {
                             console.log("Response Data:", data); // Debugging log
                             $('#siswa_table').html(data); // Menampilkan data siswa ke dalam tabel

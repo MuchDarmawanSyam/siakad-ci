@@ -15,7 +15,7 @@ class Wali extends CI_Controller {
     public function detail($id_kelas) {
         $this->load->model('wali_model');
         $data['wali'] = $this->wali_model->get_wali_detail($id_kelas);
-        $data['siswa'] = $this->wali_model->get_siswa_by_id_wali($id_kelas);
+        $data['siswa'] = $this->wali_model->get_siswa_by_id_wali($id_kelas, $this->tahun_model->get_tahun_aktif()->id_tahun);
         $data['tahun_ajaran'] = $this->wali_model->get_tahun_ajaran_aktif(); // Tambahkan ini untuk mendapatkan tahun ajaran
         $this->load->view('templates_administrator/header');
         $this->load->view('templates_administrator/sidebar');

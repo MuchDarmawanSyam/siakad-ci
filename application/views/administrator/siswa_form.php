@@ -99,13 +99,17 @@
 
        <!-- Form group untuk kelas -->
         <div class="form-group">
-            <label for="id_kelas">Kelas</label>
-            <select name="id_kelas" id="id_kelas" class="form-control" required>
-                <?php foreach ($kelas as $kls) : ?>
-                    <option value="<?php echo $kls->id_kelas; ?>"><?php echo $kls->nama_kelas; ?></option>
-                <?php endforeach; ?>
-            </select>
-            <?php echo form_error('id_kelas','<div class="text-danger small ml-3">','</div>') ?>
+            <label for="id_kelas">Kelas / Tahun Ajaran</label>
+            <div class="row">    
+                <select name="id_kelas" id="id_kelas" class="form-control col-5 ml-3" required>
+                    <?php foreach ($kelas as $kls) : ?>
+                        <option value="<?php echo $kls->id_kelas; ?>"><?php echo $kls->nama_kelas; ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <?php echo form_error('id_kelas','<div class="text-danger small ml-3">','</div>') ?>
+                <input type="text" class="form-control col-5 ml-2" value=<?= $tahun->tahun_ajaran; ?> readonly>
+                <input type="hidden" name="tahun" value=<?= $tahun->id_tahun; ?>>
+            </div>
         </div>
 
         <div class="form-group">

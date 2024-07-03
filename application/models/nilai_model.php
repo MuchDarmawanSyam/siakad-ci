@@ -51,14 +51,14 @@
             return $query->row();
         }
 
-        // Ambil semua data siswa berdasarkab id dan id kelas
-        public function get_siswa_by_id_ngajar_id_kelas($id_mengajar, $id_kelas){
+        // Ambil semua data siswa berdasarkan nis, kelas dan tahun akademik
+        public function get_siswa_by_id_ngajar_id_kelas($id_mengajar, $id_kelas, $id_tahun){
             $this->db->select('siswa.nis, siswa.nama_siswa');
-            // $this->db->select('siswa.nis, siswa.nama_siswa, mengajar.id_kelas');
-            // $this->db->from('siswa, mengajar');
             $this->db->from('siswa, mengajar');
+            $this->db->join('rombel', 'rombel.nis = siswa.nis');
             $this->db->where('mengajar.id_mengajar', $id_mengajar);
-            $this->db->where('siswa.id_kelas', $id_kelas);
+            $this->db->where('rombel.id_kelas', $id_kelas);
+            $this->db->where('rombel.id_tahun', $id_tahun);
             $query = $this->db->get();
             return $query->result();
         }
@@ -122,13 +122,14 @@
             return $query->result();
         }
 
-        public function get_nilai_cetak_raport($nis, $id_tahun){
+        public function get_nilai_cetak_raport($nis, $id_tahun, $semester){
             // Join 3 Tabel
             $this->db->select('nilai.*, mapel.nama_mapel');
             $this->db->from('nilai');
             $this->db->join('mengajar', 'nilai.id_mengajar = mengajar.id_mengajar');
             $this->db->join('mapel', 'mengajar.id_mapel = mapel.id_mapel');
             $this->db->where('nilai.nis', $nis);
+            $this->db->where('mengajar.semester', $semester);
             $query = $this->db->get();
             return $query->result();
         }

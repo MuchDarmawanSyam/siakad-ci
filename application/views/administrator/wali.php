@@ -28,7 +28,7 @@
                     <td><?php echo $no++; ?></td>
                     <td><?php echo $wali->nama_kelas; ?></td>
                     <td><?php echo $wali->nama_guru; ?></td>
-                    <td><?php echo $this->wali_model->hitung_jumlah_siswa($wali->id_kelas); ?></td>
+                    <td><?php echo $this->rombel_model->get_jumlah_siswa($wali->id_kelas, $this->tahun_model->get_tahun_aktif()->id_tahun); ?></td>
                     <td>
                         <?php echo anchor('administrator/wali/detail/' . $wali->id_kelas, '<div class="btn btn-sm btn-info">Detail</div>'); ?>
                         <?php echo anchor('administrator/wali/update/' . $wali->id_kelas, '<div class="btn btn-sm btn-primary">Update</div>'); ?>

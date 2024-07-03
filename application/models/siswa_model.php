@@ -44,9 +44,13 @@ class Siswa_model extends CI_Model {
         return $this->db->get($this->table)->row();
     }
 
-    public function get_by_id_kelas($id_kelas) {
-        $this->db->where("id_kelas", $id_kelas);
-        return $this->db->get($this->table)->result();
+    public function get_by_id_kelas($id_kelas, $id_tahun) {
+        $this->db->select("siswa.nis, siswa.nama_siswa");
+        $this->db->from("siswa");
+        $this->db->join("rombel", "rombel.nis = siswa.nis");
+        $this->db->where("rombel.id_kelas", $id_kelas);
+        $this->db->where("rombel.id_tahun", $id_tahun);
+        return $this->db->get()->result();
     }
 
     public function jumlah_siswa(){
