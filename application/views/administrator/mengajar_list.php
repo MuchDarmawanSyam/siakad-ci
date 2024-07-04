@@ -29,6 +29,7 @@
                     <th>NO</th>
                     <th>NAMA MATA PELAJARAN</th>
                     <th>GURU PENGAJAR</th>
+                    <th>SEMESTER</th>
                     <th colspan="2">AKSI</th>
                 </tr>
             </thead>
@@ -40,6 +41,7 @@
                     <td width="20px"><?php echo $no++ ?></td>
                     <td><?php echo htmlspecialchars($mengajar->nama_mapel, ENT_QUOTES, 'UTF-8'); ?></td>
                     <td><?php echo htmlspecialchars($mengajar->nama_guru, ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td><?php echo htmlspecialchars($mengajar->semester, ENT_QUOTES, 'UTF-8'); ?></td>
                     <td>
                         <a href="<?php echo base_url('administrator/mengajar/delete/'.$mengajar->id_mengajar); ?>" class="btn btn-sm btn-danger">Hapus</a>
                     </td>

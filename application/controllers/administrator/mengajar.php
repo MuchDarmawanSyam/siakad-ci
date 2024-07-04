@@ -167,18 +167,27 @@ class Mengajar extends CI_Controller {
         $data = array(
             'id_kelas' => $id_kelas,
             'nik' => $this->input->post('nik', TRUE),
+            'id_tahun' => $this->input->post('id_tahun', TRUE),
             'id_mapel' => $this->input->post('id_mapel', TRUE),
             'semester' => $this->input->post('semester', TRUE),
             'kkm' => $this->input->post('kkm', TRUE)
         );
 
-        if ($this->Mengajar_model->update_mengajar($id_mengajar, $data)) {
-            // Set flash data before redirect
-            $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">Data mata pelajaran berhasil diupdate!</div>');
-            // Redirect to mengajar_aksi with appropriate parameters
-            redirect('administrator/mengajar/mengajar_aksi/'.$id_kelas.'/'.$tahun_ajaran->id_tahun);
-        } else {
-            $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">Gagal update data mata pelajaran. Silakan coba lagi!</div>');
+        if($this->Mengajar_model->cek_duplikat_pengajar($data['nik'], $data['id_kelas'], $data['id_tahun'], $data['id_mapel'], $data['semester'])){
+            if ($this->Mengajar_model->update_mengajar($id_mengajar, $data)) {
+                // Set flash data before redirect
+                $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">Data mata pelajaran berhasil diupdate!</div>');
+                // Redirect to mengajar_aksi with appropriate parameters
+                redirect('administrator/mengajar/mengajar_aksi/'.$id_kelas.'/'.$tahun_ajaran->id_tahun);
+            } else {
+                $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">Data mata pelajaran berhasil diupdate!</div>');
+                redirect('administrator/mengajar/mengajar_aksi/'.$id_kelas.'/'.$tahun_ajaran->id_tahun);
+                //$this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">Gagal update data mata pelajaran. Silakan coba lagi!</div>');
+                //redirect('administrator/mengajar/update_mengajar/'.$id_mengajar);
+                // ??? Masih dipertanyakan mengapa sukses update tapi redirect lewat blok ini
+            }
+        }else{
+            $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">Gagal menambahkan data. Guru mata pelajaran di kelas yang sama dan semester yang sama sudah ada!</div>');
             redirect('administrator/mengajar/update_mengajar/'.$id_mengajar);
         }
     }

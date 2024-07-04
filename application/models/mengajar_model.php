@@ -115,7 +115,7 @@ class Mengajar_model extends CI_Model {
         if ($result->num_rows() > 0) {
             return false;
         } else {
-            return $result->result();
+            return true;
         }
     }
 

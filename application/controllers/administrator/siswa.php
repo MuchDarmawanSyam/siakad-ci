@@ -65,49 +65,16 @@ class Siswa extends CI_Controller {
             $config['file_name']             = 'Siswa-'.$nis;
             // Memuat modul bawaaan ci untuk mengangani upload file
             $this->load->library('upload', $config);
-
-            if(!isset($_FILES['foto']) || $_FILES['foto']['error'] == UPLOAD_ERR_NO_FILE) {
-                // Jika melakukan tambah data tanpa update foto
-                $data = array(
-                    'nis' => $nis,
-                    'nama_siswa' => $nama_siswa,
-                    'alamat' => $alamat,
-                    'jenis_kelamin' => $jenis_kelamin,
-                    'tempat_lahir' => $tempat_lahir,
-                    'tgl_lahir' => $tgl_lahir,
-                    'email' => $email,
-                    'agama' => $agama,
-                    'nama_ayah' => $nama_ayah,
-                    'pekerjaan_ayah' => $pekerjaan_ayah,
-                    'nama_ibu' => $nama_ibu,
-                    'pekerjaan_ibu' => $pekerjaan_ibu,
-                    'foto' => $foto,
-                    'no_telp' => $no_telp,
-                    'idu' => $idu // Isi idu dengan nilai nis
-                );
-
-                if ($this->siswa_model->insert_data($data)) {
-                    $data_rombel = [
-                        'nis' => $nis,
-                        'id_kelas' => $kelas,
-                        'id_tahun' => $tahun
-                    ];
-                    $this->rombel_model->tambah_siswa($data_rombel);
-                    $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
-                        Data siswa Berhasil Ditambahkan!
-                        </div>');
-                    redirect('administrator/siswa');
-                } else {
-                    $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
-                        Gagal menambah data siswa.
-                        </div>');
-                    redirect('administrator/siswa/tambah_siswa');
-                }
+            
+            // Validasi apakah nis yg ditambahkan sdh ada
+            if ($nis == $this->siswa_model->ambil_kode_siswa($nis)[0]->nis){
+                $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
+                            Siswa dengan NIS: <b>'.$nis.'</b> sudah terdaftar.
+                            </div>');
+                redirect('administrator/siswa/tambah_siswa');
             }else{
-                // Jika melakukan tambah data beserta foto
-                if($this->upload->do_upload('foto')){
-                    $data_upload['tipe'] = $this->upload->data();
-                    $nama_file = 'Siswa-'.$nis.$data_upload['tipe']['file_ext'];
+                if(!isset($_FILES['foto']) || $_FILES['foto']['error'] == UPLOAD_ERR_NO_FILE) {
+                    // Jika melakukan tambah data tanpa update foto
                     $data = array(
                         'nis' => $nis,
                         'nama_siswa' => $nama_siswa,
@@ -121,11 +88,11 @@ class Siswa extends CI_Controller {
                         'pekerjaan_ayah' => $pekerjaan_ayah,
                         'nama_ibu' => $nama_ibu,
                         'pekerjaan_ibu' => $pekerjaan_ibu,
-                        'foto' => $nama_file,
+                        'foto' => $foto,
                         'no_telp' => $no_telp,
                         'idu' => $idu // Isi idu dengan nilai nis
                     );
-    
+
                     if ($this->siswa_model->insert_data($data)) {
                         $data_rombel = [
                             'nis' => $nis,
@@ -138,17 +105,58 @@ class Siswa extends CI_Controller {
                             </div>');
                         redirect('administrator/siswa');
                     } else {
-                        unlink('./assets/uploads/img/siswa/'.$nama_file);
                         $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
                             Gagal menambah data siswa.
                             </div>');
                         redirect('administrator/siswa/tambah_siswa');
                     }
                 }else{
-                    $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
-                        Gagal upload foto siswa.
-                        </div>');
-                    redirect('administrator/siswa/tambah_siswa');
+                    // Jika melakukan tambah data beserta foto
+                    if($this->upload->do_upload('foto')){
+                        $data_upload['tipe'] = $this->upload->data();
+                        $nama_file = 'Siswa-'.$nis.$data_upload['tipe']['file_ext'];
+                        $data = array(
+                            'nis' => $nis,
+                            'nama_siswa' => $nama_siswa,
+                            'alamat' => $alamat,
+                            'jenis_kelamin' => $jenis_kelamin,
+                            'tempat_lahir' => $tempat_lahir,
+                            'tgl_lahir' => $tgl_lahir,
+                            'email' => $email,
+                            'agama' => $agama,
+                            'nama_ayah' => $nama_ayah,
+                            'pekerjaan_ayah' => $pekerjaan_ayah,
+                            'nama_ibu' => $nama_ibu,
+                            'pekerjaan_ibu' => $pekerjaan_ibu,
+                            'foto' => $nama_file,
+                            'no_telp' => $no_telp,
+                            'idu' => $idu // Isi idu dengan nilai nis
+                        );
+        
+                        if ($this->siswa_model->insert_data($data)) {
+                            $data_rombel = [
+                                'nis' => $nis,
+                                'id_kelas' => $kelas,
+                                'id_tahun' => $tahun
+                            ];
+                            $this->rombel_model->tambah_siswa($data_rombel);
+                            $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
+                                Data siswa Berhasil Ditambahkan!
+                                </div>');
+                            redirect('administrator/siswa');
+                        } else {
+                            unlink('./assets/uploads/img/siswa/'.$nama_file);
+                            $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
+                                Gagal menambah data siswa.
+                                </div>');
+                            redirect('administrator/siswa/tambah_siswa');
+                        }
+                    }else{
+                        $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
+                            Gagal upload foto siswa.
+                            </div>');
+                        redirect('administrator/siswa/tambah_siswa');
+                    }
                 }
             }
         }

@@ -3,6 +3,8 @@
         <i class="fas fa-landmark"></i> Data Mengajar Mata Pelajaran di Kelas
     </div>
 
+    <?php echo $this->session->flashdata('pesan'); ?>
+
     <center>
         <legend class="mt-3"><strong>Update Data Mata Pelajaran di Kelas</strong></legend>
     </center>
@@ -23,6 +25,7 @@
     <div class="mt-4">
         <?php echo form_open('administrator/mengajar/update_mengajar_aksi'); ?>
             <input type="hidden" name="id_mengajar" value="<?php echo $mengajar->id_mengajar; ?>">
+            <input type="hidden" name="id_tahun" value="<?php echo htmlspecialchars($tahun_ajaran->id_tahun, ENT_QUOTES, 'UTF-8'); ?>">
             <input type="hidden" name="id_kelas" value="<?php echo $kelas->id_kelas; ?>">
 
             <div class="form-group">
@@ -51,7 +54,10 @@
 
             <div class="form-group">
                 <label>Semester</label>
-                <input type="text" name="semester" class="form-control" value="<?php echo htmlspecialchars($mengajar->semester, ENT_QUOTES, 'UTF-8'); ?>">
+                <select name="semester" class="form-control">
+                    <option value="ganjil" <?= ($mengajar->semester == "ganjil")? 'selected="True"' : 'selected="False"' ?>>Ganjil</option>
+                    <option value="genap" <?= ($mengajar->semester == "ganjil")? 'selected="True"' : 'selected="False"' ?>>Genap</option>
+                </select>
                 <?php echo form_error('semester', '<small class="text-danger">', '</small>'); ?>
             </div>
 
@@ -62,6 +68,6 @@
             </div>
 
             <button type="submit" class="btn btn-sm btn-primary">Update</button>
-            <?php echo anchor('administrator/mengajar/update_mengajar/'.$kelas->id_kelas.'/'.$tahun_ajaran->id_tahun, '<button class="btn btn-sm btn-danger">Kembali</button>'); ?>
+            <?php //echo anchor('administrator/mengajar/update_mengajar/'.$kelas->id_kelas.'/'.$tahun_ajaran->id_tahun, '<button class="btn btn-sm btn-danger">Kembali</button>'); ?>
         <?php echo form_close(); ?>
 </div>
