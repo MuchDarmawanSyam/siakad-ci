@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 03, 2024 at 02:37 PM
+-- Generation Time: Jul 04, 2024 at 08:25 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -90,7 +90,8 @@ CREATE TABLE `guru` (
 INSERT INTO `guru` (`nik`, `nama_guru`, `alamat`, `jenis_kelamin`, `tempat_lahir`, `tgl_lahir`, `agama`, `email`, `no_telp`, `foto`, `idu`) VALUES
 (2020051074021, 'RAIHAN RAMADHAN', 'abe', 'Laki-laki', 'ambroben', '2020-11-30', 'Kristen', 'raadwjaj@gmail.com', '55667476', 'guru.jpeg', 2020051074021),
 (2020051074022, 'abel', 'abepante', 'Laki-laki', 'abe', '2002-02-20', 'Islam', 'abel@cukimai', '6543543545668', 'admin-logo.jpg', 2020051074022),
-(2020051074023, 'kirana', 'abe', 'Perempuan', 'abe', '2002-02-20', 'Kristen', 'qdkqldqlkd@gmail.com', '6543543545668', '', 2020051074023);
+(2020051074023, 'kirana', 'abe', 'Perempuan', 'abe', '2002-02-20', 'Kristen', 'qdkqldqlkd@gmail.com', '6543543545668', '', 2020051074023),
+(2020051074080, 'Test Guru Rombel', 'Test Guru Rombel', 'Perempuan', 'Test Guru Rombel', '2024-07-04', 'Hindu', 'test@gmail.com', '08219782', 'Guru-2020051074080.jpg', 2020051074080);
 
 -- --------------------------------------------------------
 
@@ -189,7 +190,8 @@ INSERT INTO `mengajar` (`id_mengajar`, `id_kelas`, `nik`, `id_tahun`, `id_mapel`
 (23, 2, 2020051074021, 6, 2, 'ganjil', 75),
 (24, 2, 2020051074021, 6, 11, 'genap', 75),
 (25, 3, 2020051074021, 3, 2, 'genap', 75),
-(32, 3, 2020051074021, 6, 13, 'ganjil', 80);
+(32, 3, 2020051074021, 6, 13, 'ganjil', 80),
+(36, 1, 2020051074021, 3, 13, 'ganjil', 80);
 
 -- --------------------------------------------------------
 
@@ -218,7 +220,7 @@ CREATE TABLE `nilai` (
 --
 
 INSERT INTO `nilai` (`id_nilai`, `nis`, `ns1`, `ns2`, `ns3`, `ns4`, `rata1`, `predikat`, `deskripsi`, `total`, `nilai_akhir`, `kkm`, `id_mengajar`) VALUES
-(12, 2020051074080, 10, 10, 10, 10, 10, 'D', 'Kurang Baik', 40, 10, 75, 1),
+(12, 2020051074080, 25, 25, 25, 25, 25, 'D', 'Kurang Baik', 100, 25, 75, 1),
 (13, 2022051074046, 100, 100, 90, 90, 95, 'A', 'Sangat Baik', 380, 95, 75, 25),
 (14, 2022051074047, 75, 75, 75, 75, 75, 'C', 'Cukup Baik', 300, 75, 75, 25);
 
@@ -239,7 +241,8 @@ CREATE TABLE `nilai_sikap` (
 --
 
 INSERT INTO `nilai_sikap` (`id_nilai_sikap`, `nis`, `ket`) VALUES
-(1, 2020051074021, 'asasqq222');
+(1, 2020051074021, 'asasqq222'),
+(2, 2022051074048, 'Baik');
 
 -- --------------------------------------------------------
 
@@ -291,7 +294,8 @@ INSERT INTO `rombel` (`id_rombel`, `nis`, `id_kelas`, `id_tahun`) VALUES
 (10, 2020051074080, 1, 3),
 (11, 2022051074044, 1, 1),
 (12, 2022051074047, 3, 3),
-(13, 2022051074048, 2, 1);
+(13, 2022051074048, 2, 1),
+(15, 2022051074050, 2, 3);
 
 -- --------------------------------------------------------
 
@@ -329,7 +333,8 @@ INSERT INTO `siswa` (`nis`, `nama_siswa`, `alamat`, `jenis_kelamin`, `tgl_lahir`
 (2022051074044, 'Much Darmawan Syam', 'Ardipura', 'Laki-laki', '0000-00-00', 'Jayapura', 'darmawan@gmail.com', 'Islam', 'test', 'test pek', 'test', 'tes pek', 'admin-logo.jpg', '0822222', 2022051074044, NULL),
 (2022051074046, 'Much Darmawan Syam3a', 'Ardipura3a', 'Laki-laki', '2024-06-03', 'Jayapura3a', 'darmawan3a@gmail.com', 'Islam', NULL, 'test peka', 'testa', 'tes pek2a', NULL, '08222221', 2022051074046, NULL),
 (2022051074047, 'Much Darmawan Syam3b', 'Ardipura4', 'Laki-laki', '2024-06-16', 'Jayapura4', 'darmawan3a@gmail.com', 'Islam', NULL, 'test pek', 'test2', 'tes pek2a', 'Siswa-2022051074047.jpg', '0822222', 2022051074047, NULL),
-(2022051074048, 'Test Rombel3', 'Ardipura3', 'Laki-laki', '2024-07-03', 'Jayapura3', 'test3@gmail.com', 'Islam', NULL, 'test pek', 'test', 'tes pek3', 'Siswa-2022051074048.jpg', '08219782', 2022051074048, NULL);
+(2022051074048, 'Test Rombel3', 'Ardipura3', 'Laki-laki', '2024-07-03', 'Jayapura3', 'test3@gmail.com', 'Islam', NULL, 'test pek', 'test', 'tes pek3', 'Siswa-2022051074048.jpg', '08219782', 2022051074048, NULL),
+(2022051074050, 'Test Rombel4', 'Test Rombel4', 'Perempuan', '2024-07-03', 'Test Rombel4', 'darmawan4@gmail.com', 'Islam', 'Test Rombel4', 'Test Rombel4', 'Test Rombel4', 'Test Rombel4', NULL, '0800808080', 2022051074050, NULL);
 
 -- --------------------------------------------------------
 
@@ -530,7 +535,7 @@ ALTER TABLE `mapel`
 -- AUTO_INCREMENT for table `mengajar`
 --
 ALTER TABLE `mengajar`
-  MODIFY `id_mengajar` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id_mengajar` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `nilai`
@@ -542,7 +547,7 @@ ALTER TABLE `nilai`
 -- AUTO_INCREMENT for table `nilai_sikap`
 --
 ALTER TABLE `nilai_sikap`
-  MODIFY `id_nilai_sikap` bigint(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_nilai_sikap` bigint(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `pengguna`
@@ -554,7 +559,7 @@ ALTER TABLE `pengguna`
 -- AUTO_INCREMENT for table `rombel`
 --
 ALTER TABLE `rombel`
-  MODIFY `id_rombel` bigint(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_rombel` bigint(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `tahun_ajaran`
