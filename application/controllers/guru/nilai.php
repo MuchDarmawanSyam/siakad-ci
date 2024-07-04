@@ -7,11 +7,11 @@ class Nilai extends CI_Controller {
 
     public function index() {
         $this->load->model('mengajar_model');
-
+        $nik = $this->session->userdata['nik'];
         $data = array(
             'id_kelas' => set_value('id_kelas'),
             'id_mengajar' => set_value('id_mengajar'),  // Menambahkan id_mengajar
-            'mapel_data' => $this->mengajar_model->get_mapel_by_nik($this->session->userdata['nik']),  // Mendapatkan semua mapel yg diajar guru tertentu
+            'mapel_data' => $this->mengajar_model->get_mapel_by_nik($nik, $this->wali_model->get_wali_by_nik_wali($nik)->id_tahun),  // Mendapatkan semua mapel yg diajar guru tertentu
             'tahun_ajaran_aktif' => $this->nilai_model->get_tahun_ajaran_aktif()
         );
         $this->load->view('templates_administrator/header');
@@ -68,13 +68,13 @@ class Nilai extends CI_Controller {
     public function input_nilai($id_mengajar){
         $id_kls = $this->input->get('kelas');
         $nilai_siswa = $this->nilai_model->get_nilai_by_id_mengajar($id_mengajar);
-        $tahun_mengajar = $this->nilai_model->get_tahun_ajaran_aktif();
         $data_mengajar = $this->nilai_model->get_mata_pelajaran_guru_by_id_mengajar($id_mengajar);
+        $tahun_mengajar = $this->tahun_model->ambil_data_id($data_mengajar[0]->id_tahun);
         $data = [
             'id_mengajar' => $id_mengajar,
             'id_kelas' => $id_kls,
             'kelas' => $this->nilai_model->get_kelas_by_id($id_kls),
-            'siswa' => $this->nilai_model->get_siswa_by_id_ngajar_id_kelas($id_mengajar, $id_kls),
+            'siswa' => $this->nilai_model->get_siswa_by_id_ngajar_id_kelas($id_mengajar, $id_kls, $this->wali_model->get_wali_by_nik_wali($this->session->userdata['nik'])->id_tahun),
             'mapel' => $data_mengajar[0]->nama_mapel,
             'guru' => $data_mengajar[0]->nama_guru,
             'tahun_ajaran_mapel' => $tahun_mengajar,
@@ -92,7 +92,8 @@ class Nilai extends CI_Controller {
         $this->load->model('siswa_model');
         $id_mengajar = $this->input->post('idm');
         $id_kelas = $this->input->post('idk');
-        $siswa = $this->siswa_model->get_by_id_kelas($id_kelas);
+        $id_tahun = $this->input->post('idt');
+        $siswa = $this->rombel_model->get_siswa_by_kelas_tahun_aktif($id_kelas, $id_tahun);
         foreach($siswa as $sw){
             $nis = $this->input->post('nis'.$sw->nis);
             $data = [
@@ -122,7 +123,8 @@ class Nilai extends CI_Controller {
         $this->load->model('siswa_model');
         $id_mengajar = $this->input->post('idm');
         $id_kelas = $this->input->post('idk');
-        $siswa = $this->siswa_model->get_by_id_kelas($id_kelas);
+        $id_tahun = $this->input->post('idt');
+        $siswa = $this->rombel_model->get_siswa_by_kelas_tahun_aktif($id_kelas, $id_tahun);
         foreach($siswa as $sw){
             $nis = $this->input->post('nis'.$sw->nis);
             $id_nilai = $this->input->post('idn'.$sw->nis);

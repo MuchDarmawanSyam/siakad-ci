@@ -24,9 +24,12 @@ class Dashboard extends CI_Controller{
             'username' => $data->username,
             'hak_akses' => $data->hak_akses,
             'id' => $data->idu,
-            'siswa_wali' => $this->wali_model->get_jml_siswa_by_nik_wali($data->idu),
-            //'mengajar' => $this->user_model->jumlah_pengguna()
+            'siswa_wali' => $this->wali_model->get_jml_siswa_by_nik_wali($data->idu, $this->wali_model->get_wali_by_nik_wali($data->idu)->id_tahun),
+            'banyak_mapel' => $this->mengajar_model->get_jml_mengajar_mapel_by_nik($data->idu, $this->tahun_model->get_tahun_aktif()->id_tahun)
         );
+        // siswa wali akan mengambil jumlah siswa yg kelasnya diwali berdasarkan nik wali itu dan tahun aktif dari wali itu.
+        // banyak mapel akan mengambil jumlah mengajar yang diajar wali itu berdasarkan tahun aktif saat ini.
+        // jadi data jumlah siswa wali akan berubah jika id tahun/id kelas dari data wali diubah, sedangkan banyak mapel akan berubah jika tahun aktif diubah.
         $this->load->view('templates_administrator/header');
         $this->load->view('templates_administrator/sidebar');
         $this->load->view('guru/dashboard', $data);

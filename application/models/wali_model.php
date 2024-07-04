@@ -166,11 +166,12 @@ class Wali_model extends CI_Model {
     // ---------------------------------------
     // Method ini diakses dari controller guru
     // ---------------------------------------
-    public function get_jml_siswa_by_nik_wali($nik){
+    public function get_jml_siswa_by_nik_wali($nik, $id_tahun){
         $this->db->select('*');
-        $this->db->from('siswa');
-        $this->db->join('wali_kelas', 'wali_kelas.id_kelas = siswa.id_kelas');
+        $this->db->from('rombel');
+        $this->db->join('wali_kelas', 'wali_kelas.id_kelas = rombel.id_kelas');
         $this->db->where('wali_kelas.nik', $nik);
+        $this->db->where('rombel.id_tahun', $id_tahun);
 
         return $this->db->count_all_results();
     }
@@ -178,9 +179,17 @@ class Wali_model extends CI_Model {
     public function get_siswa_by_nik_wali($nik){
         $this->db->select('siswa.*');
         $this->db->from('siswa');
-        $this->db->join('wali_kelas', 'wali_kelas.id_kelas = siswa.id_kelas');
+        $this->db->join('rombel', 'rombel.nis = siswa.nis');
+        $this->db->join('wali_kelas', 'wali_kelas.id_kelas = rombel.id_kelas');
         $this->db->where('wali_kelas.nik', $nik);
         return $this->db->get()->result();
+    }
+
+    public function get_wali_by_nik_wali($nik){
+        $this->db->select('wali_kelas.*');
+        $this->db->from('wali_kelas');
+        $this->db->where('wali_kelas.nik', $nik);
+        return $this->db->get()->row();
     }
 
 }

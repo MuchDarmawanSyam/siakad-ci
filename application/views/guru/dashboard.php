@@ -40,7 +40,7 @@
                                             </div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php //echo($kelas) ?></div>
+                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo($banyak_mapel) ?></div>
                                                 </div>
                                             </div>
                                         </div>

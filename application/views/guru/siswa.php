@@ -2,7 +2,7 @@
 
 <div class="container-fluid">
     <div class="alert alert-success" role="alert">
-        <i class="fas fa-landmark"></i> Siswa
+        <i class="fas fa-landmark"></i> Siswa Wali
     </div>
     <?php echo $this->session->flashdata('pesan') ?>
 

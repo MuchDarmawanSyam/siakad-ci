@@ -102,7 +102,7 @@
         }
 
         public function get_mata_pelajaran_guru_by_id_mengajar($id_mengajar) {
-            $this->db->select('mengajar.id_mengajar, mapel.nama_mapel, guru.nama_guru');
+            $this->db->select('mengajar.id_mengajar, mengajar.id_tahun, mapel.nama_mapel, guru.nama_guru');
             $this->db->from('mengajar');
             $this->db->join('mapel', 'mengajar.id_mapel = mapel.id_mapel');
             $this->db->join('guru', 'mengajar.nik = guru.nik');

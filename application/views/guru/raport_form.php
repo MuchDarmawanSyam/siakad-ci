@@ -88,12 +88,13 @@
             $('#id_kelas').change(function(e) {
                 e.preventDefault();
                 var id_kelas = $('#id_kelas').val();
+                var id_tahun = $('#id_tahun').val();
                 var kepsek = $('#id_kepsek').val();
                 if (id_kelas) {
                     $.ajax({
                         url: "<?php echo base_url('guru/raport/get_siswa_by_kelas'); ?>",
                         type: "POST",
-                        data: {id_kelas: id_kelas},
+                        data: {id_kelas: id_kelas, id_tahun: id_tahun},
                         success: function(data) {
                             console.log("Response Data:", data); // Debugging log
                             $('#id_siswa').html(data); // Menampilkan data siswa ke dalam tabel
