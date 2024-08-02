@@ -42,7 +42,7 @@ class Mengajar_model extends CI_Model {
     public function get_tahun_ajaran_by_id($id_tahun) {
         $this->db->where('id_tahun', $id_tahun);
         $query = $this->db->get('tahun_ajaran');
-        return $query->row(); // Ensure to return the row, not just the query result
+        return $query->row();
     }
 
     public function get_mapel_dropdown() {
@@ -98,50 +98,38 @@ class Mengajar_model extends CI_Model {
     }
 
     public function get_tahun_akademik_by_id($id_tahun_akademik) {
-        // Correct the variable name here to match the parameter
         $this->db->where('id_tahun', $id_tahun_akademik);
-        return $this->db->get('tahun_ajaran')->row(); // Ensure to return the row, not just the query result
+        return $this->db->get('tahun_ajaran')->row();
     }
 
-    public function cek_duplikat_pengajar($nik, $id_kelas, $id_tahun, $id_mapel, $semester){
+    public function cek_duplikat_pengajar_guru($nik, $id_kelas, $id_tahun, $id_mapel, $semester) {
+        // Checks for duplicate teacher entries based on the provided parameters
         $this->db->where('nik', $nik);
         $this->db->where('id_kelas', $id_kelas);
         $this->db->where('id_tahun', $id_tahun);
         $this->db->where('id_mapel', $id_mapel);
         $this->db->where('semester', $semester);
+        $query = $this->db->get('mengajar');
+        return $query->num_rows() > 0;
+    }
+
+    public function cek_duplikat_pengajar_mapel_semester($id_mapel, $semester){
+        $this->db->where('id_mapel', $id_mapel);
+        $this->db->where('semester', $semester);
         $this->db->from('mengajar');
         $result = $this->db->get();
 
-        if ($result->num_rows() > 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return $result->num_rows() > 0;
     }
 
-
-    //-------------------------
-    // Diakses Controller Guru
-    //-------------------------
-    public function get_jml_mengajar_mapel_by_nik($nik, $id_tahun){
-        $this->db->select('mengajar.id_kelas');
-        $this->db->from('mengajar');
-        $this->db->where('mengajar.nik', $nik);
-        $this->db->where('mengajar.id_tahun', $id_tahun);
-        return $this->db->count_all_results();
-    }
-
-    public function get_mapel_by_nik($nik, $id_tahun){
-        // Join 3 Tabel
+    public function get_mapel_by_nik($nik){
         $this->db->select('kelas.*, mapel.nama_mapel, mengajar.id_mengajar');
         $this->db->from('kelas');
         $this->db->join('mengajar', 'kelas.id_kelas = mengajar.id_kelas');
         $this->db->join('mapel', 'mengajar.id_mapel = mapel.id_mapel');
         $this->db->where('mengajar.nik', $nik);
-        $this->db->where('mengajar.id_tahun', $id_tahun);
         $query = $this->db->get();
         return $query->result();
     }
-
 }
 ?>

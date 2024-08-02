@@ -51,27 +51,43 @@
             return $query->row();
         }
 
-        // Ambil semua data siswa berdasarkan nis, kelas dan tahun akademik
-        public function get_siswa_by_id_ngajar_id_kelas($id_mengajar, $id_kelas, $id_tahun){
+        // Ambil semua data siswa berdasarkab id dan id kelas
+        public function get_siswa_by_id_ngajar_id_kelas($id_mengajar, $id_kelas){
             $this->db->select('siswa.nis, siswa.nama_siswa');
+            // $this->db->select('siswa.nis, siswa.nama_siswa, mengajar.id_kelas');
+            // $this->db->from('siswa, mengajar');
             $this->db->from('siswa, mengajar');
-            $this->db->join('rombel', 'rombel.nis = siswa.nis');
             $this->db->where('mengajar.id_mengajar', $id_mengajar);
-            $this->db->where('rombel.id_kelas', $id_kelas);
-            $this->db->where('rombel.id_tahun', $id_tahun);
+            $this->db->where('siswa.id_kelas', $id_kelas);
             $query = $this->db->get();
             return $query->result();
         }
 
-        // Ambil data nilai berdasarkan kelas dan tahun ajaran
-        public function baca_nilai($id_kelas, $id_tahun) {
+        public function get_kelas_by_mengajar($id_mengajar) {
+            $this->db->select('kelas.*');
+            $this->db->from('mengajar');
+            $this->db->join('kelas', 'mengajar.id_kelas = kelas.id_kelas');
+            $this->db->where('mengajar.id_mengajar', $id_mengajar);
+            $query = $this->db->get();
+            return $query->row();
+        }
+    
+        public function baca_nilai($id_mengajar, $id_tahun) {
             $this->db->select('nilai.*, siswa.nis, siswa.nama_siswa');
             $this->db->from('nilai');
             $this->db->join('siswa', 'nilai.nis = siswa.nis');
-            $this->db->where('nilai.id_kelas', $id_kelas);
-            $this->db->where('nilai.id_tahun', $id_tahun);
+            $this->db->where('nilai.id_mengajar', $id_mengajar);
             $query = $this->db->get();
             return $query->result();
+        }
+        public function get_mengajar_by_id($id_mengajar) {
+            $this->db->select('mengajar.*, mapel.nama_mapel, guru.nama_guru');
+            $this->db->from('mengajar');
+            $this->db->join('mapel', 'mengajar.id_mapel = mapel.id_mapel');
+            $this->db->join('guru', 'mengajar.nik = guru.nik');
+            $this->db->where('mengajar.id_mengajar', $id_mengajar);
+            $query = $this->db->get();
+            return $query->row();
         }
 
         // Ambil tahun ajaran berdasarkan ID
@@ -102,7 +118,7 @@
         }
 
         public function get_mata_pelajaran_guru_by_id_mengajar($id_mengajar) {
-            $this->db->select('mengajar.id_mengajar, mengajar.id_tahun, mapel.nama_mapel, guru.nama_guru');
+            $this->db->select('mengajar.id_mengajar, mapel.nama_mapel, guru.nama_guru');
             $this->db->from('mengajar');
             $this->db->join('mapel', 'mengajar.id_mapel = mapel.id_mapel');
             $this->db->join('guru', 'mengajar.nik = guru.nik');
@@ -122,14 +138,13 @@
             return $query->result();
         }
 
-        public function get_nilai_cetak_raport($nis, $id_tahun, $semester){
+        public function get_nilai_cetak_raport($nis, $id_tahun){
             // Join 3 Tabel
             $this->db->select('nilai.*, mapel.nama_mapel');
             $this->db->from('nilai');
             $this->db->join('mengajar', 'nilai.id_mengajar = mengajar.id_mengajar');
             $this->db->join('mapel', 'mengajar.id_mapel = mapel.id_mapel');
             $this->db->where('nilai.nis', $nis);
-            $this->db->where('mengajar.semester', $semester);
             $query = $this->db->get();
             return $query->result();
         }
@@ -151,5 +166,21 @@
             $this->db->where('nis', $nis);
             $this->db->update('nilai_sikap', $data);
         }
+
+        public function get_all_nilai_satu_siswa($nis, $kelas, $semester){
+            $this->db->select('nilai.*, mapel.nama_mapel, guru.nama_guru');
+            $this->db->from('nilai');
+            $this->db->join('mengajar', 'nilai.id_mengajar = mengajar.id_mengajar');
+            $this->db->join('mapel', 'mengajar.id_mapel = mapel.id_mapel');
+            $this->db->join('kelas', 'mengajar.id_kelas = kelas.id_kelas');
+            $this->db->join('guru', 'mengajar.nik = guru.nik');
+            $this->db->where('nilai.nis', $nis);
+            $this->db->where('mengajar.semester', $semester);
+            $this->db->like('kelas.kode_kelas', $kelas);
+            $query = $this->db->get();
+            return $query->result();
+        }
+        
     }
+   
 ?>

@@ -14,7 +14,17 @@
             <div class="form-group">
                 <label for="nama_kelas">Nama Kelas</label>
                 <input type="text" name="nama_kelas" class="form-control" value="<?php echo $kls->nama_kelas ?>" required>
-            </div>  
+            </div>
+
+            <div class="form-group">
+                <label for="tahun_ajaran">Tahun Ajaran</label>
+                <select name="tahun_ajaran" class="form-control" required>
+                    <?php foreach ($tahun_ajaran as $ta): ?>
+                        <option value="<?php echo $ta->id_tahun; ?>" <?php echo ($ta->id_tahun == $kls->id_tahun) ? 'selected' : ''; ?>><?php echo $ta->tahun_ajaran; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
             <button type="submit" class="btn btn-primary">Simpan</button>
         </form>
     <?php endforeach; ?>

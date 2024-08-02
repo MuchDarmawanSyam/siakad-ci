@@ -72,7 +72,7 @@ class Nilai extends CI_Controller {
             'id_mengajar' => $id_mengajar,
             'id_kelas' => $id_kls,
             'kelas' => $this->nilai_model->get_kelas_by_id($id_kls),
-            'siswa' => $this->nilai_model->get_siswa_by_id_ngajar_id_kelas($id_mengajar, $id_kls, $tahun_mengajar->id_tahun),
+            'siswa' => $this->nilai_model->get_siswa_by_id_ngajar_id_kelas($id_mengajar, $id_kls),
             'mapel' => $data_mengajar[0]->nama_mapel,
             'guru' => $data_mengajar[0]->nama_guru,
             'tahun_ajaran_mapel' => $tahun_mengajar,
@@ -87,10 +87,10 @@ class Nilai extends CI_Controller {
 
     // Ini untuk fungsi input nilai
     public function input_nilai_aksi(){
-        $this->load->model('rombel_model');
+        $this->load->model('siswa_model');
         $id_mengajar = $this->input->post('idm');
         $id_kelas = $this->input->post('idk');
-        $siswa = $this->rombel_model->get_siswa_by_kelas_tahun_aktif($id_kelas, $this->tahun_model->get_tahun_aktif()->id_tahun);
+        $siswa = $this->siswa_model->get_by_id_kelas($id_kelas);
         foreach($siswa as $sw){
             $nis = $this->input->post('nis'.$sw->nis);
             $data = [
@@ -120,7 +120,7 @@ class Nilai extends CI_Controller {
         $this->load->model('siswa_model');
         $id_mengajar = $this->input->post('idm');
         $id_kelas = $this->input->post('idk');
-        $siswa = $this->rombel_model->get_siswa_by_kelas_tahun_aktif($id_kelas, $this->tahun_model->get_tahun_aktif()->id_tahun);
+        $siswa = $this->siswa_model->get_by_id_kelas($id_kelas);
         foreach($siswa as $sw){
             $nis = $this->input->post('nis'.$sw->nis);
             $id_nilai = $this->input->post('idn'.$sw->nis);
@@ -145,6 +145,45 @@ class Nilai extends CI_Controller {
                     </div>');
         redirect('administrator/nilai');
     }
+        public function lihat_nilai($id_mengajar) {
+            // Retrieve active academic year
+            $tahun_ajaran_aktif = $this->nilai_model->get_tahun_ajaran_aktif();
+            $id_tahun = $tahun_ajaran_aktif ? $tahun_ajaran_aktif->id_tahun : null;
     
-}
+            // Retrieve class details by teaching ID
+            $kelas = $this->nilai_model->get_kelas_by_mengajar($id_mengajar);
+            if (!$kelas) {
+                // Handle case where class is not found
+                $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">Kelas yang Anda pilih tidak ditemukan!</div>');
+                redirect('administrator/nilai');
+            }
+    
+            // Retrieve subject and teacher details by teaching ID
+            $mengajar = $this->nilai_model->get_mengajar_by_id($id_mengajar);
+            if (!$mengajar) {
+                // Handle case where teaching details are not found
+                $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">Data pengajaran tidak ditemukan!</div>');
+                redirect('administrator/nilai');
+            }
+    
+            // Retrieve grades data for the selected class and academic year
+            $nilai_data = $this->nilai_model->baca_nilai($id_mengajar, $id_tahun);
+    
+            // Data to be passed to the view
+            $data = array(
+                'nilai_data' => $nilai_data,
+                'tahun_ajaran' => $tahun_ajaran_aktif ? $tahun_ajaran_aktif->tahun_ajaran : 'Tidak Diketahui',
+                'nama_kelas' => $kelas->nama_kelas,
+                'nama_mapel' => $mengajar->nama_mapel,
+                'nama_guru' => $mengajar->nama_guru
+            );
+    
+            // Load view for displaying grades
+            $this->load->view('templates_administrator/header');
+            $this->load->view('templates_administrator/sidebar');
+            $this->load->view('administrator/nilai_lihat', $data);
+            $this->load->view('templates_administrator/footer');
+        }
+    }
+    
 ?>

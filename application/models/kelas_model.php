@@ -14,7 +14,16 @@ class Kelas_model extends CI_Model {
         $query = $this->db->get('kelas');
         return $query->result();
     }
-
+    public function ambil_data_tahun_ajaran() {
+        return $this->db->get('tahun_ajaran')->result();
+    }
+    public function get_tahun_ajaran_aktif() {
+        $this->db->select('tahun_ajaran');
+        $this->db->from('tahun_ajaran');
+        $this->db->where('status', 'aktif');
+        return $this->db->get()->row();
+    }
+    
     public function insert_data($data) {
         return $this->db->insert('kelas', $data);
     }

@@ -57,4 +57,6 @@ $route['translate_uri_dashes'] = FALSE;
 // Tambahkan rute untuk URL /kelas/tambah
 $route['kelas/input'] = 'kelas/input';
 $route['rombel/get_siswa_by_kelas'] = 'rombel/get_siswa_by_kelas';
+$route['profil'] = 'profile';
+
 

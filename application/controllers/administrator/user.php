@@ -18,43 +18,74 @@ class User extends CI_Controller {
         $this->load->view('templates_administrator/footer');
     }
 
-    public function tambah(){
+    public function tambah_guru(){
         $data['data_guru'] = $this->guru_model->tampil_data('guru');
-
+    
         $this->load->view('templates_administrator/header');
         $this->load->view('templates_administrator/sidebar');
         $this->load->view('administrator/user_form', $data);
         $this->load->view('templates_administrator/footer');
     }
-
-    public function tambah_aksi(){
+    
+    public function tambah_guru_aksi(){
         $data['idu'] = $this->input->post('guru');
         $data['username'] = $this->input->post('username');
-        $data['password'] = md5($data['username']); // Password defaultnya username itu sendiri
+        $data['password'] = md5($this->input->post('password'));
         $data['email'] = $this->input->post('email');
-        $data['hak_akses'] = 'guru';
+        $data['hak_akses'] = $this->input->post('hak_akses');
         $data['blokir'] = 'N';
-
+    
         if($this->user_model->cek_duplikat_pengguna($data['idu'])){
             if ($this->user_model->tambah_pengguna($data)) {
                 $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
-                Data Penguna Berhasil Ditambahkan! Passwordnya :<b>'.$data['username'].'</b>.
+                Data Pengguna Berhasil Ditambahkan! Passwordnya :<b>'.$this->input->post('password').'</b>.
                 </div>');
                 redirect('administrator/user');
             }else{
                 $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
-                Data Penguna Gagal Ditambahkan!
+                Data Pengguna Gagal Ditambahkan!
                 </div>');
-                redirect('administrator/user/tambah');
+                redirect('administrator/user/tambah_guru');
             }
         }else{
             $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
-                Data Penguna Sudah Ada!
+                Data Pengguna Sudah Ada!
                 </div>');
-                redirect('administrator/user/tambah');
+                redirect('administrator/user/tambah_guru');
         }
     }
+    
+     public function tambah_siswa() {
+        $data['data_siswa'] = $this->user_model->get_all_siswa(); // Mendapatkan data semua siswa dari model
+        $this->load->view('templates_administrator/header');
+        $this->load->view('templates_administrator/sidebar');
+        $this->load->view('administrator/user_form_siswa', $data); // Load view user_form_siswa.php dengan data siswa
+        $this->load->view('templates_administrator/footer');
+    }
 
+    public function tambah_siswa_aksi() {
+        $data['idu'] = $this->input->post('siswa');
+        $data['username'] = $this->input->post('username');
+        $data['password'] = md5($this->input->post('password'));
+        $data['email'] = $this->input->post('email');
+        $data['hak_akses'] = 'siswa';
+        $data['blokir'] = 'N';
+    
+        log_message('info', 'Data yang diterima: ' . json_encode($data));
+    
+        if ($this->user_model->cek_duplikat_user_siswa($data['idu'])) {
+            $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">Data Siswa atau Username sudah ada!</div>');
+            redirect('administrator/user/tambah_siswa');
+        } else {
+            if ($this->user_model->tambah_pengguna($data)) {
+                $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">Data Pengguna Berhasil Ditambahkan! Passwordnya :<b>' . $this->input->post('password') . '</b>.</div>');
+                redirect('administrator/user');
+            } else {
+                $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">Data Pengguna Gagal Ditambahkan!</div>');
+                redirect('administrator/user/tambah_siswa');
+            }
+        }
+    }
     public function delete($id){
         $me = $this->session->userdata['nik'];
         if($me != $id){
@@ -86,19 +117,24 @@ class User extends CI_Controller {
         $username = $this->input->post('username');
         $email = $this->input->post('email');
         $blokir = $this->input->post('blokir');
+        
+        // Ambil hak akses dari input
+        $hak_akses = $this->input->post('hak_akses');
+    
         $array = [
             'username' => $username,
-            'password' => $data->password,
+            'password' => $data->password, // Menggunakan password yang sudah ada
             'email' => $email,
-            'hak_akses' => $data->hak_akses,
+            'hak_akses' => $hak_akses, // Menggunakan hak akses yang diambil dari form
             'blokir' => $blokir
         ];
-
+    
         $this->user_model->update($array, $id);
         $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
-                Data Penguna Berhasil diperbarui!
+                Data Pengguna Berhasil diperbarui!
                 </div>');
-                redirect('administrator/user');
+        redirect('administrator/user');
     }
+    
     
 }

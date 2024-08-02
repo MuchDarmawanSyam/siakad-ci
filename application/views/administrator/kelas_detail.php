@@ -53,4 +53,3 @@
             </div>
         <?php endif; ?>
     </div>
-    <?php echo anchor('administrator/kelas','<div class="btn btn-danger mb-5 ml-4">Kembali</div>') ?>

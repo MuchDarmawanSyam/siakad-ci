@@ -97,19 +97,25 @@ class Mengajar extends CI_Controller {
                 'kkm' => $this->input->post('kkm', TRUE)
             );
 
-            if($this->Mengajar_model->cek_duplikat_pengajar($data['nik'], $data['id_kelas'], $data['id_tahun'], $data['id_mapel'], $data['semester'])){
-                
+            if ($this->Mengajar_model->cek_duplikat_pengajar_guru($data['nik'], $data['id_kelas'], $data['id_tahun'], $data['id_mapel'], $data['semester'])) {
+                // Jika duplikasi berdasarkan guru, kelas, tahun, mata pelajaran, dan semester
+                $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">Gagal menambahkan data. Guru mata pelajaran di kelas yang sama dan semester yang sama sudah ada!</div>');
+                redirect('administrator/mengajar/tambah_mengajar/'.$data['id_kelas'].'/'.$data['id_tahun']);
+            } elseif ($this->Mengajar_model->cek_duplikat_pengajar_mapel_semester($data['id_mapel'], $data['semester'])) {
+                // Jika duplikasi berdasarkan mata pelajaran dan semester saja
+                $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">Gagal menambahkan data. Mata pelajaran di semester yang sama sudah ada!</div>');
+                redirect('administrator/mengajar/tambah_mengajar/'.$data['id_kelas'].'/'.$data['id_tahun']);
+            } else {
+                // Jika tidak ada duplikasi, tambahkan data
                 if ($this->Mengajar_model->tambah_mengajar($data)) {
                     $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">Data mata pelajaran berhasil ditambahkan!</div>');
-                    redirect('administrator/mengajar/mengajar_aksi'); // Redirect kembali ke halaman daftar pengajaran jika berhasil menambahkan
+                    redirect('administrator/mengajar/mengajar_aksi');
                 } else {
                     $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">Gagal menambahkan data mata pelajaran. Pastikan semua field terisi dengan benar!</div>');
-                    redirect('administrator/mengajar/tambah_mengajar/'.$data['id_kelas'].'/'.$data['id_tahun']); // Redirect kembali ke halaman tambah_mengajar dengan parameter id_kelas dan id_tahun jika gagal menambahkan
+                    redirect('administrator/mengajar/tambah_mengajar/'.$data['id_kelas'].'/'.$data['id_tahun']);
                 }
-            }else{
-                $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">Gagal menambahkan data. Guru mata pelajaran di kelas yang sama dan semester yang sama sudah ada!</div>');
-                redirect('administrator/mengajar/tambah_mengajar/'.$data['id_kelas'].'/'.$data['id_tahun']); // Redirect kembali ke halaman tambah_mengajar dengan parameter id_kelas dan id_tahun jika gagal menambahkan
             }
+            
             
         }
     }
@@ -146,7 +152,7 @@ class Mengajar extends CI_Controller {
         $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">Data mata pelajaran berhasil dihapus!</div>');
         redirect('administrator/mengajar/mengajar_aksi');
     }
-    public function update_mengajar_aksi()
+   public function update_mengajar_aksi()
 {
     // Validasi form
     $this->form_validation->set_rules('id_mengajar', 'ID Mengajar', 'required');
@@ -157,62 +163,73 @@ class Mengajar extends CI_Controller {
     $this->form_validation->set_rules('kkm', 'KKM', 'required');
 
     if ($this->form_validation->run() == FALSE) {
-        // Validasi gagal, kembali ke halaman edit
+        // Validasi gagal, log error
+        log_message('error', 'Validasi form gagal');
+        // Kembali ke halaman edit
         $this->update_mengajar($this->input->post('id_mengajar', TRUE));
     } else {
         // Validasi berhasil, update data
         $id_mengajar = $this->input->post('id_mengajar', TRUE);
         $id_kelas = $this->input->post('id_kelas', TRUE);
+        $id_tahun = $this->input->post('id_tahun', TRUE); // Make sure this input is included in the form
 
         $data = array(
             'id_kelas' => $id_kelas,
             'nik' => $this->input->post('nik', TRUE),
-            'id_tahun' => $this->input->post('id_tahun', TRUE),
             'id_mapel' => $this->input->post('id_mapel', TRUE),
             'semester' => $this->input->post('semester', TRUE),
             'kkm' => $this->input->post('kkm', TRUE)
         );
-
-        if($this->Mengajar_model->cek_duplikat_pengajar($data['nik'], $data['id_kelas'], $data['id_tahun'], $data['id_mapel'], $data['semester'])){
+        if ($this->Mengajar_model->cek_duplikat_pengajar_guru($data['nik'], $data['id_kelas'], $data['id_tahun'], $data['id_mapel'], $data['semester'])) {
+            // Jika duplikasi berdasarkan guru, kelas, tahun, mata pelajaran, dan semester
+            $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">Gagal memperbarui data. Guru mata pelajaran di kelas yang sama dan semester yang sama sudah ada!</div>');
+            redirect('administrator/mengajar/update_mengajar/'.$id_mengajar);
+        } elseif ($this->Mengajar_model->cek_duplikat_pengajar_mapel_semester($data['id_mapel'], $data['semester'])) {
+            // Jika duplikasi berdasarkan mata pelajaran dan semester saja
+            $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">Gagal memperbarui data. Mata pelajaran di semester yang sama sudah ada!</div>');
+            redirect('administrator/mengajar/update_mengajar/'.$id_mengajar);
+        } else {
+            // Jika tidak ada duplikasi, perbarui data
             if ($this->Mengajar_model->update_mengajar($id_mengajar, $data)) {
+                // Log success
+                log_message('info', 'Data mengajar berhasil diupdate');
                 // Set flash data before redirect
                 $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">Data mata pelajaran berhasil diupdate!</div>');
                 // Redirect to mengajar_aksi with appropriate parameters
-                redirect('administrator/mengajar/mengajar_aksi/'.$id_kelas.'/'.$tahun_ajaran->id_tahun);
+                redirect('administrator/mengajar/mengajar_aksi/'.$id_tahun);
             } else {
-                $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">Data mata pelajaran berhasil diupdate!</div>');
-                redirect('administrator/mengajar/mengajar_aksi/'.$id_kelas.'/'.$tahun_ajaran->id_tahun);
-                //$this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">Gagal update data mata pelajaran. Silakan coba lagi!</div>');
-                //redirect('administrator/mengajar/update_mengajar/'.$id_mengajar);
-                // ??? Masih dipertanyakan mengapa sukses update tapi redirect lewat blok ini
+                // Log failure
+                log_message('error', 'Gagal update data mengajar');
+                $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">Gagal update data mata pelajaran. Silakan coba lagi!</div>');
+                redirect('administrator/mengajar/update_mengajar/'.$id_mengajar);
             }
-        }else{
-            $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">Gagal menambahkan data. Guru mata pelajaran di kelas yang sama dan semester yang sama sudah ada!</div>');
-            redirect('administrator/mengajar/update_mengajar/'.$id_mengajar);
         }
     }
-}
-public function update_mengajar($id_mengajar)
-{
-    // Fetch data yang diperlukan untuk form
-    $data['mengajar'] = $this->Mengajar_model->get_mengajar_by_id($id_mengajar);
-    if (!$data['mengajar']) {
-        show_404();
     }
 
-    // Fetch tahun akademik dan kelas data
-    $data['tahun_ajaran'] = $this->Mengajar_model->get_tahun_akademik_by_id($data['mengajar']->id_tahun);
-    $data['kelas'] = $this->Mengajar_model->get_kelas_by_id($data['mengajar']->id_kelas);
-
-    // Fetch dropdown data
-    $data['mapelDropdown'] = $this->Mengajar_model->get_all_mapel();
-    $data['guruDropdown'] = $this->Mengajar_model->get_all_guru();
-
-    // Load view
-    $this->load->view('templates_administrator/header');
-    $this->load->view('templates_administrator/sidebar');
-    $this->load->view('administrator/mengajar_update', $data); // Mengirim $data ke view
-    $this->load->view('templates_administrator/footer');
+    public function update_mengajar($id_mengajar)
+    {
+        // Fetch data yang diperlukan untuk form
+        $data['mengajar'] = $this->Mengajar_model->get_mengajar_by_id($id_mengajar);
+        if (!$data['mengajar']) {
+            show_404();
+        }
+    
+        // Fetch tahun akademik dan kelas data
+        $data['tahun_ajaran'] = $this->Mengajar_model->get_tahun_akademik_by_id($data['mengajar']->id_tahun);
+        $data['kelas'] = $this->Mengajar_model->get_kelas_by_id($data['mengajar']->id_kelas);
+    
+        // Fetch dropdown data
+        $data['mapelDropdown'] = $this->Mengajar_model->get_all_mapel();
+        $data['guruDropdown'] = $this->Mengajar_model->get_all_guru();
+    
+        // Load view
+        $this->load->view('templates_administrator/header');
+        $this->load->view('templates_administrator/sidebar');
+        $this->load->view('administrator/mengajar_update', $data); // Mengirim $data ke view
+        $this->load->view('templates_administrator/footer');
+    }
 }
-}
+
+
 ?>

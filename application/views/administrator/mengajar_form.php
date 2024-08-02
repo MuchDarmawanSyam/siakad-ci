@@ -23,14 +23,16 @@
         <div class="form-group">
             <label>Semester</label>
             <select name="semester" class="form-control">
-                <option value="ganjil" <?php echo set_select('semester', '1'); ?>>Semester 1</option>
-                <option value="genap" <?php echo set_select('semester', '2'); ?>>Semester 2</option>
+                <option value="Ganjil" <?php echo set_select('semester', 'Ganjil'); ?>>Ganjil</option>
+                <option value="Genap" <?php echo set_select('semester', 'Genap'); ?>>Genap</option>
             </select>
+            <?php echo form_error('semester', '<small class="text-danger">', '</small>'); ?>
         </div>
 
         <div class="form-group">
             <label>KKM</label>
             <input type="text" name="kkm" class="form-control" value="<?php echo set_value('kkm'); ?>">
+            <?php echo form_error('kkm', '<small class="text-danger">', '</small>'); ?>
         </div>
 
         <button type="submit" class="btn btn-primary">Simpan</button>

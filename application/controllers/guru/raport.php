@@ -28,8 +28,7 @@ class Raport extends CI_Controller {
     public function get_siswa_by_kelas(){
         $this->load->model('siswa_model');
         $id_kelas = $this->input->post('id_kelas');
-        $id_tahun = $this->input->post('id_tahun');
-        $data['siswa'] = $this->siswa_model->get_by_id_kelas($id_kelas, $id_tahun);
+        $data['siswa'] = $this->siswa_model->get_by_id_kelas($id_kelas);
         $this->load->view('guru/partials/form_cetak/ajax_siswa', $data);
     }
 
@@ -52,7 +51,7 @@ class Raport extends CI_Controller {
         $data['kepsek'] = $this->input->post('kepala_sekolah');
         $data['wali'] = $this->guru_model->get_by_id($nik_wali->nik);
         $data['siswa'] = $this->siswa_model->get_by_id($nis);
-        $data['nilai'] = $this->nilai_model->get_nilai_cetak_raport($nis, $kelas, $semester);
+        $data['nilai'] = $this->nilai_model->get_nilai_cetak_raport($nis, $kelas);
         $data['sikap'] = $this->nilai_model->get_sikap_by_nis($nis);
         $this->load->view('guru/partials/cetak_raport', $data);
     }

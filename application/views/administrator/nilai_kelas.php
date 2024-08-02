@@ -60,9 +60,8 @@
                                         }
                                     }
                                     if (!$already_filled): ?>
-                                        <?php echo anchor('administrator/nilai/input_nilai/'.$nilai->id_mengajar.'?kelas='.$id_kelas, '<button class="btn btn-sm btn-primary">Input Nilai</button>'); ?>
-                                    <?php else: ?>
-                                        Sudah Dinilai
+                                        <?php echo anchor('administrator/nilai/input_nilai/'.$nilai->id_mengajar.'?kelas='.$id_kelas, '<button class="btn btn-sm btn-primary">Input Nilai</button>'); ?> 
+                                        <?php echo anchor('administrator/nilai/lihat_nilai/'.$nilai->id_mengajar, '<button class="btn btn-sm btn-success">Lihat Nilai</button>'); ?>
                                     <?php endif; ?>
                                 </td>
                             </tr>

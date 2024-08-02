@@ -13,9 +13,6 @@
         <div class="alert alert-success" role="alert">
             <i class="fas fa-landmark"></i> Input Nilai / Data Kelas
         </div>
-        <div class="alert alert-success" role="alert">
-            <i class="fas fa-landmark"></i> Tahun Ajaran <?= $tahun_ajaran_aktif->tahun_ajaran; ?>
-        </div>
         <?php echo $this->session->flashdata('pesan') ?>
         <center>
             <legend class="mt-3"><strong>Data Mapel</strong></legend>

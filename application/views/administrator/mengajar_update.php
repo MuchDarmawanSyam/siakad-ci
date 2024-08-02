@@ -3,8 +3,6 @@
         <i class="fas fa-landmark"></i> Data Mengajar Mata Pelajaran di Kelas
     </div>
 
-    <?php echo $this->session->flashdata('pesan'); ?>
-
     <center>
         <legend class="mt-3"><strong>Update Data Mata Pelajaran di Kelas</strong></legend>
     </center>
@@ -25,8 +23,9 @@
     <div class="mt-4">
         <?php echo form_open('administrator/mengajar/update_mengajar_aksi'); ?>
             <input type="hidden" name="id_mengajar" value="<?php echo $mengajar->id_mengajar; ?>">
-            <input type="hidden" name="id_tahun" value="<?php echo htmlspecialchars($tahun_ajaran->id_tahun, ENT_QUOTES, 'UTF-8'); ?>">
             <input type="hidden" name="id_kelas" value="<?php echo $kelas->id_kelas; ?>">
+            <input type="hidden" name="id_tahun" value="<?php echo $tahun_ajaran->id_tahun; ?>">
+            <input type="hidden" name="redirect_url" value="<?php echo current_url(); ?>"> <!-- URL redirect -->
 
             <div class="form-group">
                 <label>Nama Mata Pelajaran</label>
@@ -55,8 +54,8 @@
             <div class="form-group">
                 <label>Semester</label>
                 <select name="semester" class="form-control">
-                    <option value="ganjil" <?= ($mengajar->semester == "ganjil")? 'selected="True"' : 'selected="False"' ?>>Ganjil</option>
-                    <option value="genap" <?= ($mengajar->semester == "ganjil")? 'selected="True"' : 'selected="False"' ?>>Genap</option>
+                    <option value="Ganjil" <?php echo ($mengajar->semester == 'Ganjil') ? 'selected' : ''; ?>>Ganjil</option>
+                    <option value="Genap" <?php echo ($mengajar->semester == 'Genap') ? 'selected' : ''; ?>>Genap</option>
                 </select>
                 <?php echo form_error('semester', '<small class="text-danger">', '</small>'); ?>
             </div>
@@ -68,6 +67,7 @@
             </div>
 
             <button type="submit" class="btn btn-sm btn-primary">Update</button>
-            <?php //echo anchor('administrator/mengajar/update_mengajar/'.$kelas->id_kelas.'/'.$tahun_ajaran->id_tahun, '<button class="btn btn-sm btn-danger">Kembali</button>'); ?>
+            <?php echo anchor('administrator/mengajar/mengajar_aksi/'.$kelas->id_kelas.'/'.$tahun_ajaran->id_tahun, '<button class="btn btn-sm btn-danger">Kembali</button>'); ?>
         <?php echo form_close(); ?>
+    </div>
 </div>

@@ -51,50 +51,42 @@ class Guru extends CI_Controller {
             $config['file_name']             = 'Guru-'.$nik;
             // Memuat modul bawaaan ci untuk mengangani uploadd file
             $this->load->library('upload', $config);
+            
+            if ($this->upload->do_upload('foto')){
+                $data_upload['tipe'] = $this->upload->data();
+                $nama_file = 'Guru-'.$nik.$data_upload['tipe']['file_ext'];
+                $data = array(
+                    'nik' => $nik,
+                    'nama_guru' => $nama_guru,
+                    'alamat' => $alamat,
+                    'jenis_kelamin' => $jenis_kelamin,
+                    'tempat_lahir' => $tempat_lahir,
+                    'tgl_lahir' => $tgl_lahir,
+                    'email' => $email,
+                    'agama' => $agama,
+                    'no_telp' => $no_telp,
+                    'foto' => $nama_file, // buat nama filenya pakai nik
+                    'idu' => $idu // Attribut idu diisi dengan nilai dari nik
+                );
 
-            // Validasi apakah nik guru yang ditambah sdh ada
-            if ($nik == $this->guru_model->ambil_kode_guru($nik)[0]->nik){
-                $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
-                            Guru dengan NIK: <b>'.$nik.'</b> sudah terdaftar.
-                            </div>');
-                redirect('administrator/guru/tambah_guru');
-            }else{
-                if ($this->upload->do_upload('foto')){
-                    $data_upload['tipe'] = $this->upload->data();
-                    $nama_file = 'Guru-'.$nik.$data_upload['tipe']['file_ext'];
-                    $data = array(
-                        'nik' => $nik,
-                        'nama_guru' => $nama_guru,
-                        'alamat' => $alamat,
-                        'jenis_kelamin' => $jenis_kelamin,
-                        'tempat_lahir' => $tempat_lahir,
-                        'tgl_lahir' => $tgl_lahir,
-                        'email' => $email,
-                        'agama' => $agama,
-                        'no_telp' => $no_telp,
-                        'foto' => $nama_file, // buat nama filenya pakai nik
-                        'idu' => $idu // Attribut idu diisi dengan nilai dari nik
-                    );
-
-                    if ($this->guru_model->insert_data($data)) {
-                        $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
-                            Data guru Berhasil Ditambahkan!
-                            </div>');
-                        redirect('administrator/guru'); // Redirect kembali ke halaman tabel guru setelah data terupload & terinput
-                    } else {
-                        // hapus foto yang baru diupload jika berhasil upload tapi gagal menambah data
-                        unlink('./assets/uploads/img/guru/'.$nama_file);
-                        $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
-                            Gagal menambah data guru.
-                            </div>');
-                        redirect('administrator/guru/tambah_guru'); // Jika berhasil upload tapi gagal tambah data, tetap di halaman tambah guru
-                    }
-                }else{
-                    $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
-                        Gagal upload foto guru.
+                if ($this->guru_model->insert_data($data)) {
+                    $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
+                        Data guru Berhasil Ditambahkan!
                         </div>');
-                    redirect('administrator/guru'); // Jika gagal upload, tetap di halaman tambah guru
+                    redirect('administrator/guru'); // Redirect kembali ke halaman tabel guru setelah data terupload & terinput
+                } else {
+                    // hapus foto yang baru diupload jika berhasil upload tapi gagal menambah data
+                    unlink('./assets/uploads/img/guru/'.$nama_file);
+                    $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
+                        Gagal menambah data guru.
+                        </div>');
+                    redirect('administrator/guru/tambah_guru'); // Jika berhasil upload tapi gagal tambah data, tetap di halaman tambah guru
                 }
+            }else{
+                $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
+                    Gagal upload foto guru.
+                    </div>');
+                redirect('administrator/guru'); // Jika gagal upload, tetap di halaman tambah guru
             }
         }
     }

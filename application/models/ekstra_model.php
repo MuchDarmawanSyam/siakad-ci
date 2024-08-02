@@ -93,6 +93,15 @@ class Ekstra_model extends CI_Model {
         $this->db->insert('ekstra_siswa', $data);
     }
 
+    public function get_all_ekstra_siswa_by_nis($nis) {
+        $this->db->select('ekstra.*, guru.nama_guru');
+        $this->db->from('ekstra');
+        $this->db->join('guru', 'ekstra.nik = guru.nik');
+        $this->db->join('ekstra_siswa', 'ekstra.id_ekstra = ekstra_siswa.id_ekstra');
+        $this->db->where('ekstra_siswa.nis', $nis);
+        return $this->db->get()->result();
+    }
+
     public function get_siswa_by_ekstra_id($id_ekstra) {
         $this->db->select('siswa.nis, siswa.nama_siswa, siswa.jenis_kelamin, siswa.alamat');
         $this->db->from('ekstra_siswa');

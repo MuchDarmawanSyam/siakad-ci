@@ -11,13 +11,13 @@
     <div class="alert alert-info">
         Tahun Ajaran Aktif: <?php echo isset($tahun_ajaran_aktif->tahun_ajaran) ? $tahun_ajaran_aktif->tahun_ajaran : 'Tidak ada tahun ajaran aktif'; ?>
     </div>
+    
     <table id="wali_table" class="table table-bordered table-hover">
         <thead class="thead-light">
             <tr>
                 <th>NO</th>
                 <th>KELAS</th>
                 <th>WALI KELAS</th>
-                <th>JUMLAH SISWA</th>
                 <th>AKSI</th>
             </tr>
         </thead>
@@ -28,7 +28,6 @@
                     <td><?php echo $no++; ?></td>
                     <td><?php echo $wali->nama_kelas; ?></td>
                     <td><?php echo $wali->nama_guru; ?></td>
-                    <td><?php echo $this->rombel_model->get_jumlah_siswa($wali->id_kelas, $this->tahun_model->get_tahun_aktif()->id_tahun); ?></td>
                     <td>
                         <?php echo anchor('administrator/wali/detail/' . $wali->id_kelas, '<div class="btn btn-sm btn-info">Detail</div>'); ?>
                         <?php echo anchor('administrator/wali/update/' . $wali->id_kelas, '<div class="btn btn-sm btn-primary">Update</div>'); ?>

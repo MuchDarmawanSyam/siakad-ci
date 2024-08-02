@@ -19,10 +19,8 @@ class Siswa extends CI_Controller {
 
     public function tambah_siswa() {
         $this->load->model('kelas_model');
-        $this->load->model('tahun_model');
         $data['siswa'] = $this->siswa_model->get_siswa();
         $data['kelas'] = $this->kelas_model->get_all_kelas();
-        $data['tahun'] = $this->tahun_model->get_tahun_aktif();
         $this->load->view('templates_administrator/header');
         $this->load->view('templates_administrator/sidebar');
         $this->load->view('administrator/siswa_form', $data); 
@@ -35,7 +33,6 @@ class Siswa extends CI_Controller {
         if ($this->form_validation->run() == FALSE) {
             $this->tambah_siswa();
         } else {
-            $this->load->model('rombel_model');
             $nis = $this->input->post('nis');
             $nama_siswa = $this->input->post('nama_siswa');
             $alamat = $this->input->post('alamat');
@@ -47,7 +44,6 @@ class Siswa extends CI_Controller {
             $nama_ayah = $this->input->post('nama_ayah');
             $pekerjaan_ayah = $this->input->post('pekerjaan_ayah');
             $kelas = $this->input->post('id_kelas');
-            $tahun = $this->input->post('tahun');
             $nama_ibu = $this->input->post('nama_ibu');
             $pekerjaan_ibu = $this->input->post('pekerjaan_ibu');
             $foto = $this->input->post('foto');
@@ -65,16 +61,44 @@ class Siswa extends CI_Controller {
             $config['file_name']             = 'Siswa-'.$nis;
             // Memuat modul bawaaan ci untuk mengangani upload file
             $this->load->library('upload', $config);
-            
-            // Validasi apakah nis yg ditambahkan sdh ada
-            if ($nis == $this->siswa_model->ambil_kode_siswa($nis)[0]->nis){
-                $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
-                            Siswa dengan NIS: <b>'.$nis.'</b> sudah terdaftar.
-                            </div>');
-                redirect('administrator/siswa/tambah_siswa');
+
+            if(!isset($_FILES['foto']) || $_FILES['foto']['error'] == UPLOAD_ERR_NO_FILE) {
+                // Jika melakukan tambah data tanpa update foto
+                $data = array(
+                    'nis' => $nis,
+                    'nama_siswa' => $nama_siswa,
+                    'alamat' => $alamat,
+                    'jenis_kelamin' => $jenis_kelamin,
+                    'tempat_lahir' => $tempat_lahir,
+                    'tgl_lahir' => $tgl_lahir,
+                    'email' => $email,
+                    'agama' => $agama,
+                    'nama_ayah' => $nama_ayah,
+                    'pekerjaan_ayah' => $pekerjaan_ayah,
+                    'nama_ibu' => $nama_ibu,
+                    'pekerjaan_ibu' => $pekerjaan_ibu,
+                    'foto' => $foto,
+                    'no_telp' => $no_telp,
+                    'id_kelas' => $kelas,
+                    'idu' => $idu // Isi idu dengan nilai nis
+                );
+
+                if ($this->siswa_model->insert_data($data)) {
+                    $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
+                        Data siswa Berhasil Ditambahkan!
+                        </div>');
+                    redirect('administrator/siswa');
+                } else {
+                    $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
+                        Gagal menambah data siswa.
+                        </div>');
+                    redirect('administrator/siswa/tambah_siswa');
+                }
             }else{
-                if(!isset($_FILES['foto']) || $_FILES['foto']['error'] == UPLOAD_ERR_NO_FILE) {
-                    // Jika melakukan tambah data tanpa update foto
+                // Jika melakukan tambah data beserta foto
+                if($this->upload->do_upload('foto')){
+                    $data_upload['tipe'] = $this->upload->data();
+                    $nama_file = 'Siswa-'.$nis.$data_upload['tipe']['file_ext'];
                     $data = array(
                         'nis' => $nis,
                         'nama_siswa' => $nama_siswa,
@@ -88,75 +112,29 @@ class Siswa extends CI_Controller {
                         'pekerjaan_ayah' => $pekerjaan_ayah,
                         'nama_ibu' => $nama_ibu,
                         'pekerjaan_ibu' => $pekerjaan_ibu,
-                        'foto' => $foto,
+                        'foto' => $nama_file,
                         'no_telp' => $no_telp,
+                        'id_kelas' => $kelas,
                         'idu' => $idu // Isi idu dengan nilai nis
                     );
-
+    
                     if ($this->siswa_model->insert_data($data)) {
-                        $data_rombel = [
-                            'nis' => $nis,
-                            'id_kelas' => $kelas,
-                            'id_tahun' => $tahun
-                        ];
-                        $this->rombel_model->tambah_siswa($data_rombel);
                         $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
                             Data siswa Berhasil Ditambahkan!
                             </div>');
                         redirect('administrator/siswa');
                     } else {
+                        unlink('./assets/uploads/img/siswa/'.$nama_file);
                         $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
                             Gagal menambah data siswa.
                             </div>');
                         redirect('administrator/siswa/tambah_siswa');
                     }
                 }else{
-                    // Jika melakukan tambah data beserta foto
-                    if($this->upload->do_upload('foto')){
-                        $data_upload['tipe'] = $this->upload->data();
-                        $nama_file = 'Siswa-'.$nis.$data_upload['tipe']['file_ext'];
-                        $data = array(
-                            'nis' => $nis,
-                            'nama_siswa' => $nama_siswa,
-                            'alamat' => $alamat,
-                            'jenis_kelamin' => $jenis_kelamin,
-                            'tempat_lahir' => $tempat_lahir,
-                            'tgl_lahir' => $tgl_lahir,
-                            'email' => $email,
-                            'agama' => $agama,
-                            'nama_ayah' => $nama_ayah,
-                            'pekerjaan_ayah' => $pekerjaan_ayah,
-                            'nama_ibu' => $nama_ibu,
-                            'pekerjaan_ibu' => $pekerjaan_ibu,
-                            'foto' => $nama_file,
-                            'no_telp' => $no_telp,
-                            'idu' => $idu // Isi idu dengan nilai nis
-                        );
-        
-                        if ($this->siswa_model->insert_data($data)) {
-                            $data_rombel = [
-                                'nis' => $nis,
-                                'id_kelas' => $kelas,
-                                'id_tahun' => $tahun
-                            ];
-                            $this->rombel_model->tambah_siswa($data_rombel);
-                            $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
-                                Data siswa Berhasil Ditambahkan!
-                                </div>');
-                            redirect('administrator/siswa');
-                        } else {
-                            unlink('./assets/uploads/img/siswa/'.$nama_file);
-                            $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
-                                Gagal menambah data siswa.
-                                </div>');
-                            redirect('administrator/siswa/tambah_siswa');
-                        }
-                    }else{
-                        $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
-                            Gagal upload foto siswa.
-                            </div>');
-                        redirect('administrator/siswa/tambah_siswa');
-                    }
+                    $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
+                        Gagal upload foto siswa.
+                        </div>');
+                    redirect('administrator/siswa/tambah_siswa');
                 }
             }
         }
@@ -186,7 +164,7 @@ class Siswa extends CI_Controller {
         $tgl_lahir = $this->input->post('tgl_lahir');
         $email = $this->input->post('email');
         $agama = $this->input->post('agama');
-        $nama_ayah = $this->input->post('nama_ayah$nama_ayah');
+        $nama_ayah = $this->input->post('nama_ayah');
         $pekerjaan_ayah = $this->input->post('pekerjaan_ayah');
         $nama_ibu = $this->input->post('nama_ibu');
         $pekerjaan_ibu = $this->input->post('pekerjaan_ibu');
@@ -285,12 +263,24 @@ class Siswa extends CI_Controller {
     
 public function delete($id) {
     $where = array('nis' => $id);
-    $this->rombel_model->hapus_siswa($id); // Hapus data di tabel childnya dulu baru di tabel parent
     $this->siswa_model->hapus_data($where,'siswa');
     $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
         Data siswa Berhasil dihapus!
         </div>');
     redirect('administrator/siswa');
 }
+
+
+
+
+ public function detail_kelas($id) {
+        $this->load->model('siswa_model');
+        $data['detail'] = $this->Kelas_model->detail_kelas($id); // Memanggil method detail_kelas dari model dengan parameter $id
+        $data['siswa'] = $this->siswa_model->get_by_id_kelas($id);
+        $this->load->view('templates_administrator/header');
+        $this->load->view('templates_administrator/sidebar');
+        $this->load->view('administrator/kelas_detail', $data); // Menyertakan data detail ke dalam view
+        $this->load->view('templates_administrator/footer');
+    }
 }
 ?>

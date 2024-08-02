@@ -15,6 +15,15 @@
             <?php echo form_error('kode_kelas','<div class="text-danger small ml-3">','</div>') ?>
         </div>
 
+        <div class="form-group">
+            <label for="tahun_ajaran">Tahun Ajaran</label>
+            <select name="tahun_ajaran" id="tahun_ajaran" class="form-control" required>
+                <?php foreach ($tahun_ajaran as $ta): ?>
+                    <option value="<?php echo $ta->id_tahun; ?>"><?php echo $ta->tahun_ajaran; ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
         <button type="submit" class="btn btn-primary mb-5">Simpan</button>
     </form>
 </div>

@@ -16,6 +16,26 @@ class Guru_model extends CI_Model {
         }
     }
 
+    public function get_nama_by_nik($nik){
+        $this->db->select('nama_guru');
+        $this->db->from('guru');
+        $this->db->where('nik', $nik);
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+            return $query->row()->nama_guru;
+        } else {
+            return null; // Jika tidak ada data ditemukan, bisa dikembalikan null atau pesan error sesuai kebutuhan
+        }
+    }
+    public function get_all_guru() {
+        $this->db->select('*');
+        $this->db->from('guru');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+
+    
     public function insert_data($data) {
         return $this->db->insert('guru', $data);
     }
@@ -44,4 +64,11 @@ class Guru_model extends CI_Model {
     public function jumlah_guru(){
         return $this->db->count_all('guru');
     }
+
+    //profil guru dan admin
+    public function get_detail_by_username($username) {
+        $this->db->where('username', $username);
+        return $this->db->get('guru')->result();
+    }
+    
 }

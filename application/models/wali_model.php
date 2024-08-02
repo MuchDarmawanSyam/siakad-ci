@@ -3,33 +3,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Wali_model extends CI_Model {
 
+   public function tampil_data_by_tahun_ajaran_aktif() {
+    // Dapatkan data wali kelas berdasarkan tahun ajaran aktif
+    $tahun_ajaran_aktif = $this->get_tahun_ajaran_aktif();
+    if ($tahun_ajaran_aktif) {
+        $this->db->select('wali_kelas.id_kelas, guru.nama_guru, kelas.nama_kelas, COUNT(wali_kelas.nis) as jumlah_siswa');
+        $this->db->from('wali_kelas');
+        $this->db->join('guru', 'wali_kelas.nik = guru.nik');
+        $this->db->join('kelas', 'wali_kelas.id_kelas = kelas.id_kelas');
+        $this->db->where('wali_kelas.id_tahun', $tahun_ajaran_aktif->id_tahun);
+        $this->db->group_by('wali_kelas.id_kelas, guru.nama_guru, kelas.nama_kelas');
+        return $this->db->get()->result();
+    } else {
+        return [];
+    }
+}
+        public function get_tahun_ajaran() {
+    return $this->db->get('tahun_ajaran')->result();
+}
+
     public function get_tahun_ajaran_aktif() {
-        // Dapatkan tahun ajaran aktif
-        $this->db->where('status', 'aktif');
-        return $this->db->get('tahun_ajaran')->row();
-    }
+    $this->db->where('status', 'aktif');
+    return $this->db->get('tahun_ajaran')->row();
+}
 
-    public function tampil_data_by_tahun_ajaran_aktif() {
-        // Dapatkan data wali kelas berdasarkan tahun ajaran aktif
-        $tahun_ajaran_aktif = $this->get_tahun_ajaran_aktif();
-        if ($tahun_ajaran_aktif) {
-            $this->db->select('wali_kelas.id_kelas, guru.nama_guru, kelas.nama_kelas, COUNT(wali_kelas.nis) as jumlah_siswa');
-            $this->db->from('wali_kelas');
-            $this->db->join('guru', 'wali_kelas.nik = guru.nik');
-            $this->db->join('kelas', 'wali_kelas.id_kelas = kelas.id_kelas');
-            $this->db->where('wali_kelas.id_tahun', $tahun_ajaran_aktif->id_tahun);
-            $this->db->group_by('wali_kelas.id_kelas, guru.nama_guru, kelas.nama_kelas');
-            return $this->db->get()->result();
-        } else {
-            return [];
-        }
-    }
-
-    public function hitung_jumlah_siswa($id_kelas) {
-        // Hitung jumlah siswa dalam kelas tertentu
-        $result = $this->db->where('id_kelas', $id_kelas)->get('siswa');
-        return $result->num_rows();
-    }
 
     public function cek_data($nik, $id_kelas, $id_tahun) {
         // Memeriksa apakah data sudah ada di tabel wali_kelas
@@ -113,13 +110,11 @@ class Wali_model extends CI_Model {
         return $this->db->get()->row();
     }
 
-    public function get_siswa_by_id_wali($id_kelas, $id_tahun) {
+    public function get_siswa_by_id_wali($id_kelas) {
         $this->db->select('siswa.nis, siswa.nama_siswa, siswa.jenis_kelamin');
         $this->db->from('siswa');
-        $this->db->join('rombel', 'rombel.nis = siswa.nis');
-        $this->db->join('wali_kelas', 'wali_kelas.id_kelas = rombel.id_kelas');
-        $this->db->where('rombel.id_kelas', $id_kelas);
-        $this->db->where('rombel.id_tahun', $id_tahun);
+        $this->db->join('wali_kelas', 'wali_kelas.nis = siswa.nis');
+        $this->db->where('wali_kelas.id_kelas', $id_kelas);
         return $this->db->get()->result();
     }
     
@@ -166,12 +161,11 @@ class Wali_model extends CI_Model {
     // ---------------------------------------
     // Method ini diakses dari controller guru
     // ---------------------------------------
-    public function get_jml_siswa_by_nik_wali($nik, $id_tahun){
+    public function get_jml_siswa_by_nik_wali($nik){
         $this->db->select('*');
-        $this->db->from('rombel');
-        $this->db->join('wali_kelas', 'wali_kelas.id_kelas = rombel.id_kelas');
+        $this->db->from('siswa');
+        $this->db->join('wali_kelas', 'wali_kelas.id_kelas = siswa.id_kelas');
         $this->db->where('wali_kelas.nik', $nik);
-        $this->db->where('rombel.id_tahun', $id_tahun);
 
         return $this->db->count_all_results();
     }
@@ -179,17 +173,9 @@ class Wali_model extends CI_Model {
     public function get_siswa_by_nik_wali($nik){
         $this->db->select('siswa.*');
         $this->db->from('siswa');
-        $this->db->join('rombel', 'rombel.nis = siswa.nis');
-        $this->db->join('wali_kelas', 'wali_kelas.id_kelas = rombel.id_kelas');
+        $this->db->join('wali_kelas', 'wali_kelas.id_kelas = siswa.id_kelas');
         $this->db->where('wali_kelas.nik', $nik);
         return $this->db->get()->result();
-    }
-
-    public function get_wali_by_nik_wali($nik){
-        $this->db->select('wali_kelas.*');
-        $this->db->from('wali_kelas');
-        $this->db->where('wali_kelas.nik', $nik);
-        return $this->db->get()->row();
     }
 
 }

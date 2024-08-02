@@ -15,13 +15,17 @@
             </div>
             <div class="form-group">
                 <label>Hak Akses</label>
-                <input type="text" name="" class="form-control" value="<?php echo $user->hak_akses?>" readonly>
+                <select name="hak_akses" class="form-control">
+                    <option value="admin" <?php echo ($user->hak_akses == 'admin') ? 'selected' : ''; ?>>Admin</option>
+                    <option value="guru" <?php echo ($user->hak_akses == 'guru') ? 'selected' : ''; ?>>Guru</option>
+                    <option value="siswa" <?php echo ($user->hak_akses == 'siswa') ? 'selected' : ''; ?>>Siswa</option>
+                </select>
             </div>
             <div class="form-group">
                 <label>Blokir</label>
                 <select name="blokir" class="form-control">
-                    <option value="N" <?php echo ($user->blokir == 'N') ? 'selected' : ''; ?>>N</option>
-                    <option value="Y" <?php echo ($user->blokir == 'Y') ? 'selected' : ''; ?>>Y</option>
+                    <option value="N" <?php echo ($user->blokir == 'N') ? 'selected' : ''; ?>>Tidak</option>
+                    <option value="Y" <?php echo ($user->blokir == 'Y') ? 'selected' : ''; ?>>Ya</option>
                 </select>
             </div>
             <button type="submit" class="btn btn-primary mb-5">Update</button>

@@ -15,7 +15,7 @@
             var n1 = parseInt($('[name="' + s + '1' + x + '"]').val());
             $('[name="rata_' + s + '' + x + '"]').val(n1);
             $('[name="total_' + s + '' + x + '"]').val(n1);
-            $('[name="' + s + '2' + x + '"]').val("");
+            // $('[name="' + s + '2' + x + '"]').val("");
             dropreadonly(s + '2' + x);
             $('[name="' + s + '1' + x + '"]').prop('readonly', true);
         }
@@ -28,7 +28,7 @@
 
             $('[name="rata_' + s + '' + x + '"]').val(hasil);
             $('[name="total_' + s + '' + x + '"]').val(total);
-            $('[name="' + s + '3' + x + '"]').val("");
+            // $('[name="' + s + '3' + x + '"]').val("");
             dropreadonly(s + '3' + x);
             $('[name="' + s + '2' + x + '"]').prop('readonly', true);
         }
@@ -42,7 +42,7 @@
 
             $('[name="rata_' + s + '' + x + '"]').val(hasil);
             $('[name="total_' + s + '' + x + '"]').val(total);
-            $('[name="' + s + '4' + x + '"]').val("");
+            // $('[name="' + s + '4' + x + '"]').val("");
             dropreadonly(s + '4' + x);
             $('[name="' + s + '3' + x + '"]').prop('readonly', true);
         }
@@ -125,7 +125,7 @@
         </div>
         <!-- Lanjuut Bikin Tabel Input -->
         <div class="mt-4" style="overflow-x:scroll;">
-            <form action="<?= base_url('guru/nilai/'.($nilai? 'update_nilai_aksi' : 'input_nilai_aksi')); ?>" id="formNilai" method="post">
+            <form action="<?= base_url('guru/nilai/'.($nilai? 'update_sikap_aksi' : 'input_sikap_aksi')); ?>" id="formNilai" method="post">
                 <table class="table table-bordered table-hover table-striped" style="table-layout:fixed;">
                     <thead>
                         <tr>
@@ -215,7 +215,6 @@
                 </table>
                 <input type="hidden" name="idm" value="<?=$id_mengajar;?>">
                 <input type="hidden" name="idk" value="<?=$id_kelas; ?>">
-                <input type="hidden" name="idt" value="<?=$tahun_ajaran_mapel->id_tahun; ?>">
             </form>
         </div>
 

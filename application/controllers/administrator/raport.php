@@ -7,6 +7,7 @@ class Raport extends CI_Controller {
     public function __construct(){
         parent::__construct();
         $this->load->model('nilai_model');
+        $this->load->model('guru_model'); // Load model guru untuk dropdown kepala sekolah
     }
 
     public function index(){
@@ -14,7 +15,8 @@ class Raport extends CI_Controller {
         $data = array(
             'kelas' => $this->nilai_model->get_all_kelas(),  // Mendapatkan semua data kelas
             'tahun_ajaran' => $this->tahun_model->tampil_data(),  // Mendapatkan data tahun ajaran
-            'tahun_ajaran_aktif' => $this->nilai_model->get_tahun_ajaran_aktif()
+            'tahun_ajaran_aktif' => $this->nilai_model->get_tahun_ajaran_aktif(),
+            'guruDropdown' => $this->guru_model->get_all_guru()  // Mendapatkan data guru untuk dropdown kepala sekolah
         );
 
         $this->load->view('templates_administrator/header');
@@ -23,37 +25,46 @@ class Raport extends CI_Controller {
         $this->load->view('templates_administrator/footer');
     }
 
-
     public function get_siswa_by_kelas(){
         $this->load->model('siswa_model');
         $id_kelas = $this->input->post('id_kelas');
-        $id_tahun = $this->input->post('id_tahun');
-        $data['siswa'] = $this->siswa_model->get_by_id_kelas($id_kelas, $id_tahun);
+        $data['siswa'] = $this->siswa_model->get_by_id_kelas($id_kelas);
         $this->load->view('administrator/partials/form_cetak/ajax_siswa', $data);
     }
 
-    public function cetak_raport(){
+    public function cetak_raport() {
         $this->load->model('kelas_model');
         $this->load->model('wali_model');
         $this->load->model('guru_model');
         $this->load->model('siswa_model');
         $this->load->model('tahun_model');
-
-        $tahun_ajaran = $this->input->post('tahun');
-        $kelas = $this->input->post('kelas');
+        $this->load->model('nilai_model');
+    
+        // Ambil data dari form
+        $tahun_ajaran_id = $this->input->post('tahun');
+        $kelas_id = $this->input->post('kelas');
         $semester = $this->input->post('semester');
         $nis = $this->input->post('siswa');
-        $nik_wali = $this->wali_model->get_wali_by_id_kelas($kelas);
-
-        $data['tahun_ajaran'] = $this->tahun_model->ambil_data_id($tahun_ajaran);
-        $data['kelas'] = $this->kelas_model->get_by_id($kelas);
+        $guru_kepsek_nik = $this->input->post('kepala_sekolah'); // Ambil NIK Kepsek dari dropdown
+    
+        // Ambil data dari model sesuai dengan id atau nik yang diberikan
+        $data['tahun_ajaran'] = $this->tahun_model->ambil_data_id($tahun_ajaran_id);
+        $data['kelas'] = $this->kelas_model->get_by_id($kelas_id);
         $data['semester'] = $semester;
-        $data['kepsek'] = $this->input->post('kepala_sekolah');
-        $data['wali'] = $this->guru_model->get_by_id($nik_wali->nik);
         $data['siswa'] = $this->siswa_model->get_by_id($nis);
-        $data['nilai'] = $this->nilai_model->get_nilai_cetak_raport($nis, $kelas, $semester);
+        $data['nilai'] = $this->nilai_model->get_nilai_cetak_raport($nis, $kelas_id);
         $data['sikap'] = $this->nilai_model->get_sikap_by_nis($nis);
+        $data['wali'] = $this->guru_model->get_by_id($this->wali_model->get_wali_by_id_kelas($kelas_id)->nik);
+        
+        // Ambil nama dan nip kepala sekolah
+        $kepsek_data = $this->guru_model->get_by_id($guru_kepsek_nik);
+        $data['kepsek'] = $kepsek_data->nama_guru; // Ambil nama Kepsek dari model guru
+        $data['nik_kepsek'] = $kepsek_data->nik; // Ambil nip Kepsek dari model guru
+    
+        // Load view dengan data yang sudah diambil
         $this->load->view('administrator/partials/cetak_raport', $data);
     }
+    
+    
 }
 ?>
